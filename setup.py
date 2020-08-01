@@ -15,6 +15,7 @@ setup(
     install_requires=[
         "future",
         "pyngrok",
+        "python-dotenv",
         "flask"
     ],
     entry_points="""
