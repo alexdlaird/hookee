@@ -1,6 +1,6 @@
 import unittest
 
-from hookee import hookee
+from hookee import cli
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
