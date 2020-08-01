@@ -1,37 +1,55 @@
+import threading
+import urllib.request
+
 from flask import Flask, request
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.0.1"
 
+_server_proc = None
 
-def create_app():
-    app = Flask(__name__)
+app = Flask(__name__)
 
-    # Initialize our ngrok settings into Flask
-    app.config.from_mapping(
-        ENV="development"
-    )
+# Initialize our ngrok settings into Flask
+app.config.from_mapping(
+    ENV="development"
+)
 
-    @app.route("/webhook", methods=["GET", "POST"])
-    def webhook():
-        # TODO: make this pretty
-        print(request.method)
-        print(request.headers)
-        print(request.args)
-        print(request.query_string)
-        print(request.data)
-        print(request.form)
+app.app_context().push()
 
-        # TODO: add support for plugins and other hooks, custom processing, responses, etc.
 
-        return "{}"
+@app.route("/webhook", methods=["GET", "POST"])
+def webhook():
+    # TODO: make this pretty
+    print(request.method)
+    print(request.headers)
+    print(request.args)
+    print(request.query_string)
+    print(request.data)
+    print(request.form)
 
-    return app
+    # TODO: add support for plugins and other hooks, custom processing, responses, etc.
+
+    return "{}"
+
+
+def shutdown():
+    request.environ.get("werkzeug.server.shutdown")()
+
+
+@app.route("/shutdown", methods=("POST",))
+def route_shutdown():
+    shutdown()
+    return "", 204
 
 
 def start_server(port):
     # TODO: this needs to start a separate thread that is terminated at exit
-    app = create_app()
+    flask_kwargs = {"host": "127.0.0.1", "port": port, "debug": True, "use_reloader": False}
+    threading.Thread(target=app.run, kwargs=flask_kwargs).start()
 
-    app.run(host="127.0.0.1", port=port, debug=True, use_reloader=False)
+
+def stop_server():
+    req = urllib.request.Request("http://127.0.0.1:5000/shutdown", method="POST")
+    urllib.request.urlopen(req)
