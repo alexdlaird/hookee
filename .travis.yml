@@ -20,6 +20,8 @@ before_deploy:
 deploy:
   provider: pypi
   username: alexdlaird
+  password:
+    secure: R5LcCX2yOuoukQClDJTj9dQ0fW6aU0rbDP8IUKY20k570XCs5/DL0W9GFjl0K0A2+CN3tT4OGFrWPC2H//HMIDxB+upoT2iIH3gn5Si0F4keo0GCG5wetjq8/++GT6QzkEBAt6heTsGAz/OfEBX57Ilews5ep0zOmQ5PKUDWoc5iaNp33A5fUoKDsOW0aRMmBtorMJ2SMd4iZ6vpBZ2+qFbuml3+MTbbohIpOTo70JVMOx+1cKSCUwAXgAO8M82xsuYzkGAaSuaoovDuxP92VoQfcfjZOpj/h02ECc5bnZl3m6Hznzq05jc63PWWTo+hc4XmkFh5fvFt+Zh8DJD23VKfQgmGGAxd40kco0RTvnjf6b2LBKTyoqBb5HCV+yCQ656a/mtIRLfopwBH63jWDpR76rysz32y6ljtX/emS2BqF/4RnAg6D8wBDgx9izOWdUDr4O6wK6csnj+pZUWdc97ub80Dltn2FceZAs9MxlyGDkjCrKROtgHqFG1I1mxZLOMsVHdzjMZt5lnGIY+BElr1pAF0qo6V3fio7DNu2ff9s6/duxeZ57z2UJ7JnikfPbBFqAkFdLGReXu8GdLD09fES83suBWLc3lhdGPE9pYh3vvTnjoSeaJzzo56qjs5yA6vfhrJLfG3KKFdOLFPU+gFo92GsfcMDS7EKAb7avA=
   on:
     tags: true
     python: "3.8"
