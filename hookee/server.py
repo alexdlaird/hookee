@@ -7,16 +7,12 @@ __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.0.1"
 
-_server_proc = None
-
 app = Flask(__name__)
 
 # Initialize our ngrok settings into Flask
 app.config.from_mapping(
     ENV="development"
 )
-
-app.app_context().push()
 
 
 @app.route("/webhook", methods=["GET", "POST"])
