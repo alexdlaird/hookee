@@ -13,9 +13,7 @@ script:
   - make test
   - make local
 after_success:
-  - pip freeze
   - source venv/bin/activate
-  - pip freeze
   - codecov
 before_deploy:
   - sudo -H python -m pip install setuptools twine --upgrade
