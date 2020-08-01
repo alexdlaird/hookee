@@ -20,7 +20,7 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        hookee=hookee.hookee:main
+        hookee=hookee.cli:main
     """,
     description="Command line webhooks, on demand.",
     long_description=long_description,
