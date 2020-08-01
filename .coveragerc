@@ -17,5 +17,5 @@ exclude_lines =
     if __name__ == .__main__.:
 
 [html]
-title = hookie Coverage Report
+title = hookee Coverage Report
 directory = _build/coverage
