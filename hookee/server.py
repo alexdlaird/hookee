@@ -1,7 +1,12 @@
 import threading
-import urllib.request
 
 from flask import Flask, request
+
+from future.standard_library import install_aliases
+
+install_aliases()
+
+from urllib.request import urlopen, Request
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
@@ -47,5 +52,5 @@ def start_server(port):
 
 
 def stop_server():
-    req = urllib.request.Request("http://127.0.0.1:5000/shutdown", method="POST")
-    urllib.request.urlopen(req)
+    req = Request("http://127.0.0.1:5000/shutdown", method="POST")
+    urlopen(req)
