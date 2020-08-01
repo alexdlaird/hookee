@@ -2,21 +2,21 @@ os: linux
 dist: xenial
 language: python
 python:
-- '2.7'
-- '3.5'
-- '3.8'
+  - "2.7"
+  - "3.5"
+  - "3.8"
 install:
-- python -m pip install virtualenv
-- python -m virtualenv venv
-- make install
+  - python -m pip install virtualenv
+  - python -m virtualenv venv
+  - make install
 script:
-- make test
-- make local
+  - make test
+  - make local
 after_success:
-- codecov
+  - codecov
 before_deploy:
-- sudo -H python -m pip install setuptools twine --upgrade
-- make validate-release VERSION=$TRAVIS_TAG
+  - sudo -H python -m pip install setuptools twine --upgrade
+  - make validate-release VERSION=$TRAVIS_TAG
 deploy:
   provider: pypi
   username: alexdlaird
@@ -24,30 +24,30 @@ deploy:
     secure: R/2XXSJAfSwBqYEFFslZXeW2jXTRtsxx+ORA2MyCaW8HtNDjNgke6hFdQT9aoYuHFP0US6q0QJ6oGN80C2QgZkvM3cTPl1dcJOcpbZIovsXiVY2L2YW1DXoFuv3iXkrD+Kv6W/WfqEL5tQMmtpmS3ahNxwh6W6bItoBG5fNu5vNOtsTQWSE0MhvjDD3X/g57Cqn6MaHtqOgMdIxA56RXeC3brWH3vfprQRGBVoKJy5ZsKbuJ4E/ryY+wD0v6grNcIqy/r4+mq4rtQKnItqkyOU+Ap3kLEoDrvlXX4XMy3D/1V7Ym6JAgINCcHWSbLAU8zOUdxqkPOhrJ5DQts7Lg/6ThnKAooUrGV7LG6C8xJ2OwBD9tW8y5BmuPnHhY0t3EG8PsR3dG1Cu8bAGGCokoq9pq6XmTnI8PtjFjvs4ewzM49dxY98oGFktqrSxFJiJRF535TlU6dYCCBedlo7Dp5X9R/fgfUjWHFm5V8PsbLCuAwJpIGHqgLZoUIJSRPVlYUAJJftk2O73+XWQL6w9ysD1x1aMzvbKfoYJLV8BffKypAcJKGzgjyx5ZwFGpEZbjd1io+EgGh1MGROfv9gcjrnhW+VGEqS6qyXxUHCMsOhIL5yHVVUWxvmo7xtGXV2m7Q6nLz+lAIqwaAmW14ThUxZItqhw9lMLfCsjsYCvqnOY=
   on:
     tags: true
-    python: '3.8'
+    python: "3.8"
 jobs:
   include:
-  - name: 'OS X, Python: 3.7'
-    os: osx
-    language: shell
-    osx_image: xcode11.2
-    install:
-    - python3 -m pip install virtualenv
-    - python3 -m virtualenv venv
-    - make install
-  - name: 'Windows, Python: 3.7'
-    os: windows
-    language: shell
-    before_install:
-    - git clone https://github.com/pyenv-win/pyenv-win.git $HOME/.pyenv
-    - export PATH="$HOME/.pyenv/pyenv-win/bin:$HOME/.pyenv/pyenv-win/shims:$PATH"
-    - pyenv install -q 3.7.2
-    - pyenv global 3.7.2
-    - pyenv rehash
-    - pyenv local 3.7.2
-    - python --version
-    - export PATH="$HOME/.pyenv/pyenv-win/versions/3.7.2/Scripts:$PATH"
-    install:
-    - pip install -r requirements.txt -r requirements-dev.txt
-    script:
-    - nosetests -s
+    - name: "OS X, Python: 3.7"
+      os: osx
+      language: shell
+      osx_image: "xcode11.2"
+      install:
+        - python3 -m pip install virtualenv
+        - python3 -m virtualenv venv
+        - make install
+    - name: "Windows, Python: 3.7"
+      os: windows
+      language: shell
+      before_install:
+        - git clone https://github.com/pyenv-win/pyenv-win.git $HOME/.pyenv
+        - export PATH="$HOME/.pyenv/pyenv-win/bin:$HOME/.pyenv/pyenv-win/shims:$PATH"
+        - pyenv install -q 3.7.2
+        - pyenv global 3.7.2
+        - pyenv rehash
+        - pyenv local 3.7.2
+        - python --version
+        - export PATH="$HOME/.pyenv/pyenv-win/versions/3.7.2/Scripts:$PATH"
+      install:
+        - pip install -r requirements.txt -r requirements-dev.txt
+      script:
+        - nosetests -s
