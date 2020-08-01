@@ -2,15 +2,15 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "0.0.1"
 
 with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name="hookie",
+    name="hookee",
     version=__version__,
-    packages=["hookie"],
+    packages=["hookee"],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         "future",
@@ -20,17 +20,17 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        hookie=hookie.hookie:main
+        hookee=hookee.hookee:main
     """,
     description="Command line webhooks, on demand.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Alex Laird",
     author_email="contact@alexlaird.com",
-    url="https://github.com/alexdlaird/hookie",
-    download_url="https://github.com/alexdlaird/hookie/archive/{}.tar.gz".format(__version__),
+    url="https://github.com/alexdlaird/hookee",
+    download_url="https://github.com/alexdlaird/hookee/archive/{}.tar.gz".format(__version__),
     project_urls={
-        "Changelog": "https://github.com/alexdlaird/hookie/blob/master/CHANGELOG.md",
+        "Changelog": "https://github.com/alexdlaird/hookee/blob/master/CHANGELOG.md",
         "Sponsor": "https://www.paypal.me/alexdlaird"
     },
     keywords=["python", "webhook", "ngrok", "flask"],

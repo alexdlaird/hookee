@@ -41,7 +41,7 @@ validate-release:
 	@if [[ "${VERSION}" == "" ]]; then echo "VERSION is not set" & exit 1 ; fi
 
 	@if [[ $$(grep "__version__ = \"${VERSION}\"" setup.py) == "" ]] ; then echo "Version not bumped in setup.py" & exit 1 ; fi
-	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookie/hookie.py) == "" ]] ; then echo "Version not bumped in hookie/hookie.py" & exit 1 ; fi
+	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/hookee.py) == "" ]] ; then echo "Version not bumped in hookee/hookee.py" & exit 1 ; fi
 
 upload:
 	@rm -rf *.egg-info dist

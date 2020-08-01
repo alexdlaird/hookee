@@ -1,17 +1,18 @@
 import unittest
 
-from hookie import hookie
+from hookee import hookee
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "0.0.1"
 
 
-class TestNgrok(unittest.TestCase):
+class TestHookee(unittest.TestCase):
 
     def test_main(self):
         # WHEN
-        hookie.main()
+        hookee.main()
 
         # THEN
+        # TODO: We'll come back to this after the POC
         pass
