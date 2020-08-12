@@ -2,7 +2,7 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -10,7 +10,9 @@ with open("README.md", "r") as f:
 setup(
     name="hookee",
     version=__version__,
-    packages=["hookee"],
+    packages=["hookee",
+              "hookee.blueprints",
+              "hookee.plugins"],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         "future",
@@ -20,7 +22,7 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        hookee=hookee.cli:main
+        hookee=hookee.cli:hookee
     """,
     description="Command line webhooks, on demand.",
     long_description=long_description,
@@ -38,7 +40,7 @@ setup(
     classifiers=[
         "Environment :: Console",
         "Environment :: Web Environment",
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Alpha",
         "Intended Audience :: Developers",
         "Intended Audience :: Education",
         "Intended Audience :: Information Technology",
