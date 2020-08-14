@@ -4,12 +4,15 @@ import pkgutil
 import threading
 import time
 
+import click
+
 import hookee.plugins
 
 from flask import Flask
 
 from future.standard_library import install_aliases
 
+from hookee import conf
 from hookee.blueprints import default_blueprint
 
 install_aliases()
@@ -27,7 +30,7 @@ except ImportError:  # pragma: no cover
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.setLevel(logging.ERROR)
@@ -71,11 +74,15 @@ class Server:
 
     def start(self):
         if self._thread is None:
+            self._open_banner()
+
             self._thread = threading.Thread(target=self._loop)
             self._thread.start()
 
             while self._server_status() != StatusCodes.OK:
                 time.sleep(1)
+
+            self._close_banner()
 
     def stop(self):
         if self._thread:
@@ -89,3 +96,17 @@ class Server:
             return urlopen("http://127.0.0.1:{}/status".format(self.port)).getcode()
         except URLError:
             return StatusCodes.INTERNAL_SERVER_ERROR
+
+    def _open_banner(self):
+        title = "Starting Server"
+        width = int((conf.CONSOLE_WIDTH - len(title)) / 2)
+
+        click.echo("")
+        click.secho("{}{}{}".format("-" * width, title, "-" * width), fg="red", bold=True)
+        click.echo("")
+
+    def _close_banner(self):
+        click.echo(" * Port: {}".format(self.port))
+        click.echo(" * Blueprints: registered")
+        click.echo("")
+        click.secho("-" * conf.CONSOLE_WIDTH, fg="red", bold=True)

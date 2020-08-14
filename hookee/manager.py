@@ -1,5 +1,8 @@
 import time
 
+import click
+
+from hookee import conf
 from hookee.server import Server
 from hookee.tunnel import Tunnel
 
@@ -28,19 +31,13 @@ class Manager:
 
     def start(self):
         if not self.alive:
-            print("{}\n".format("-" * 70))
-
             self.server.start()
-
-            print("")
 
             self.tunnel.start()
 
-            print(
-                " * Ready! Send requets to {}/webhook\n\n{}\n".format(
-                    self.tunnel.public_url.replace("http://", "https://"), "-" * 70))
-
             self.alive = True
+
+            self._banner()
 
     def wait_for_signal(self):
         try:
@@ -59,3 +56,22 @@ class Manager:
                 time.sleep(1)
 
             self.alive = False
+
+    def _banner(self):
+        title = "Endpoints Ready for Requests"
+        width = int((conf.CONSOLE_WIDTH - len(title)) / 2)
+
+        click.echo("")
+        click.secho("{}{}{}".format("-" * width, title, "-" * width), fg="blue", bold=True)
+        click.echo("")
+
+        rules = list(filter(lambda r: r.rule not in ["/shutdown", "/static/<path:filename>", "/status"],
+                            self.server.app.url_map.iter_rules()))
+        for rule in rules:
+            click.secho("--> {}{} - {}".format(self.tunnel.public_url, rule.rule, sorted(list(rule.methods))),
+                        fg="blue",
+                        bold=True)
+
+        click.echo("")
+        click.secho("-" * conf.CONSOLE_WIDTH, fg="blue", bold=True)
+        click.echo("\n")

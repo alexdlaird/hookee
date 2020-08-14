@@ -3,9 +3,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.2...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.3...HEAD)
 
-## [0.0.2](https://github.com/alexdlaird/hookee/releases/tag/0.0.2) - 2019-08-12
+## [0.0.3](https://github.com/alexdlaird/pyngrok/compare/0.0.2...0.0.3) - 2019-08-14
+### Added
+- Console output during server/tunnel startup.
+- POC implementation of colorful, more organized output.
+
+## [0.0.2](https://github.com/alexdlaird/pyngrok/compare/0.0.1...0.0.2) - 2019-08-12
 ### Added
 - `Manager` to handle state of the Flask server, `pyngrok`, tunnel, etc.
 - POC implementation to dynamically pull in blueprints, request/response processing, etc.
