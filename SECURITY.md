@@ -4,9 +4,12 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
+| 0.0.x   | :x:                |
 
 ## Reporting a Vulnerability
+
+While this package is in pre-release alpha, it is not being supported for security concerns. You are still welcome
+to raise concerns that should be shored up before a stable release is published.
 
 If you suspect you have found a security vulnerability, send an email to [contact@alexlaird.com](mailto:contact@alexlaird.com).
 Please include a clear and concise description of what the vulnerability is, where it is exposed in the code, and (if

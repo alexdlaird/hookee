@@ -16,7 +16,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         "future",
-        "pyngrok",
+        "pyngrok>=4.1.10",
         "python-dotenv",
         "flask"
     ],
