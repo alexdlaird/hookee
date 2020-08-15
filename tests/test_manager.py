@@ -8,7 +8,7 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.0.3"
 
 
-class TestCLI(unittest.TestCase):
+class TestManager(unittest.TestCase):
 
     def test_manager(self):
         # GIVEN
@@ -17,9 +17,6 @@ class TestCLI(unittest.TestCase):
 
         # WHEN
         manager.start()
-
-        # Wait for things to boot
-        time.sleep(2)
 
         # THEN
         self.assertIsNotNone(manager.server._thread)

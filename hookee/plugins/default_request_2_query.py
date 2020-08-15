@@ -7,4 +7,7 @@ __version__ = "0.0.3"
 
 def call(request):
     # TODO: pretty this up further
-    click.secho("Args: {}".format(dict(request.args)), fg="magenta")
+    if request.args:
+        click.secho("Query: {}".format(dict(request.args)), fg="magenta")
+
+    return request

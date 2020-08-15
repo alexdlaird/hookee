@@ -58,6 +58,7 @@ class Manager:
             self.alive = False
 
     def _banner(self):
+        # TODO: refactor all these reused dynamic title widths to helper function
         title = "Endpoints Ready for Requests"
         width = int((conf.CONSOLE_WIDTH - len(title)) / 2)
 

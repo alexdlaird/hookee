@@ -6,7 +6,7 @@ import click
 
 import hookee.plugins
 
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, jsonify
 from hookee import conf
 
 __author__ = "Alex Laird"
@@ -52,7 +52,7 @@ def webhook():
     click.secho("{}{}{}".format("-" * width, title, "-" * width), fg="magenta", bold=True)
     click.echo("")
 
-    response = Response()
+    response = jsonify({})
     for name in filter(lambda n: n.startswith("hookee.plugins.default_response"), plugins.keys()):
         plugins[name].call(request, response)
 
