@@ -37,7 +37,7 @@ class Config:
 
             plugins_dir = os.path.expanduser(self.config["plugins_dir"])
             if not os.path.exists(plugins_dir):
-                os.mkdir(plugins_dir)
+                os.makedirs(plugins_dir)
         except confuse.NotFoundError as e:
             ctx.fail("The config file is invalid: {}.".format(str(e)))
         except (confuse.ConfigReadError, ValueError):
