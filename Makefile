@@ -1,4 +1,4 @@
-.PHONY: all virtualenv install nopyc clean test local validate-release upload
+.PHONY: all virtualenv install nopyc clean test docs local validate-release upload
 
 SHELL := /usr/bin/env bash
 PYTHON_BIN ?= python
@@ -28,6 +28,13 @@ test: install
 	@( \
 		source venv/bin/activate; \
 		python `which nosetests` --with-coverage --cover-erase --cover-package=. --cover-html --cover-html-dir=_build/coverage; \
+	)
+
+docs: install
+	@( \
+		source venv/bin/activate; \
+		python -m pip install -r docs/requirements.txt; \
+		sphinx-build -M html docs _build/docs; \
 	)
 
 local:

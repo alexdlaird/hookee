@@ -3,6 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/hookee.svg)](https://badge.fury.io/py/hookee)
 [![Build Status](https://travis-ci.org/alexdlaird/hookee.svg?branch=master)](https://travis-ci.org/alexdlaird/hookee)
 [![codecov](https://codecov.io/gh/alexdlaird/hookee/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdlaird/hookee)
+[![Documentation Status](https://readthedocs.org/projects/hookee/badge/?version=latest)](https://hookee.readthedocs.io/en/latest/?badge=latest)
 [![PyPI license](https://img.shields.io/pypi/l/hookee.svg)](https://pypi.org/project/hookee/)
 
 `hookee` is a simple command line utility which generates webhooks on demand and dumps useful information to the
@@ -19,6 +20,12 @@ using `pip`:
 pip install hookee
 ```
 
+or `conda`:
+
+```sh
+conda install -c conda-forge hookee
+```
+
 That's it! `hookee` is now available on the command line and as a package to our Python projects.
 
 ## Basic Usage
@@ -33,8 +40,14 @@ This will start a server on the default port 5000, open a [`ngrok`](https://ngro
 using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
 the `/webhook` endpoint will dump the request and response content to the console.
 
-More details, configuration, and extensibility are coming soon, as this is still a pre-release of `hookee`. For now,
-POC features are documented in `hookee --help` as they are released.
+## Documentation
 
-The plugin system will also be documented in the future. For now, custom plugins can be developed and stored in
-`~/.config/hookee/plugins`, and [the built-in plugins can be used as a reference](https://github.com/alexdlaird/hookee/tree/master/hookee/plugins).
+For more advanced usage, including extending `hookee` through plugin development, `hookee`'s official documentation is
+available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
+
+## Contributing
+
+If you would like to get involved, be sure to review the [Contribution Guide](https://github.com/alexdlaird/hookee/blob/master/CONTRIBUTING.rst).
+
+Want to contribute financially? If you've found `hookee` useful, [a donation](https://www.paypal.me/alexdlaird>) would
+also be greatly appreciated!
