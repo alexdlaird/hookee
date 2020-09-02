@@ -1,3 +1,5 @@
+from types import ModuleType
+
 import click
 
 from hookee.manager import Manager
@@ -6,15 +8,23 @@ from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.6"
+__version__ = "0.0.7"
 
 
 @click.group(invoke_without_command=True)
 @click.pass_context
 @click.option("--port", type=int, help="The port for the local webserver.")
 @click.option("--plugins_dir", help="The directory to scan for custom `hookee` plugins.")
-@click.option("--plugins", multiple=True, help="A list of `hookee` plugins to enable.")
+@click.option("--plugins", multiple=True, help="A list of `hookee` plugins to use.")
 @click.option("--auth_token", help="The `ngrok` auth token use.")
+@click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
+              help="The `ngrok` region to use.")
+@click.option("--subdomain", help="The `ngrok` subdomain token use.")
+@click.option("--auth", help="The `ngrok` auth token use for endpoints.")
+@click.option("--last_request", type=ModuleType,
+              help="Without the need for plugins, last_request.run(request) will be called after all plugins when processing a request to the default `/webhook`.")
+@click.option("--last_response", type=ModuleType,
+              help="Without the need for plugins, last_response.run(request, response) will be called after all plugins when generating the default `/webhook`'s response.")
 def hookee(ctx, **kwargs):
     """
     If options are given, they override the default values derived from the config file.
@@ -25,11 +35,10 @@ def hookee(ctx, **kwargs):
             ctx.obj[key] = value
 
     manager = Manager(ctx)
+    ctx.obj["manager"] = manager
 
     if ctx.invoked_subcommand is None:
         manager.start()
-    else:
-        ctx.obj["manager"] = manager
 
 
 @hookee.command()
@@ -48,7 +57,7 @@ def start(ctx):
 @click.argument("plugins_dig")
 def set_plugins_dir(ctx, plugins_dir):
     """
-    Set the default directory to be scanned for plugins.
+    Set the default directory to use for `hookee` plugins.
     """
     manager = ctx.obj["manager"]
 
@@ -66,7 +75,7 @@ def enable_plugin(ctx, plugin):
     """
     manager = ctx.obj["manager"]
 
-    manager.validate_plugin(plugin)
+    manager.validate_plugin(manager.source.load_plugin(plugin))
 
     manager.config.append("plugins", plugin)
 

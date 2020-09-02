@@ -25,12 +25,16 @@ def setup(_manager):
 def webhook():
     for plugin in manager.get_plugins_by_type(util.REQUEST_PLUGIN):
         plugin.run(request)
+    if manager.last_request:
+        manager.last_request.run(request)
 
     manager.print_util.print_open_header("Response", fg="magenta")
 
     response = None
     for plugin in manager.get_plugins_by_type(util.RESPONSE_PLUGIN):
         response = plugin.run(request, response)
+    if manager.last_response:
+        response = manager.last_response.run(request, response)
 
     manager.print_util.print_close_header("=", fg="magenta")
     click.echo("")

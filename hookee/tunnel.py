@@ -8,7 +8,7 @@ from pyngrok.conf import PyngrokConfig
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.4"
+__version__ = "0.0.7"
 
 
 class Tunnel:
@@ -16,7 +16,8 @@ class Tunnel:
         self.manager = manager
         self.port = self.manager.config.get("port")
 
-        self.pyngrok_config = PyngrokConfig(auth_token=self.manager.config.get("auth_token"))
+        self.pyngrok_config = PyngrokConfig(auth_token=self.manager.config.get("auth_token"),
+                                            region=self.manager.config.get("region"))
 
         self.public_url = None
         self.ngrok_process = None
@@ -48,7 +49,17 @@ class Tunnel:
             self.print_close_header()
 
     def _start_tunnel(self):
-        self.public_url = ngrok.connect(self.port, pyngrok_config=self.pyngrok_config).replace("http", "https")
+        options = {}
+        subdomain = self.manager.config.get("subdomain")
+        auth = self.manager.config.get("auth")
+        if subdomain:
+            options["subdomain"] = subdomain
+        if auth:
+            options["auth"] = auth
+
+        self.public_url = ngrok.connect(self.port,
+                                        pyngrok_config=self.pyngrok_config,
+                                        options=options).replace("http", "https")
         self.ngrok_process = ngrok.get_ngrok_process()
 
     def stop(self):

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.6...HEAD)
+### Added
+- Additional `ngrok` passthrough args to the CLI: `region`, `subdomain`, and `auth`.
+- `--last_request` as an arg to CLI. Without the need for plugins, `last_request.run(request)` will be called after all plugins when processing a request to the default `/webhook`.
+- `--last_response` as an arg to CLI. Without the need for plugins, `last_response.run(request, response)` will be called after all plugins when processing a request to the default `/webhook`.
+
+### Fixed
+- Stability improvements.
 
 ## [0.0.6](https://github.com/alexdlaird/hookee/compare/0.0.5...0.0.6) - 2019-09-02
 ### Fixed

@@ -1,27 +1,35 @@
 import os
+from types import ModuleType
 
 import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.4"
+__version__ = "0.0.7"
+
+
+def as_template(value, default=None):
+    param = confuse.as_template(value)
+    param.default = default
+
+    return param
+
+
+template = {
+    "auth_token": confuse.String(default=None),
+    "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"], default=None),
+    "subdomain": confuse.String(default=None),
+    "auth": confuse.String(default=None),
+    "port": int,
+    "plugins_dir": confuse.Filename(),
+    "plugins": list,
+    "console_width": confuse.Integer(default=80),
+    "last_request": as_template(ModuleType, default=None),
+    "last_response": as_template(ModuleType, default=None),
+}
 
 
 class Config:
-    auth_token = confuse.as_template(str)
-    auth_token.default = None
-
-    console_width = confuse.as_template(int)
-    console_width.default = 80
-
-    template = {
-        "auth_token": auth_token,
-        "port": int,
-        "plugins_dir": confuse.Filename(),
-        "plugins": list,
-        "console_width": console_width
-    }
-
     def __init__(self, ctx):
         self.ctx = ctx
 
@@ -33,7 +41,7 @@ class Config:
             self.config_dir = self.config_obj.config_dir()
             self.config_filename = os.path.join(self.config_dir, confuse.CONFIG_FILENAME)
 
-            self.config = config.get(self.template)
+            self.config = config.get(template)
 
             plugins_dir = os.path.expanduser(self.config["plugins_dir"])
             if not os.path.exists(plugins_dir):
@@ -45,6 +53,9 @@ class Config:
 
     def get(self, key):
         return self.config[key]
+
+    def has(self, key):
+        return key in self.config
 
     def set(self, key, value):
         if value != self.config[key]:
