@@ -1,11 +1,14 @@
 import time
 import unittest
 
+from click import Context
+from hookee import cli
+
 from hookee.manager import Manager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 class ManagedTestCase(unittest.TestCase):
@@ -15,7 +18,9 @@ class ManagedTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.manager = Manager({})
+        ctx = Context(cli)
+
+        cls.manager = Manager(ctx)
 
         cls.manager.start()
 
