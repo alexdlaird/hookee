@@ -2,7 +2,7 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -25,6 +25,7 @@ setup(
         [console_scripts]
         hookee=hookee.cli:hookee
     """,
+    include_package_data=True,
     description="Command line webhooks, on demand.",
     long_description=long_description,
     long_description_content_type="text/markdown",
