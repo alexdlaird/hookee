@@ -1,50 +1,53 @@
+import inspect
+import os
 import time
 
 import click
 
-from hookee import conf
+from hookee import conf, util
 from hookee.server import Server
 from hookee.tunnel import Tunnel
+from hookee.util import PrintUtil
+
+from pluginbase import PluginBase
+
+__author__ = "Alex Laird"
+__copyright__ = "Copyright 2020, Alex Laird"
+__version__ = "0.0.4"
 
 
 class Manager:
-    __instance = None
+    def __init__(self, ctx):
+        self.ctx = ctx
 
-    @staticmethod
-    def get_instance(port):
-        if Manager.__instance is None:
-            Manager(port)
-        return Manager.__instance
+        self.config = conf.Config(self.ctx)
+        self.loaded_plugins = self.load_plugins()
+        self.print_util = PrintUtil(self.config)
 
-    def __init__(self, port):
-        if Manager.__instance is not None:
-            raise Exception("The Manager is already instantiated, use get_instance().")
-        else:
-            Manager.__instance = self
+        # TODO: validate if no plugins are loaded (for instance, if no Blueprints loaded, hookee will hang on startup)
 
-            self.port = port
+        self.tunnel = Tunnel(self)
+        self.server = Server(self)
 
-            self.tunnel = Tunnel(self.port)
-            self.server = Server(self.port)
+        self.alive = False
 
-            self.alive = False
+        self.print_util.print_hookee_banner()
 
     def start(self):
         if not self.alive:
             self.server.start()
-
             self.tunnel.start()
-
             self.alive = True
 
-            self._banner()
+            self.print_ready()
 
-    def wait_for_signal(self):
-        try:
-            while self.alive:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            pass
+            try:
+                while self.alive:
+                    time.sleep(1)
+            except KeyboardInterrupt:
+                pass
+
+            self.stop()
 
     def stop(self):
         if self.alive:
@@ -57,21 +60,60 @@ class Manager:
 
             self.alive = False
 
-    def _banner(self):
-        title = "Endpoints Ready for Requests"
-        width = int((conf.CONSOLE_WIDTH - len(title)) / 2)
-
-        click.echo("")
-        click.secho("{}{}{}".format("-" * width, title, "-" * width), fg="blue", bold=True)
-        click.echo("")
+    def print_ready(self):
+        self.print_util.print_open_header("Registered Endpoints")
 
         rules = list(filter(lambda r: r.rule not in ["/shutdown", "/static/<path:filename>", "/status"],
                             self.server.app.url_map.iter_rules()))
         for rule in rules:
-            click.secho("--> {}{} - {}".format(self.tunnel.public_url, rule.rule, sorted(list(rule.methods))),
-                        fg="blue",
-                        bold=True)
+            click.secho("* {}{}".format(self.tunnel.public_url, rule.rule))
+            click.secho("  Methods: {}".format(sorted(list(rule.methods))))
+            click.echo("")
 
+        self.print_util.print_close_header()
         click.echo("")
-        click.secho("-" * conf.CONSOLE_WIDTH, fg="blue", bold=True)
-        click.echo("\n")
+        click.secho("--> Ready, send a request to a registered endpoint ...", fg="green", bold=True)
+        click.echo("")
+
+    def validate_plugin(self, plugin_name):
+        try:
+            plugin = self.source.load_plugin(plugin_name)
+
+            functions_list = [o[0] for o in inspect.getmembers(plugin, inspect.isfunction)]
+            attributes = dir(plugin)
+
+            if not all(elem in attributes for elem in ["plugin_type", "manager"]):
+                self.ctx.fail("Plugin \"{}\" does not conform to the plugin spec.".format(plugin_name))
+
+            if plugin.plugin_type in [util.REQUEST_PLUGIN, util.RESPONSE_PLUGIN]:
+                all(elem in functions_list for elem in ["setup", "run"])
+            elif plugin.plugin_type == util.BLUEPRINT_PLUGIN:
+                all(elem in functions_list for elem in ["setup"])
+            else:
+                self.ctx.fail("Plugin \"{}\" is not a valid plugin type.".format(plugin_name))
+
+            # TODO: additionally validate the functions have correct num args
+
+            return plugin
+        except ModuleNotFoundError:
+            self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin_name))
+
+    def load_plugins(self):
+        builtin_plugins_dir = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "plugins"))
+        plugins_dir = self.config.get("plugins_dir")
+        enabled_plugins = self.config.get("plugins")
+
+        plugin_base = PluginBase(package="hookee.plugins",
+                                 searchpath=[builtin_plugins_dir])
+        self.source = plugin_base.make_plugin_source(searchpath=[plugins_dir])
+
+        loaded_plugins = []
+        for plugin_name in enabled_plugins:
+            plugin = self.validate_plugin(plugin_name)
+            plugin.setup(self)
+            loaded_plugins.append(plugin)
+
+        return loaded_plugins
+
+    def get_plugins_by_type(self, plugin_type):
+        return filter(lambda p: p.plugin_type == plugin_type, self.loaded_plugins)

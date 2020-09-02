@@ -3,14 +3,22 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.3...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.4...HEAD)
 
-## [0.0.3](https://github.com/alexdlaird/pyngrok/compare/0.0.2...0.0.3) - 2019-08-14
+## [0.0.4](https://github.com/alexdlaird/hookee/compare/0.0.3...0.0.4) - 2019-09-01
+### Added
+- Made Blueprints, request, and response pluggable, support for built-in and custom plugins (in `~/.config/hookee/plugins` by default).
+- Plugin management system to enable/disable plugins.
+- Configuration management system with defaults, overrides in `~/.config/hookee/config.yaml`, and overrides from command line args.
+- Configuration management of `config.yaml` defaults from the CLI.
+- Significant refactors to abstract functionality of `cli.py` and `manager.py`, among others.
+
+## [0.0.3](https://github.com/alexdlaird/hookee/compare/0.0.2...0.0.3) - 2019-08-14
 ### Added
 - Console output during server/tunnel startup.
 - POC implementation of colorful, more organized output.
 
-## [0.0.2](https://github.com/alexdlaird/pyngrok/compare/0.0.1...0.0.2) - 2019-08-12
+## [0.0.2](https://github.com/alexdlaird/hookee/compare/0.0.1...0.0.2) - 2019-08-12
 ### Added
 - `Manager` to handle state of the Flask server, `pyngrok`, tunnel, etc.
 - POC implementation to dynamically pull in blueprints, request/response processing, etc.

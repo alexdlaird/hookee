@@ -2,7 +2,7 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -11,14 +11,15 @@ setup(
     name="hookee",
     version=__version__,
     packages=["hookee",
-              "hookee.blueprints",
               "hookee.plugins"],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         "future",
-        "pyngrok>=4.1.10",
+        "pluginbase",
+        "confuse",
         "python-dotenv",
-        "flask"
+        "flask",
+        "pyngrok>=4.1.10",
     ],
     entry_points="""
         [console_scripts]
