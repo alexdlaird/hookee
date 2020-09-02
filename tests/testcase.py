@@ -15,7 +15,7 @@ class ManagedTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.manager = Manager.get_instance(cls.port)
+        cls.manager = Manager({})
 
         cls.manager.start()
 
