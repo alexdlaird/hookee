@@ -6,7 +6,7 @@ from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 
 
 @click.group(invoke_without_command=True)

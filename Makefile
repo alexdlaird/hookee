@@ -49,7 +49,7 @@ validate-release:
 
 	@if [[ $$(grep "__version__ = \"${VERSION}\"" setup.py) == "" ]] ; then echo "Version not bumped in setup.py" & exit 1 ; fi
 	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/cli.py) == "" ]] ; then echo "Version not bumped in hookee/cli.py" & exit 1 ; fi
-	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/manager.py) == "" ]] ; then echo "Version not bumped in hookee/manager.py" & exit 1 ; fi
+	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/util.py) == "" ]] ; then echo "Version not bumped in hookee/util.py" & exit 1 ; fi
 
 upload:
 	@rm -rf *.egg-info dist

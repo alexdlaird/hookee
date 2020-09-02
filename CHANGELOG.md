@@ -3,9 +3,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.4...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.5...HEAD)
+
+## [0.0.5](https://github.com/alexdlaird/hookee/compare/0.0.4...0.0.5) - 2019-09-02
 ### Added
 - Documentation now builds and publishes to [hookee.readthedocs.io](https://hookee.readthedocs.io).
+
+### Fixed
+- Build improvements.
 
 ## [0.0.4](https://github.com/alexdlaird/hookee/compare/0.0.3...0.0.4) - 2019-09-01
 ### Added
