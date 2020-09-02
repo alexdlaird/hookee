@@ -1,11 +1,22 @@
 import click
 
+from hookee import util
+
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
+
+plugin_type = util.REQUEST_PLUGIN
+manager = None
 
 
-def call(request):
+def setup(_manager):
+    global manager
+
+    manager = _manager
+
+
+def run(request):
     # TODO: pretty this up further
     if request.headers and "X-Forwarded-For" in request.headers:
         click.secho("Client IP: {}".format(request.headers.get("X-Forwarded-For")), fg="magenta")

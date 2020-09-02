@@ -1,19 +1,14 @@
-import importlib
 import logging
-import pkgutil
 import threading
 import time
 
 import click
 
-import hookee.plugins
-
 from flask import Flask
 
 from future.standard_library import install_aliases
 
-from hookee import conf
-from hookee.blueprints import default_blueprint
+from hookee import util
 
 install_aliases()
 
@@ -30,21 +25,16 @@ except ImportError:  # pragma: no cover
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.setLevel(logging.ERROR)
 
-blueprints = {
-    name: importlib.import_module(name)
-    for finder, name, ispkg
-    in pkgutil.iter_modules(hookee.blueprints.__path__, hookee.blueprints.__name__ + ".")
-}
-
 
 class Server:
-    def __init__(self, port):
-        self.port = port
+    def __init__(self, manager):
+        self.manager = manager
+        self.port = self.manager.config.get("port")
 
         self.app = self.create_app()
 
@@ -57,9 +47,8 @@ class Server:
             ENV="development"
         )
 
-        # TODO: will refactor this to support a real plugin arch after POC
-        for b in blueprints.values():
-            app.register_blueprint(b.blueprint)
+        for plugin in self.manager.get_plugins_by_type(util.BLUEPRINT_PLUGIN):
+            app.register_blueprint(plugin.blueprint)
 
         return app
 
@@ -74,7 +63,7 @@ class Server:
 
     def start(self):
         if self._thread is None:
-            self._open_banner()
+            self.manager.print_util.print_open_header("Starting Server")
 
             self._thread = threading.Thread(target=self._loop)
             self._thread.start()
@@ -82,7 +71,7 @@ class Server:
             while self._server_status() != StatusCodes.OK:
                 time.sleep(1)
 
-            self._close_banner()
+            self.print_close_header()
 
     def stop(self):
         if self._thread:
@@ -97,16 +86,8 @@ class Server:
         except URLError:
             return StatusCodes.INTERNAL_SERVER_ERROR
 
-    def _open_banner(self):
-        title = "Starting Server"
-        width = int((conf.CONSOLE_WIDTH - len(title)) / 2)
-
-        click.echo("")
-        click.secho("{}{}{}".format("-" * width, title, "-" * width), fg="red", bold=True)
-        click.echo("")
-
-    def _close_banner(self):
+    def print_close_header(self):
         click.echo(" * Port: {}".format(self.port))
         click.echo(" * Blueprints: registered")
         click.echo("")
-        click.secho("-" * conf.CONSOLE_WIDTH, fg="red", bold=True)
+        self.manager.print_util.print_close_header()

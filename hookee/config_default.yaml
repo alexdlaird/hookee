@@ -1,0 +1,10 @@
+port: 5000
+plugins_dir: "~/.config/hookee/plugins"
+plugins:
+  - "blueprint_default"
+  - "request_url_info"
+  - "request_headers"
+  - "request_query_params"
+  - "request_body"
+  - "request_files"
+  - "response_json"
