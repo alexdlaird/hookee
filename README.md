@@ -26,11 +26,12 @@ That's it! `hookee` is now available on the command line and as a package to our
 This package puts `hookee` on your path, so it can be used by simply executing it from the command line.
 
 ```sh
-hookee
+hookee start
 ```
 
 This will start a server on the default port 5000, open a [`ngrok`](https://ngrok.com/) tunnel to this server
 using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
-the `/webhook` endpoint will dump the the request and response content to the console.
+the `/webhook` endpoint will dump the request and response content to the console.
 
-More details, configuration, and extensibility coming soon, as this is still a pre-release of `hookee`.
+More details, configuration, and extensibility coming soon, as this is still a pre-release of `hookee`. For now,
+POC features are documented in `hookee --help` as they are released.
