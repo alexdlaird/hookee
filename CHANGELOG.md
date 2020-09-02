@@ -3,7 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.5...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.6...HEAD)
+
+## [0.0.6](https://github.com/alexdlaird/hookee/compare/0.0.5...0.0.6) - 2019-09-02
+### Fixed
+- Default config file was not being included in previous packages.
 
 ## [0.0.5](https://github.com/alexdlaird/hookee/compare/0.0.4...0.0.5) - 2019-09-02
 ### Added
