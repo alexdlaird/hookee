@@ -1,4 +1,4 @@
 Sphinx
-PyYAML
+click
 sphinx_rtd_theme
 sphinx-notfound-page
