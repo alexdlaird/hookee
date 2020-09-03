@@ -61,8 +61,7 @@ class CliManager:
             self.alive = False
 
     def print_hookee_banner(self):
-        click.echo("")
-        self.print_util.print_open_header("=", "")
+        self.print_util.print_open_header("", "=")
         click.secho("""                .__                   __                  
                 |  |__   ____   ____ |  | __ ____   ____  
                 |  |  \ /  _ \ /  _ \|  |/ // __ \_/ __ \ 

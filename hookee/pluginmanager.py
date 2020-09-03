@@ -1,15 +1,14 @@
 import inspect
 import os
-import time
 
-import click
-
-from hookee import conf, util
-from hookee.server import Server
-from hookee.tunnel import Tunnel
-from hookee.util import PrintUtil
+from hookee import util
 
 from pluginbase import PluginBase
+
+if util.is_python_3():
+    import importlib.util
+else:
+    import imp
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
@@ -68,14 +67,25 @@ class PluginManager:
                 plugin.setup(self.cli_manager)
             self.loaded_plugins.append(plugin)
 
-        last_request = self.config.get("last_request")
-        if last_request:
-            self.last_request = __import__(last_request.__name__, globals(), {}, ['__name__'])
-            self.validate_plugin(self.last_request)
-        last_response = self.config.get("last_response")
-        if last_response:
-            self.last_response = __import__(last_response.__name__, globals(), {}, ['__name__'])
-            self.validate_plugin(self.last_response)
+        self.last_request = self.import_from_file(self.config.get("last_request"))
+        self.last_response = self.import_from_file(self.config.get("last_response"))
 
     def get_plugins_by_type(self, plugin_type):
         return filter(lambda p: p.plugin_type == plugin_type, self.loaded_plugins)
+
+    def import_from_file(self, filename):
+        if filename:
+            module_name = os.path.basename(filename).strip(".py")
+
+            if util.is_python_3():
+                spec = importlib.util.spec_from_file_location(module_name, filename)
+                plugin = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(plugin)
+            else:
+                plugin = imp.load_source(module_name, filename)
+
+            plugin, has_setup = self.validate_plugin(plugin)
+            if has_setup:
+                plugin.setup(self.cli_manager)
+
+            return plugin

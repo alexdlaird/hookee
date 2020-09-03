@@ -21,13 +21,10 @@ def setup(cli_manager):
 def run(request):
     now = datetime.now()
 
-    print_util.print_close_header("=", fg="magenta")
-    click.echo("")
     click.secho(
         "[{}] \"{} {} {}\"".format(now.isoformat(), request.method, request.base_url,
                                    request.environ["SERVER_PROTOCOL"]),
-        fg="magenta")
-
-    print_util.print_open_header("Request", fg="magenta")
+        fg="magenta", bold=True)
+    click.echo("")
 
     return request

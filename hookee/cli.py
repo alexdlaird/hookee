@@ -14,17 +14,17 @@ __version__ = "0.0.7"
 @click.group(invoke_without_command=True)
 @click.pass_context
 @click.option("--port", type=int, help="The port for the local webserver.")
-@click.option("--plugins_dir", help="The directory to scan for custom `hookee` plugins.")
+@click.option("--plugins_dir", type=click.Path(exists=True), help="The directory to scan for custom `hookee` plugins.")
 @click.option("--plugins", multiple=True, help="A list of `hookee` plugins to use.")
 @click.option("--auth_token", help="The `ngrok` auth token use.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
               help="The `ngrok` region to use.")
 @click.option("--subdomain", help="The `ngrok` subdomain token use.")
 @click.option("--auth", help="The `ngrok` auth token use for endpoints.")
-@click.option("--last_request", type=ModuleType,
-              help="Without the need for plugins, last_request.run(request) will be called after all plugins have processed a request to the default `/webhook`.")
-@click.option("--last_response", type=ModuleType,
-              help="Without the need for plugins, last_response.run(request, response) will be called after all plugins have generated the default `/webhook`'s response.")
+@click.option("--last_request", type=click.Path(exists=True),
+              help="A Python script, where last_request.run(request) will be called after all plugins have processed a request to the default `/webhook`.")
+@click.option("--last_response", type=click.Path(exists=True),
+              help="A Python script, where last_response.run(request, response) will be called after all plugins have generated the default `/webhook`'s response.")
 def hookee(ctx, **kwargs):
     """
     If options are given, they override the default values derived from the config file.

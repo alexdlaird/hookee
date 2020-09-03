@@ -25,6 +25,9 @@ def setup(cli_manager):
 @blueprint.route("/webhook",
                  methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "TRACE", "CONNECT"])
 def webhook():
+    print_util.print_close_header(delimiter="=", fg="magenta")
+    print_util.print_open_header("Request", delimiter="-", fg="magenta")
+
     for plugin in plugin_manager.get_plugins_by_type(util.REQUEST_PLUGIN):
         plugin.run(request)
     if plugin_manager.last_request:
