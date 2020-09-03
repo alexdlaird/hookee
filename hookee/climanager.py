@@ -2,7 +2,7 @@ import time
 
 import click
 
-from hookee import conf
+from hookee import conf, util
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
 from hookee.tunnel import Tunnel
@@ -14,16 +14,15 @@ __version__ = "0.0.7"
 
 
 class CliManager:
-    def __init__(self, ctx):
+    def __init__(self, ctx, load_plugins=True):
         self.ctx = ctx
 
         self.config = conf.Config(self.ctx)
         self.plugin_manager = PluginManager(self)
         self.print_util = PrintUtil(self.config)
 
-        self.plugin_manager.load_plugins()
-
-        # TODO: validate at least minimum plugin reqs are met (for instance, if no Blueprints loaded, hookee will hang on startup)
+        if load_plugins:
+            self.plugin_manager.load_plugins()
 
         self.tunnel = Tunnel(self)
         self.server = Server(self)

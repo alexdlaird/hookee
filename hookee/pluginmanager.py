@@ -17,7 +17,6 @@ __version__ = "0.0.7"
 
 class PluginManager:
     def __init__(self, cli_manager):
-
         self.cli_manager = cli_manager
         self.ctx = cli_manager.ctx
         self.config = cli_manager.config
@@ -29,6 +28,8 @@ class PluginManager:
 
         self.loaded_plugins = []
 
+        self.source_plugins()
+
     def validate_plugin(self, plugin):
         try:
             functions_list = [o[0] for o in inspect.getmembers(plugin, inspect.isfunction)]
@@ -38,27 +39,46 @@ class PluginManager:
                 self.ctx.fail("Plugin \"{}\" does not conform to the plugin spec.".format(plugin.__name__))
             elif plugin.plugin_type not in util.VALID_PLUGIN_TYPES:
                 self.ctx.fail("Plugin \"{}\" must specify a valid `plugin_type`.".format(plugin.__name__))
-            elif plugin.plugin_type in [util.REQUEST_PLUGIN, util.RESPONSE_PLUGIN] and \
-                    "run" not in functions_list:
-                self.ctx.fail("Plugin \"{}\" must implement a run().".format(plugin.__name__))
+            elif plugin.plugin_type == util.REQUEST_PLUGIN:
+                if "run" not in functions_list:
+                    self.ctx.fail("Plugin \"{}\" must implement run(request).".format(plugin.__name__))
+                elif len(inspect.getargspec(plugin.run)[0]) < 1:
+                    self.ctx.fail(
+                        "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
+                            plugin.__name__))
+            elif plugin.plugin_type == util.RESPONSE_PLUGIN:
+                if "run" not in functions_list:
+                    self.ctx.fail("Plugin \"{}\" must implement run(request, response).".format(plugin.__name__))
+                elif len(inspect.getargspec(plugin.run)[0]) < 2:
+                    self.ctx.fail(
+                        "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
+                            plugin.__name__))
             elif plugin.plugin_type == util.BLUEPRINT_PLUGIN and "blueprint" not in attributes:
                 self.ctx.fail(
                     "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
                         plugin.__name__))
 
-            # TODO: additionally validate the functions have correct num args
-
             return plugin, "setup" in functions_list
         except ModuleNotFoundError:
             self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin.__name__))
 
-    def load_plugins(self):
+    def source_plugins(self):
         plugins_dir = self.config.get("plugins_dir")
-        enabled_plugins = self.config.get("plugins")
 
         plugin_base = PluginBase(package="hookee.plugins",
                                  searchpath=[self.builtin_plugins_dir])
         self.source = plugin_base.make_plugin_source(searchpath=[plugins_dir])
+
+    def load_plugins(self):
+        enabled_plugins = self.config.get("plugins")
+
+        for plugin_name in util.REQUIRED_PLUGINS:
+            if plugin_name not in enabled_plugins:
+                self.ctx.fail(
+                    "Sorry, the plugin {} is required. Run `hookee enable-plugin {}` before continuing.".format(
+                        plugin_name, plugin_name))
+
+        self.source_plugins()
 
         self.loaded_plugins = []
         for plugin_name in enabled_plugins:

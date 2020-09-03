@@ -1,7 +1,6 @@
-from types import ModuleType
-
 import click
 
+from hookee import util
 from hookee.climanager import CliManager
 
 from future.utils import iteritems
@@ -21,20 +20,22 @@ __version__ = "0.0.7"
               help="The `ngrok` region to use.")
 @click.option("--subdomain", help="The `ngrok` subdomain token use.")
 @click.option("--auth", help="The `ngrok` auth token use for endpoints.")
-@click.option("--last_request", type=click.Path(exists=True),
-              help="A Python script, where last_request.run(request) will be called after all plugins have processed a request to the default `/webhook`.")
-@click.option("--last_response", type=click.Path(exists=True),
-              help="A Python script, where last_response.run(request, response) will be called after all plugins have generated the default `/webhook`'s response.")
+@click.option("--request", type=click.Path(exists=True),
+              help="A Python script whose `run(request)` method will be called by the default `/webhook` after all request plugins have run.")
+@click.option("--response", type=click.Path(exists=True),
+              help="A Python script whose `run(request, response)` method will be called by the default `/webhook` after all response plugins have run.")
 def hookee(ctx, **kwargs):
     """
     If options are given, they override the default values derived from the config file.
+
+    `hookee` documentation can be found at https://hookee.readthedocs.io.
     """
     ctx.ensure_object(dict)
     for key, value in iteritems(kwargs):
         if value:
             ctx.obj[key] = value
 
-    manager = CliManager(ctx)
+    manager = CliManager(ctx, load_plugins=ctx.invoked_subcommand not in ["enable-plugin", "disable-plugin"])
     ctx.obj["cli_manager"] = manager
 
     if ctx.invoked_subcommand is None:
@@ -54,16 +55,20 @@ def start(ctx):
 
 @hookee.command()
 @click.pass_context
-@click.argument("plugins_dig")
-def set_plugins_dir(ctx, plugins_dir):
+@click.argument("key")
+@click.argument("value")
+def update_config(ctx, key, value):
     """
-    Set the default directory to use for `hookee` plugins.
+    Update the default value for a config.
     """
     manager = ctx.obj["cli_manager"]
 
-    manager.config.set("plugins_dir", plugins_dir)
+    try:
+        manager.config.set(key, value)
+    except KeyError:
+        ctx.fail("No such key exists in the config: {}".format(key))
 
-    manager.print_util.print_config_update("Plugins dir has been updated.")
+    manager.print_util.print_config_update("The default value for \"{}\" has been updated in the config.".format(key))
 
 
 @hookee.command()
@@ -75,7 +80,7 @@ def enable_plugin(ctx, plugin):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    cli_manager.validate_plugin(cli_manager.source.load_plugin(plugin))
+    cli_manager.plugin_manager.validate_plugin(cli_manager.plugin_manager.source.load_plugin(plugin))
 
     cli_manager.config.append("plugins", plugin)
 
@@ -91,8 +96,8 @@ def disable_plugin(ctx, plugin):
     """
     manager = ctx.obj["cli_manager"]
 
-    # TODO: because the manager is initialized in the main group, plugins are validated prior to this execute, but
-    #   if trying to disable a plugin that is no longer valid, this will always fail
+    if plugin in util.REQUIRED_PLUGINS:
+        ctx.fail("Sorry, you can't disable the plugin {}.".format(plugin))
 
     manager.config.remove("plugins", plugin)
 
@@ -101,16 +106,25 @@ def disable_plugin(ctx, plugin):
 
 @hookee.command()
 @click.pass_context
-@click.argument("auth_token")
-def set_auth_token(ctx, auth_token):
+def list_plugins(ctx):
     """
-    Set the default `ngrok` auth token.
+    List all available plugins.
     """
-    manager = ctx.obj["cli_manager"]
+    cli_manager = ctx.obj["cli_manager"]
 
-    manager.config.set("auth_token", auth_token)
+    click.secho("\nAvailable Plugins: {}\n".format(sorted(cli_manager.plugin_manager.source.list_plugins())),
+                fg="green")
 
-    manager.print_util.print_config_update("Default auth token has been set.")
+
+@hookee.command()
+@click.pass_context
+def enabled_plugins(ctx):
+    """
+    List all enabled plugins.
+    """
+    cli_manager = ctx.obj["cli_manager"]
+
+    click.secho("\nEnabled Plugins: {}\n".format(sorted(cli_manager.config.get("plugins"))), fg="green")
 
 
 if __name__ == "__main__":
