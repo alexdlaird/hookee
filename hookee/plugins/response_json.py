@@ -21,11 +21,10 @@ def run(request, response):
     if not response:
         response = jsonify({"Response": "Ok"})
 
-    # TODO: pretty this up further
     click.secho("Status Code: {}".format(response.status_code), fg="magenta")
     if response.headers:
-        click.secho("Headers: {}".format(dict(response.headers)), fg="magenta")
+        print_util.print_dict("Headers", dict(response.headers), fg="magenta")
     if response.data:
-        click.secho("Body: {}".format(response.data.decode("utf-8")), fg="magenta")
+        print_util.print_dict("Body", response.get_json(), fg="magenta")
 
     return response

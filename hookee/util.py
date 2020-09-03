@@ -1,4 +1,6 @@
+import json
 import sys
+import xml.dom.minidom
 
 import click
 
@@ -33,6 +35,12 @@ class PrintUtil:
 
     def print_close_header(self, delimiter="-", fg="green"):
         click.secho(delimiter * self.console_width, fg=fg, bold=True)
+
+    def print_dict(self, title, data, fg="green"):
+        click.secho("{}: {}".format(title, json.dumps(data, indent=4)), fg=fg)
+
+    def print_xml(self, title, data, fg="green"):
+        click.secho("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), fg=fg)
 
 
 def is_python_3():

@@ -1,5 +1,5 @@
 import click
-from flask import jsonify, Response, current_app
+from flask import current_app
 
 from hookee import util
 
@@ -24,11 +24,10 @@ def run(request, response):
             mimetype="application/xml",
         )
 
-    # TODO: pretty this up further
     click.secho("Status Code: {}".format(response.status_code), fg="magenta")
     if response.headers:
-        click.secho("Headers: {}".format(dict(response.headers)), fg="magenta")
+        print_util.print_dict("Headers", dict(response.headers), fg="magenta")
     if response.data:
-        click.secho("Body: {}".format(response.data.decode("utf-8")), fg="magenta")
+        print_util.print_xml("Body", response.data.decode("utf-8"), fg="magenta")
 
     return response

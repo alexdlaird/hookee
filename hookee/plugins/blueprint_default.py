@@ -41,6 +41,7 @@ def webhook():
     if plugin_manager.last_response:
         response = plugin_manager.last_response.run(request, response)
 
+    click.echo("")
     print_util.print_close_header("=", fg="magenta")
     click.echo("")
 

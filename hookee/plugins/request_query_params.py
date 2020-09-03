@@ -1,5 +1,3 @@
-import click
-
 from hookee import util
 
 __author__ = "Alex Laird"
@@ -17,8 +15,7 @@ def setup(cli_manager):
 
 
 def run(request):
-    # TODO: pretty this up further
     if request.args:
-        click.secho("Query: {}".format(dict(request.args)), fg="magenta")
+        print_util.print_dict("Query Params", dict(request.args), fg="magenta")
 
     return request

@@ -17,10 +17,9 @@ def setup(cli_manager):
 
 
 def run(request):
-    # TODO: pretty this up further
     if request.headers and "X-Forwarded-For" in request.headers:
         click.secho("Client IP: {}".format(request.headers.get("X-Forwarded-For")), fg="magenta")
     if request.headers:
-        click.secho("Headers: {}".format(dict(request.headers)), fg="magenta")
+        print_util.print_dict("Headers", dict(request.headers), fg="magenta")
 
     return request

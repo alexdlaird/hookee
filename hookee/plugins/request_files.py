@@ -1,5 +1,3 @@
-import click
-
 from hookee import util
 
 __author__ = "Alex Laird"
@@ -17,8 +15,7 @@ def setup(cli_manager):
 
 
 def run(request):
-    # TODO: pretty this up further
     if request.files:
-        click.secho("Files: {}".format(dict(request.files)), fg="magenta")
+        print_util.print_dict("Files", dict(request.files), fg="magenta")
 
     return request
