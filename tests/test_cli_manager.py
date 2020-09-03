@@ -6,30 +6,30 @@ from tests.testcase import ManagedTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.3"
+__version__ = "0.0.7"
 
 
-class TestManager(ManagedTestCase):
+class TestCliManager(ManagedTestCase):
 
-    def test_manager(self):
+    def test_cli_manager(self):
         # GIVEN / WHEN
         # The test setup started the manager for us, so just assert the assumed state
-        self.assertIsNotNone(self.manager.server._thread)
-        self.assertIsNotNone(self.manager.tunnel._thread)
+        self.assertIsNotNone(self.cli_manager.server._thread)
+        self.assertIsNotNone(self.cli_manager.tunnel._thread)
 
         # THEN
-        self.manager.stop()
+        self.cli_manager.stop()
 
         # Wait for things to tear down
         time.sleep(2)
 
-        self.assertIsNone(self.manager.server._thread)
-        self.assertIsNone(self.manager.tunnel._thread)
+        self.assertIsNone(self.cli_manager.server._thread)
+        self.assertIsNone(self.cli_manager.tunnel._thread)
 
         # Restart the manager for the next tests
-        self.manager.server.start()
-        self.manager.tunnel.start()
-        self.manager.alive = True
+        self.cli_manager.server.start()
+        self.cli_manager.tunnel.start()
+        self.cli_manager.alive = True
 
     def test_http_get_query_params(self):
         # GIVEN

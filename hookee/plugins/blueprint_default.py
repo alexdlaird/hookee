@@ -6,37 +6,39 @@ from hookee import util
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.4"
+__version__ = "0.0.7"
 
 blueprint = Blueprint("default", __name__)
 
 plugin_type = util.BLUEPRINT_PLUGIN
-manager = None
+plugin_manager = None
+print_util = None
 
 
-def setup(_manager):
-    global manager
+def setup(cli_manager):
+    global plugin_manager, print_util
 
-    manager = _manager
+    plugin_manager = cli_manager.plugin_manager
+    print_util = cli_manager.print_util
 
 
 @blueprint.route("/webhook",
                  methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "TRACE", "CONNECT"])
 def webhook():
-    for plugin in manager.get_plugins_by_type(util.REQUEST_PLUGIN):
+    for plugin in plugin_manager.get_plugins_by_type(util.REQUEST_PLUGIN):
         plugin.run(request)
-    if manager.last_request:
-        manager.last_request.run(request)
+    if plugin_manager.last_request:
+        plugin_manager.last_request.run(request)
 
-    manager.print_util.print_open_header("Response", fg="magenta")
+    print_util.print_open_header("Response", fg="magenta")
 
     response = None
-    for plugin in manager.get_plugins_by_type(util.RESPONSE_PLUGIN):
+    for plugin in plugin_manager.get_plugins_by_type(util.RESPONSE_PLUGIN):
         response = plugin.run(request, response)
-    if manager.last_response:
-        response = manager.last_response.run(request, response)
+    if plugin_manager.last_response:
+        response = plugin_manager.last_response.run(request, response)
 
-    manager.print_util.print_close_header("=", fg="magenta")
+    print_util.print_close_header("=", fg="magenta")
     click.echo("")
 
     return response

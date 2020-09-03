@@ -24,6 +24,7 @@ template = {
     "plugins_dir": confuse.Filename(),
     "plugins": list,
     "console_width": confuse.Integer(default=80),
+    # TODO: these being modules doesn't work outside of, well, modules, and the ideal is you want to just point it to a script relative to where you are on the CLI
     "last_request": as_template(ModuleType, default=None),
     "last_response": as_template(ModuleType, default=None),
 }

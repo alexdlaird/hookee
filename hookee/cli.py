@@ -2,7 +2,7 @@ from types import ModuleType
 
 import click
 
-from hookee.manager import Manager
+from hookee.climanager import CliManager
 
 from future.utils import iteritems
 
@@ -22,9 +22,9 @@ __version__ = "0.0.7"
 @click.option("--subdomain", help="The `ngrok` subdomain token use.")
 @click.option("--auth", help="The `ngrok` auth token use for endpoints.")
 @click.option("--last_request", type=ModuleType,
-              help="Without the need for plugins, last_request.run(request) will be called after all plugins when processing a request to the default `/webhook`.")
+              help="Without the need for plugins, last_request.run(request) will be called after all plugins have processed a request to the default `/webhook`.")
 @click.option("--last_response", type=ModuleType,
-              help="Without the need for plugins, last_response.run(request, response) will be called after all plugins when generating the default `/webhook`'s response.")
+              help="Without the need for plugins, last_response.run(request, response) will be called after all plugins have generated the default `/webhook`'s response.")
 def hookee(ctx, **kwargs):
     """
     If options are given, they override the default values derived from the config file.
@@ -34,8 +34,8 @@ def hookee(ctx, **kwargs):
         if value:
             ctx.obj[key] = value
 
-    manager = Manager(ctx)
-    ctx.obj["manager"] = manager
+    manager = CliManager(ctx)
+    ctx.obj["cli_manager"] = manager
 
     if ctx.invoked_subcommand is None:
         manager.start()
@@ -47,7 +47,7 @@ def start(ctx):
     """
     Start `hookee`.
     """
-    manager = ctx.obj["manager"]
+    manager = ctx.obj["cli_manager"]
 
     manager.start()
 
@@ -59,7 +59,7 @@ def set_plugins_dir(ctx, plugins_dir):
     """
     Set the default directory to use for `hookee` plugins.
     """
-    manager = ctx.obj["manager"]
+    manager = ctx.obj["cli_manager"]
 
     manager.config.set("plugins_dir", plugins_dir)
 
@@ -73,13 +73,13 @@ def enable_plugin(ctx, plugin):
     """
     Enable the given plugin by default.
     """
-    manager = ctx.obj["manager"]
+    cli_manager = ctx.obj["cli_manager"]
 
-    manager.validate_plugin(manager.source.load_plugin(plugin))
+    cli_manager.validate_plugin(cli_manager.source.load_plugin(plugin))
 
-    manager.config.append("plugins", plugin)
+    cli_manager.config.append("plugins", plugin)
 
-    manager.print_util.print_config_update("Plugin \"{}\" has been enabled.".format(plugin))
+    cli_manager.print_util.print_config_update("Plugin \"{}\" has been enabled.".format(plugin))
 
 
 @hookee.command()
@@ -89,7 +89,7 @@ def disable_plugin(ctx, plugin):
     """
     Disable the given plugin by default.
     """
-    manager = ctx.obj["manager"]
+    manager = ctx.obj["cli_manager"]
 
     # TODO: because the manager is initialized in the main group, plugins are validated prior to this execute, but
     #   if trying to disable a plugin that is no longer valid, this will always fail
@@ -106,7 +106,7 @@ def set_auth_token(ctx, auth_token):
     """
     Set the default `ngrok` auth token.
     """
-    manager = ctx.obj["manager"]
+    manager = ctx.obj["cli_manager"]
 
     manager.config.set("auth_token", auth_token)
 

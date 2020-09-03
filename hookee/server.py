@@ -25,16 +25,18 @@ except ImportError:  # pragma: no cover
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.4"
+__version__ = "0.0.7"
 
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.setLevel(logging.ERROR)
 
 
 class Server:
-    def __init__(self, manager):
-        self.manager = manager
-        self.port = self.manager.config.get("port")
+    def __init__(self, cli_manager):
+        self.cli_manager = cli_manager
+        self.plugin_manager = cli_manager.plugin_manager
+        self.print_util = cli_manager.print_util
+        self.port = self.cli_manager.config.get("port")
 
         self.app = self.create_app()
 
@@ -47,7 +49,7 @@ class Server:
             ENV="development"
         )
 
-        for plugin in self.manager.get_plugins_by_type(util.BLUEPRINT_PLUGIN):
+        for plugin in self.plugin_manager.get_plugins_by_type(util.BLUEPRINT_PLUGIN):
             app.register_blueprint(plugin.blueprint)
 
         return app
@@ -63,7 +65,7 @@ class Server:
 
     def start(self):
         if self._thread is None:
-            self.manager.print_util.print_open_header("Starting Server")
+            self.print_util.print_open_header("Starting Server")
 
             self._thread = threading.Thread(target=self._loop)
             self._thread.start()
@@ -90,4 +92,4 @@ class Server:
         click.echo(" * Port: {}".format(self.port))
         click.echo(" * Blueprints: registered")
         click.echo("")
-        self.manager.print_util.print_close_header()
+        self.print_util.print_close_header()

@@ -12,12 +12,15 @@ __version__ = "0.0.7"
 
 
 class Tunnel:
-    def __init__(self, manager):
-        self.manager = manager
-        self.port = self.manager.config.get("port")
+    def __init__(self, cli_manager):
+        self.cli_manager = cli_manager
+        self.config = cli_manager.config
+        self.plugin_manager = cli_manager.plugin_manager
+        self.print_util = cli_manager.print_util
+        self.port = self.cli_manager.config.get("port")
 
-        self.pyngrok_config = PyngrokConfig(auth_token=self.manager.config.get("auth_token"),
-                                            region=self.manager.config.get("region"))
+        self.pyngrok_config = PyngrokConfig(auth_token=self.config.get("auth_token"),
+                                            region=self.config.get("region"))
 
         self.public_url = None
         self.ngrok_process = None
@@ -37,7 +40,7 @@ class Tunnel:
 
     def start(self):
         if self._thread is None:
-            self.manager.print_util.print_open_header("Opening Tunnel")
+            self.print_util.print_open_header("Opening Tunnel")
 
             self._thread = threading.Thread(target=self._loop)
             self._thread.daemon = True
@@ -50,8 +53,8 @@ class Tunnel:
 
     def _start_tunnel(self):
         options = {}
-        subdomain = self.manager.config.get("subdomain")
-        auth = self.manager.config.get("auth")
+        subdomain = self.config.get("subdomain")
+        auth = self.config.get("auth")
         if subdomain:
             options["subdomain"] = subdomain
         if auth:
@@ -74,4 +77,4 @@ class Tunnel:
         click.echo(
             "* Tunnel: {} -> http://127.0.0.1:{}".format(self.public_url.replace("http://", "https://"), self.port))
         click.echo("")
-        self.manager.print_util.print_close_header()
+        self.print_util.print_close_header()
