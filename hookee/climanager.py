@@ -2,7 +2,7 @@ import time
 
 import click
 
-from hookee import conf, util
+from hookee import conf
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
 from hookee.tunnel import Tunnel
@@ -14,6 +14,26 @@ __version__ = "0.0.7"
 
 
 class CliManager:
+    """
+    An object that manages the state of a CLI application. Reads application configuration, loads enabled plugins,
+    and manages the long-lived state of the application if a server and tunnel are started.
+
+    :var ctx: The :code:`click` CLI context.
+    :vartype ctx: click.Context
+    :var config: The :code:`hookee` configuration.
+    :vartype config: Config
+    :var plugin_manager: Reference to the Plugin Manager.
+    :vartype plugin_manager: PluginManager
+    :var print_util: Reference to the PrintUtil.
+    :vartype print_util: PrintUtil
+    :var tunnel: Reference to the Tunnel.
+    :vartype tunnel: Tunnel
+    :var server: Reference to the Server.
+    :vartype server: Server
+    :var alive: :code:`True` when this object is managing an active tunnel and server, :code:`False` otherwise.
+    :vartype alive: bool
+    """
+
     def __init__(self, ctx, load_plugins=True):
         self.ctx = ctx
 
@@ -32,13 +52,13 @@ class CliManager:
         self.print_hookee_banner()
 
     def start(self):
+        """
+        If one is not already running, start a managed server and tunnel and block until an interrupt
+        is received (or :code:`alive` is set to False).
+        """
         if not self.alive:
             try:
-                self.alive = True
-                self.server.start()
-                self.tunnel.start()
-
-                self.print_ready()
+                self._init_server_and_tunnel()
 
                 while self.alive:
                     time.sleep(1)
@@ -48,6 +68,9 @@ class CliManager:
             self.stop()
 
     def stop(self):
+        """
+        If running, shutdown server and tunnel.
+        """
         if self.alive:
             self.server.stop()
             if self.tunnel._thread:
@@ -85,3 +108,10 @@ class CliManager:
         click.echo("")
         click.secho("--> Ready, send a request to a registered endpoint ...", fg="green", bold=True)
         click.echo("")
+
+    def _init_server_and_tunnel(self):
+        self.alive = True
+        self.server.start()
+        self.tunnel.start()
+
+        self.print_ready()

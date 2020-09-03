@@ -1,3 +1,4 @@
+import inspect
 import json
 import sys
 import xml.dom.minidom
@@ -8,15 +9,14 @@ __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.0.7"
 
-BLUEPRINT_PLUGIN = "blueprint"
-REQUEST_PLUGIN = "request"
-RESPONSE_PLUGIN = "response"
-
-VALID_PLUGIN_TYPES = [BLUEPRINT_PLUGIN, REQUEST_PLUGIN, RESPONSE_PLUGIN]
-REQUIRED_PLUGINS = ["blueprint_default"]
-
 
 class PrintUtil:
+    """
+    An object that provides helpful methods for printing to the console through :code:`click` CLI.
+
+    :var config: The :code:`hookee` configuration.
+    :vartype config: Config
+    """
     def __init__(self, config):
         self.config = config
 
@@ -28,6 +28,14 @@ class PrintUtil:
         click.secho("\n--> {}\n".format(msg), fg="green")
 
     def print_open_header(self, title, delimiter="-", fg="green"):
+        """
+        Print an opening header to the CLI.
+
+        :param delimiter: The title of the XML blob.
+        :type delimiter: str
+        :param fg: The color to make the text.
+        :type fg: str
+        """
         width = int((self.console_width - len(title)) / 2)
 
         click.echo("")
@@ -35,14 +43,75 @@ class PrintUtil:
         click.echo("")
 
     def print_close_header(self, delimiter="-", fg="green"):
+        """
+        Print a closing header to the CLI.
+
+        :param delimiter: The title of the XML blob.
+        :type delimiter: str
+        :param fg: The color to make the text.
+        :type fg: str
+        """
         click.secho(delimiter * self.console_width, fg=fg, bold=True)
 
     def print_dict(self, title, data, fg="green"):
+        """
+        Print formatted dictionary data to the CLI.
+
+        :param title: The title of the XML blob.
+        :type title: str
+        :param data: A dictionary.
+        :type data: dict
+        :param fg: The color to make the text.
+        :type fg: str
+        """
         click.secho("{}: {}".format(title, json.dumps(data, indent=4)), fg=fg)
 
     def print_xml(self, title, data, fg="green"):
+        """
+        Print formatted XML to the CLI.
+
+        :param title: The title of the XML blob.
+        :type title: str
+        :param data: An XML string.
+        :type data: str
+        :param fg: The color to make the text.
+        :type fg: str
+        """
         click.secho("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), fg=fg)
 
 
 def is_python_3():
+    """
+    Check if running on a Python 3.x interpreter.
+
+    :return: True if Python 3, False otherwise.
+    :rtype: bool
+    """
     return sys.version_info >= (3, 0)
+
+
+def get_functions(mod):
+    """
+    Get a list of functions for the given module.
+
+    :param mod: The module to inspect for functions.
+    :type mod: module
+    :return: The list of functions.
+    :rtype: list[function]
+    """
+    return [o[0] for o in inspect.getmembers(mod, inspect.isfunction)]
+
+
+def get_args(func):
+    """
+    Get a list of args for the given function.
+
+    :param func: The function to inspect for args.
+    :type func: function
+    :return: The list of args.
+    :rtype: list[str]
+    """
+    if is_python_3():
+        return inspect.getfullargspec(func)[0]
+    else:
+        return inspect.getargspec(func)[0]

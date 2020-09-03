@@ -12,12 +12,31 @@ __version__ = "0.0.7"
 
 
 class Tunnel:
+    """
+    An object that manages a non-blocking :code:`pyngrok` tunnel thread.
+
+    :var cli_manager: Reference to the CLI Manager.
+    :vartype cli_manager: CliManager
+    :var plugin_manager: Reference to the Plugin Manager.
+    :vartype plugin_manager: PluginManager
+    :var print_util: Reference to the PrintUtil.
+    :vartype print_util: PrintUtil
+    :var port: The server's port.
+    :vartype port: int
+    :var pyngrok_config: The :code:`pyngrok` config.
+    :vartype pyngrok_config: pyngrok.conf.PyngrokConfig
+    :var public_url: The public URL of the tunnel.
+    :vartype public_url: str
+    :var ngrok_process: The :code:`ngrok` process.
+    :vartype ngrok_process: pyngrok.process.NgrokProcess
+    """
+
     def __init__(self, cli_manager):
         self.cli_manager = cli_manager
         self.config = cli_manager.config
         self.plugin_manager = cli_manager.plugin_manager
         self.print_util = cli_manager.print_util
-        self.port = self.cli_manager.config.get("port")
+        self.port = self.config.get("port")
 
         self.pyngrok_config = PyngrokConfig(auth_token=self.config.get("auth_token"),
                                             region=self.config.get("region"))
@@ -39,6 +58,9 @@ class Tunnel:
         self.stop()
 
     def start(self):
+        """
+        If one is not already running, start a tunnel in a new thread.
+        """
         if self._thread is None:
             self.print_util.print_open_header("Opening Tunnel")
 
@@ -66,6 +88,9 @@ class Tunnel:
         self.ngrok_process = ngrok.get_ngrok_process()
 
     def stop(self):
+        """
+        If running, kill the tunnel and cleanup its thread.
+        """
         if self._thread:
             ngrok.kill()
 

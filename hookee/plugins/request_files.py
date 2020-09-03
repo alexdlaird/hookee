@@ -1,10 +1,10 @@
-from hookee import util
+from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.0.7"
 
-plugin_type = util.REQUEST_PLUGIN
+plugin_type = pluginmanager.REQUEST_PLUGIN
 print_util = None
 
 

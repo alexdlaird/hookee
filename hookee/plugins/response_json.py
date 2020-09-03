@@ -1,13 +1,13 @@
 import click
 from flask import jsonify
 
-from hookee import util
+from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.0.7"
 
-plugin_type = util.RESPONSE_PLUGIN
+plugin_type = pluginmanager.RESPONSE_PLUGIN
 print_util = None
 
 

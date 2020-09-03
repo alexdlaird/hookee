@@ -2,7 +2,7 @@ import click
 
 from flask import Blueprint, request
 
-from hookee import util
+from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
@@ -10,7 +10,7 @@ __version__ = "0.0.7"
 
 blueprint = Blueprint("default", __name__)
 
-plugin_type = util.BLUEPRINT_PLUGIN
+plugin_type = pluginmanager.BLUEPRINT_PLUGIN
 plugin_manager = None
 print_util = None
 
@@ -28,7 +28,7 @@ def webhook():
     print_util.print_close_header(delimiter="=", fg="magenta")
     print_util.print_open_header("Request", delimiter="-", fg="magenta")
 
-    for plugin in plugin_manager.get_plugins_by_type(util.REQUEST_PLUGIN):
+    for plugin in plugin_manager.get_plugins_by_type(pluginmanager.REQUEST_PLUGIN):
         plugin.run(request)
     if plugin_manager.last_request:
         plugin_manager.last_request.run(request)
@@ -36,7 +36,7 @@ def webhook():
     print_util.print_open_header("Response", fg="magenta")
 
     response = None
-    for plugin in plugin_manager.get_plugins_by_type(util.RESPONSE_PLUGIN):
+    for plugin in plugin_manager.get_plugins_by_type(pluginmanager.RESPONSE_PLUGIN):
         response = plugin.run(request, response)
     if plugin_manager.last_response:
         response = plugin_manager.last_response.run(request, response)

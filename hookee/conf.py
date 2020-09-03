@@ -21,6 +21,25 @@ template = {
 
 
 class Config:
+    """
+    An object with accessor methods containing :code:`hookee`'s configuration. Default configuration can be
+    overridden by creating a custom :code:`config.yaml` in :code:`~/.config/hookee` (when setting config
+    values from the command lind, this is where values are updated) which in turn can be overridden by
+    passing args to the CLI.
+
+    :var ctx: The :code:`click` CLI context.
+    :vartype ctx: click.Context
+    :var config_obj: The templated config object.
+    :vartype config_obj: confuse.Configuration
+    :var config_dir: The directory of the config being used.
+    :vartype config_dir: str
+    :var config_filename: The full path to the config file being used.
+    :vartype config_filename: str
+    :var config_data: The parsed and validated config data. Use :func:`get`, :func:`set`, and other accessors
+        to interact with the data.
+    :vartype config_data: confuse.AttrDict
+    """
+
     def __init__(self, ctx):
         self.ctx = ctx
 
@@ -30,11 +49,11 @@ class Config:
 
             self.config_obj = config
             self.config_dir = self.config_obj.config_dir()
-            self.config_filename = os.path.join(self.config_dir, confuse.CONFIG_FILENAME)
+            self.config_path = os.path.join(self.config_dir, confuse.CONFIG_FILENAME)
 
-            self.config = config.get(template)
+            self.config_data = config.get(template)
 
-            plugins_dir = os.path.expanduser(self.config["plugins_dir"])
+            plugins_dir = os.path.expanduser(self.config_data["plugins_dir"])
             if not os.path.exists(plugins_dir):
                 os.makedirs(plugins_dir)
         except confuse.NotFoundError as e:
@@ -43,37 +62,68 @@ class Config:
             ctx.fail("The config file is not valid YAML.")
 
     def get(self, key):
-        return self.config[key]
+        """
+        Get the config value for the given key.
 
-    def has(self, key):
-        return key in self.config
+        :param key: The key.
+        :type key: str
+        :return: The config value.
+        :rtype: object
+        """
+        return self.config_data[key]
 
     def set(self, key, value):
-        if value != self.config[key]:
-            self.config[key] = value
+        """
+        Update the config value for the given key, persisting to user's :code:`config.yaml`.
+
+        :param key: The key.
+        :type key: str
+        :param value: The value to set.
+        :type key: object
+        """
+        if value != self.config_data[key]:
+            self.config_data[key] = value
 
             self.config_obj[key] = value
-            with open(self.config_filename, "w") as f:
+            with open(self.config_path, "w") as f:
                 f.write(self.config_obj.dump())
 
     def append(self, key, value):
-        list_item = list(self.config[key])
+        """
+        Update the config value by appending to the list for the given key, persisting to
+        user's :code:`config.yaml`.
+
+        :param key: The key.
+        :type key: str
+        :param value: The value to append.
+        :type value: object
+        """
+        list_item = list(self.config_data[key])
 
         if value not in list_item:
             list_item.append(value)
-            self.config[key] = list_item
+            self.config_data[key] = list_item
 
             self.config_obj[key] = list_item
-            with open(self.config_filename, "w") as f:
+            with open(self.config_path, "w") as f:
                 f.write(self.config_obj.dump())
 
     def remove(self, key, value):
-        list_item = list(self.config[key])
+        """
+        Update the config value by removing the given value from the list for the given key, persisting to
+        user's :code:`config.yaml`.
+
+        :param key: The key.
+        :type key: str
+        :param value: The value to remove.
+        :type value: object
+        """
+        list_item = list(self.config_data[key])
 
         if value in list_item:
             list_item.remove(value)
-            self.config[key] = list_item
+            self.config_data[key] = list_item
 
             self.config_obj[key] = list_item
-            with open(self.config_filename, "w") as f:
+            with open(self.config_path, "w") as f:
                 f.write(self.config_obj.dump())

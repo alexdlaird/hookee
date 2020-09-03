@@ -8,7 +8,7 @@ from flask import Flask
 
 from future.standard_library import install_aliases
 
-from hookee import util
+from hookee import pluginmanager
 
 install_aliases()
 
@@ -32,6 +32,21 @@ werkzeug_logger.setLevel(logging.ERROR)
 
 
 class Server:
+    """
+    An object that manages a non-blocking Flask server thread.
+
+    :var cli_manager: Reference to the CLI Manager.
+    :vartype cli_manager: CliManager
+    :var plugin_manager: Reference to the Plugin Manager.
+    :vartype plugin_manager: PluginManager
+    :var print_util: Reference to the PrintUtil.
+    :vartype print_util: PrintUtil
+    :var port: The server's port.
+    :vartype port: int
+    :var app: The Flask app.
+    :vartype app: flask.Flask
+    """
+
     def __init__(self, cli_manager):
         self.cli_manager = cli_manager
         self.plugin_manager = cli_manager.plugin_manager
@@ -43,13 +58,19 @@ class Server:
         self._thread = None
 
     def create_app(self):
+        """
+        Create a Flask app and register all Blueprints found in enabled plugins.
+
+        :return: The Flask app.
+        :rtype: flask.Flask
+        """
         app = Flask(__name__)
 
         app.config.from_mapping(
             ENV="development"
         )
 
-        for plugin in self.plugin_manager.get_plugins_by_type(util.BLUEPRINT_PLUGIN):
+        for plugin in self.plugin_manager.get_plugins_by_type(pluginmanager.BLUEPRINT_PLUGIN):
             app.register_blueprint(plugin.blueprint)
 
         return app
@@ -64,6 +85,9 @@ class Server:
         thread.alive = False
 
     def start(self):
+        """
+        If one is not already running, start a server in a new thread.
+        """
         if self._thread is None:
             self.print_util.print_open_header("Starting Server")
 
@@ -76,6 +100,9 @@ class Server:
             self.print_close_header()
 
     def stop(self):
+        """
+        If running, kill the server and cleanup its thread.
+        """
         if self._thread:
             req = Request("http://127.0.0.1:{}/shutdown".format(self.port), method="POST")
             urlopen(req)
@@ -83,6 +110,12 @@ class Server:
             self._thread = None
 
     def _server_status(self):
+        """
+        Get the status code of the server's :code:`/status` endpoint.
+
+        :return: The status code.
+        :rtype: http.HTTPStatus
+        """
         try:
             return urlopen("http://127.0.0.1:{}/status".format(self.port)).getcode()
         except URLError:

@@ -204,4 +204,10 @@ epub_exclude_files = ["search.html"]
 
 # -- Extension configuration -------------------------------------------------
 
-intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+intersphinx_mapping = {
+    "click": ("https://click.palletsprojects.com/en/7.x", None),
+    "confuse": ("https://confuse.readthedocs.io/en/latest/", None),
+    "flask": ("https://flask.palletsprojects.com/en/1.1.x/", None),
+    "pyngrok": ("https://pyngrok.readthedocs.io/en/latest/", None),
+    "python": ("https://docs.python.org/3", None)
+}

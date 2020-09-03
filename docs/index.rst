@@ -49,13 +49,26 @@ This will start a server on the default port 5000, open a `ngrok <https://ngrok.
 using `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_, and mount a URL at :code:`/webhook`. Sending any request
 to the :code:`/webhook` endpoint will dump the request and response content to the console.
 
-Advanced Usage
---------------
+Configuration
+-------------
 
-More details, configuration, and extensibility are coming soon, as this is still a pre-release of :code:`hookee`. For
+More details on configuration and extensibility are coming soon, as this is still a pre-release of :code:`hookee`. For
 now, POC features are documented in :code:`hookee --help` as they are released.
 
-The plugin system will also be documented as we move away from it being a POC. For now, custom plugins can be developed
-and stored in :code:`~/.config/hookee/plugins`, and `the built-in plugins can be used as a reference <https://github.com/alexdlaird/hookee/tree/master/hookee/plugins>`_.
+Plugins
+-------
+
+The plugin system will also be documented further as :code:`hookee` moves away from being a POC. For now, custom
+plugins can be developed and stored in :code:`~/.config/hookee/plugins`, and `the built-in plugins can be used as a reference <https://github.com/alexdlaird/hookee/tree/master/hookee/plugins>`_.
+
+Dive Deeper
+-----------
+
+For more advanced usage, dive deeper in to the rest of the documentation.
+
+.. toctree::
+   :maxdepth: 2
+
+   api
 
 .. include:: ../CONTRIBUTING.rst

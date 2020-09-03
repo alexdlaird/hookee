@@ -1,6 +1,5 @@
 import click
 
-from hookee import util
 from hookee.climanager import CliManager
 
 from future.utils import iteritems
@@ -64,11 +63,12 @@ def update_config(ctx, key, value):
     manager = ctx.obj["cli_manager"]
 
     try:
-        manager.config.set(key, value)
+        manager.config_data.set(key, value)
+
+        manager.print_util.print_config_update(
+            "The default value for \"{}\" has been updated in the config.".format(key))
     except KeyError:
         ctx.fail("No such key exists in the config: {}".format(key))
-
-    manager.print_util.print_config_update("The default value for \"{}\" has been updated in the config.".format(key))
 
 
 @hookee.command()
@@ -80,9 +80,11 @@ def enable_plugin(ctx, plugin):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    cli_manager.plugin_manager.validate_plugin(cli_manager.plugin_manager.source.load_plugin(plugin))
+    loaded_plugin = cli_manager.plugin_manager.source.load_plugin(plugin)
 
-    cli_manager.config.append("plugins", plugin)
+    cli_manager.plugin_manager.validate_plugin(loaded_plugin)
+
+    cli_manager.config_data.append("plugins", plugin)
 
     cli_manager.print_util.print_config_update("Plugin \"{}\" has been enabled.".format(plugin))
 
@@ -96,10 +98,10 @@ def disable_plugin(ctx, plugin):
     """
     manager = ctx.obj["cli_manager"]
 
-    if plugin in util.REQUIRED_PLUGINS:
+    if plugin in manager.plugin_manager.REQUIRED_PLUGINS:
         ctx.fail("Sorry, you can't disable the plugin {}.".format(plugin))
 
-    manager.config.remove("plugins", plugin)
+    manager.config_data.remove("plugins", plugin)
 
     manager.print_util.print_config_update("Plugin \"{}\" has been disabled.".format(plugin))
 
@@ -112,7 +114,9 @@ def list_plugins(ctx):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    click.secho("\nAvailable Plugins: {}\n".format(sorted(cli_manager.plugin_manager.source.list_plugins())),
+    plugins = sorted(cli_manager.plugin_manager.source.list_plugins())
+
+    click.secho("\nAvailable Plugins: {}\n".format(plugins),
                 fg="green")
 
 
@@ -124,7 +128,9 @@ def enabled_plugins(ctx):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    click.secho("\nEnabled Plugins: {}\n".format(sorted(cli_manager.config.get("plugins"))), fg="green")
+    plugins = sorted(cli_manager.config_data.get("plugins"))
+
+    click.secho("\nEnabled Plugins: {}\n".format(plugins), fg="green")
 
 
 if __name__ == "__main__":

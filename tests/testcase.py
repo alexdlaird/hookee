@@ -21,9 +21,7 @@ class ManagedTestCase(unittest.TestCase):
     def setUpClass(cls):
         cls.cli_manager = CliManager(Context())
 
-        cls.cli_manager.server.start()
-        cls.cli_manager.tunnel.start()
-        cls.cli_manager.alive = True
+        cls.cli_manager._init_server_and_tunnel()
 
         cls.webhook_url = "{}/webhook".format(cls.cli_manager.tunnel.public_url)
 

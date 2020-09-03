@@ -27,9 +27,7 @@ class TestCliManager(ManagedTestCase):
         self.assertIsNone(self.cli_manager.tunnel._thread)
 
         # Restart the manager for the next tests
-        self.cli_manager.server.start()
-        self.cli_manager.tunnel.start()
-        self.cli_manager.alive = True
+        self.cli_manager._init_server_and_tunnel()
 
     def test_http_get_query_params(self):
         # GIVEN

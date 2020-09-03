@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `--request` to the CLI, a Python script whose `run(request)` method will be called by the default `/webhook` after all request plugins have run.
 - `--response` to the CLI, s Python script whose `run(request, response)` method will be called by the default `/webhook` after all response plugins have run.
 - Better console output.
+- API documentation.
 
 ### Changed
 - Combined config-related CLI commands into single command, `set-config KEY VALUE`.
