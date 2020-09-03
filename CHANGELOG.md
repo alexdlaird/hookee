@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Additional `ngrok` passthrough args to the CLI: `region`, `subdomain`, and `auth`.
 - `--last_request` as an arg to CLI, which can point to a Python script, where `last_request.run(request)` will be called after all plugins have processed a request to the default `/webhook`.").
 - `--last_response` as an arg to CLI, which can point to a Python script, where `last_response.run(request, response)` will be called after all plugins have generated the default `/webhook`'s response..
+- Better console output.
 
 ### Fixed
 - Stability improvements.
