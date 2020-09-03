@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.6...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.7...HEAD)
+
+## [0.0.7](https://github.com/alexdlaird/hookee/compare/0.0.6...0.0.7) - 2019-09-03
 ### Added
 - Additional `ngrok` passthrough args: `region`, `subdomain`, and `auth`.
 - `list-plugins` and `enabled-plugins` to the CLI.
