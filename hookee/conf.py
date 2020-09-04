@@ -30,14 +30,14 @@ class Config:
     :var ctx: The :code:`click` CLI context.
     :vartype ctx: click.Context
     :var config_obj: The templated config object.
-    :vartype config_obj: confuse.Configuration
+    :vartype config_obj: confuse.core.Configuration
     :var config_dir: The directory of the config being used.
     :vartype config_dir: str
     :var config_filename: The full path to the config file being used.
     :vartype config_filename: str
     :var config_data: The parsed and validated config data. Use :func:`get`, :func:`set`, and other accessors
         to interact with the data.
-    :vartype config_data: confuse.AttrDict
+    :vartype config_data: confuse.templates.AttrDict
     """
 
     def __init__(self, ctx):
