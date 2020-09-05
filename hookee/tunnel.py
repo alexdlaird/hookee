@@ -8,12 +8,12 @@ from pyngrok.conf import PyngrokConfig
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 
 class Tunnel:
     """
-    An object that manages a non-blocking :code:`pyngrok` tunnel thread.
+    An object that manages a non-blocking ``pyngrok`` tunnel thread.
 
     :var cli_manager: Reference to the CLI Manager.
     :vartype cli_manager: CliManager
@@ -23,11 +23,11 @@ class Tunnel:
     :vartype print_util: PrintUtil
     :var port: The server's port.
     :vartype port: int
-    :var pyngrok_config: The :code:`pyngrok` config.
+    :var pyngrok_config: The ``pyngrok`` config.
     :vartype pyngrok_config: pyngrok.conf.PyngrokConfig
     :var public_url: The public URL of the tunnel.
     :vartype public_url: str
-    :var ngrok_process: The :code:`ngrok` process.
+    :var ngrok_process: The ``ngrok`` process.
     :vartype ngrok_process: pyngrok.process.NgrokProcess
     """
 

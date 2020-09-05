@@ -4,7 +4,7 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 template = {
     "auth_token": confuse.String(default=None),
@@ -22,12 +22,12 @@ template = {
 
 class Config:
     """
-    An object with accessor methods containing :code:`hookee`'s configuration. Default configuration can be
-    overridden by creating a custom :code:`config.yaml` in :code:`~/.config/hookee` (when setting config
+    An object with accessor methods containing ``hookee``'s configuration. Default configuration can be
+    overridden by creating a custom ``config.yaml`` in ``~/.config/hookee`` (when setting config
     values from the command lind, this is where values are updated) which in turn can be overridden by
     passing args to the CLI.
 
-    :var ctx: The :code:`click` CLI context.
+    :var ctx: The ``click`` CLI context.
     :vartype ctx: click.Context
     :var config_obj: The templated config object.
     :vartype config_obj: confuse.core.Configuration
@@ -74,7 +74,7 @@ class Config:
 
     def set(self, key, value):
         """
-        Update the config value for the given key, persisting to user's :code:`config.yaml`.
+        Update the config value for the given key, persisting to user's ``config.yaml``.
 
         :param key: The key.
         :type key: str
@@ -91,7 +91,7 @@ class Config:
     def append(self, key, value):
         """
         Update the config value by appending to the list for the given key, persisting to
-        user's :code:`config.yaml`.
+        user's ``config.yaml``.
 
         :param key: The key.
         :type key: str
@@ -111,7 +111,7 @@ class Config:
     def remove(self, key, value):
         """
         Update the config value by removing the given value from the list for the given key, persisting to
-        user's :code:`config.yaml`.
+        user's ``config.yaml``.
 
         :param key: The key.
         :type key: str

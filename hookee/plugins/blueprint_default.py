@@ -6,7 +6,7 @@ from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 blueprint = Blueprint("default", __name__)
 
@@ -26,20 +26,14 @@ def setup(cli_manager):
                  methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "TRACE", "CONNECT"])
 def webhook():
     print_util.print_close_header(delimiter="=", fg="magenta")
+
     print_util.print_open_header("Request", delimiter="-", fg="magenta")
 
-    for plugin in plugin_manager.get_plugins_by_type(pluginmanager.REQUEST_PLUGIN):
-        plugin.run(request)
-    if plugin_manager.last_request:
-        plugin_manager.last_request.run(request)
+    plugin_manager.run_request_plugins(request)
 
     print_util.print_open_header("Response", fg="magenta")
 
-    response = None
-    for plugin in plugin_manager.get_plugins_by_type(pluginmanager.RESPONSE_PLUGIN):
-        response = plugin.run(request, response)
-    if plugin_manager.last_response:
-        response = plugin_manager.last_response.run(request, response)
+    response = plugin_manager.run_response_plugins(request)
 
     click.echo("")
     print_util.print_close_header("=", fg="magenta")

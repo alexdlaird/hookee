@@ -10,7 +10,7 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 
 class CliManager:
@@ -18,9 +18,9 @@ class CliManager:
     An object that manages the state of a CLI application. Reads application configuration, loads enabled plugins,
     and manages the long-lived state of the application if a server and tunnel are started.
 
-    :var ctx: The :code:`click` CLI context.
+    :var ctx: The ``click`` CLI context.
     :vartype ctx: click.Context
-    :var config: The :code:`hookee` configuration.
+    :var config: The ``hookee`` configuration.
     :vartype config: Config
     :var plugin_manager: Reference to the Plugin Manager.
     :vartype plugin_manager: PluginManager
@@ -30,7 +30,7 @@ class CliManager:
     :vartype tunnel: Tunnel
     :var server: Reference to the Server.
     :vartype server: Server
-    :var alive: :code:`True` when this object is managing an active tunnel and server, :code:`False` otherwise.
+    :var alive: ``True`` when this object is managing an active tunnel and server, ``False`` otherwise.
     :vartype alive: bool
     """
 
@@ -54,7 +54,7 @@ class CliManager:
     def start(self):
         """
         If one is not already running, start a managed server and tunnel and block until an interrupt
-        is received (or :code:`alive` is set to False).
+        is received (or ``alive`` is set to False).
         """
         if not self.alive:
             try:

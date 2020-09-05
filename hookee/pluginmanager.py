@@ -11,7 +11,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -27,15 +27,15 @@ class PluginManager:
 
     :var cli_manager: Reference to the CLI Manager.
     :vartype cli_manager: CliManager
-    :var ctx: The :code:`click` CLI context.
+    :var ctx: The ``click`` CLI context.
     :vartype ctx: click.Context
-    :var config: The :code:`hookee` configuration.
+    :var config: The ``hookee`` configuration.
     :vartype config: Config
-    :var source: The :code:`hookee` configuration.
+    :var source: The ``hookee`` configuration.
     :vartype source: pluginbase.PluginSource
-    :var last_request: A plugin loaded from the script at :code:`--request` from the CLI arg.
+    :var last_request: A plugin loaded from the script at ``--request`` from the CLI arg.
     :vartype last_request: module
-    :var last_response: A plugin loaded from the script at :code:`--response` from the CLI arg.
+    :var last_response: A plugin loaded from the script at ``--response`` from the CLI arg.
     :vartype last_response: module
     :var builtin_plugins_dir: The directory where built-in plugins reside.
     :vartype builtin_plugins_dir: str
@@ -60,12 +60,12 @@ class PluginManager:
 
     def validate_plugin(self, plugin):
         """
-        Validate a given module to see if it is a valid `hookee` plugin. If validation fails, an exception
+        Validate a given module to see if it is a valid ``hookee`` plugin. If validation fails, an exception
         will be thrown.
 
         :param plugin: The module to validate as a valid plugin.
         :type plugin: module
-        :return: :code:`True` if the validated plugin has a `setup()` method, :code:`False` otherwise.
+        :return: ``True`` if the validated plugin has a ``setup()`` method, ``False`` otherwise.
         :type: bool
         """
         try:
@@ -73,31 +73,32 @@ class PluginManager:
             attributes = dir(plugin)
 
             if "plugin_type" not in attributes:
-                self.ctx.fail("Plugin \"{}\" does not conform to the plugin spec.".format(plugin.__name__))
+                self.ctx.fail("Plugin \"{}\" does not conform to the plugin spec.".format(self.get_plugin_name(plugin)))
             elif plugin.plugin_type not in VALID_PLUGIN_TYPES:
-                self.ctx.fail("Plugin \"{}\" must specify a valid `plugin_type`.".format(plugin.__name__))
+                self.ctx.fail("Plugin \"{}\" must specify a valid `plugin_type`.".format(self.get_plugin_name(plugin)))
             elif plugin.plugin_type == REQUEST_PLUGIN:
                 if "run" not in functions_list:
-                    self.ctx.fail("Plugin \"{}\" must implement run(request).".format(plugin.__name__))
+                    self.ctx.fail("Plugin \"{}\" must implement run(request).".format(self.get_plugin_name(plugin)))
                 elif len(util.get_args(plugin.run)[0]) < 1:
                     self.ctx.fail(
                         "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
-                            plugin.__name__))
+                            self.get_plugin_name(plugin)))
             elif plugin.plugin_type == RESPONSE_PLUGIN:
                 if "run" not in functions_list:
-                    self.ctx.fail("Plugin \"{}\" must implement run(request, response).".format(plugin.__name__))
+                    self.ctx.fail(
+                        "Plugin \"{}\" must implement run(request, response).".format(self.get_plugin_name(plugin)))
                 elif len(util.get_args(plugin.run)[0]) < 2:
                     self.ctx.fail(
                         "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
-                            plugin.__name__))
+                            self.get_plugin_name(plugin)))
             elif plugin.plugin_type == BLUEPRINT_PLUGIN and "blueprint" not in attributes:
                 self.ctx.fail(
                     "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
-                        plugin.__name__))
+                        self.get_plugin_name(plugin)))
 
             return "setup" in functions_list
         except ModuleNotFoundError:
-            self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin.__name__))
+            self.ctx.fail("Plugin \"{}\" could not be found.".format(self.get_plugin_name(plugin)))
 
     def source_plugins(self):
         """
@@ -133,6 +134,17 @@ class PluginManager:
         self.last_request = self.import_from_file(self.config.get("last_request"))
         self.last_response = self.import_from_file(self.config.get("last_response"))
 
+    def get_plugin_name(self, plugin):
+        """
+        Get the name of the plugin from the module.
+
+        :param plugin: The plugin.
+        :type plugin: module
+        :return: The name of the plugin.
+        :rtype: str
+        """
+        return os.path.basename(plugin.__file__).strip(".py")
+
     def get_plugins_by_type(self, plugin_type):
         """
         Filter loaded plugins by the given plugin type.
@@ -167,3 +179,43 @@ class PluginManager:
                 plugin.setup(self.cli_manager)
 
             return plugin
+
+    def run_request_plugins(self, request):
+        """
+        Run all enabled request plugins.
+
+        :param request: The request object being processed.
+        :type request: flask.Request
+        :return: The processed request.
+        :rtype: flask.Request
+        """
+        for plugin in self.get_plugins_by_type(REQUEST_PLUGIN):
+            request = plugin.run(request)
+        if self.last_request:
+            self.last_request.run(request)
+
+        return request
+
+    def run_response_plugins(self, request=None, response=None):
+        """
+        Run all enabled response plugins, running the ``response_info`` plugin (if enabled) last.
+
+        :param request: The request object being processed.
+        :type request: flask.Request, optional
+        :param response: The response object being processed.
+        :type response: flask.Response, optional
+        :return: The processed response.
+        :rtype: flask.Response
+        """
+        response_info_plugin = None
+        for plugin in self.get_plugins_by_type(RESPONSE_PLUGIN):
+            if self.get_plugin_name(plugin) == "response_info":
+                response_info_plugin = plugin
+            else:
+                response = plugin.run(request, response)
+        if self.last_response:
+            response = self.last_response.run(request, response)
+        if response_info_plugin:
+            response = response_info_plugin.run(request, response)
+
+        return response

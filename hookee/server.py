@@ -25,7 +25,7 @@ except ImportError:  # pragma: no cover
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.setLevel(logging.ERROR)
@@ -111,7 +111,7 @@ class Server:
 
     def _server_status(self):
         """
-        Get the status code of the server's :code:`/status` endpoint.
+        Get the status code of the server's ``/status`` endpoint.
 
         :return: The status code.
         :rtype: http.HTTPStatus

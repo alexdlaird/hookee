@@ -3,7 +3,18 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.7...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.1.0...HEAD)
+
+## [0.1.0](https://github.com/alexdlaird/hookee/compare/0.0.7...0.1.0) - TBD
+### Added
+- Usage examples to documentation.
+- Plugin development documentation.
+
+### Changed
+- Version bumped to `0.1.0`, "Beta" status to `setup.py` classifiers.
+
+### Fixed
+- Documentation improvements.
 
 ## [0.0.7](https://github.com/alexdlaird/hookee/compare/0.0.6...0.0.7) - 2019-09-03
 ### Added

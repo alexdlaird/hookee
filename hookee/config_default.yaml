@@ -8,3 +8,4 @@ plugins:
   - "request_body"
   - "request_files"
   - "response_json"
+  - "response_info"

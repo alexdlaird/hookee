@@ -2,7 +2,7 @@
 API Documentation
 =================
 
-This part of the documentation covers the interfaces used to develop with :code:`hookee`.
+This part of the documentation covers the interfaces used to develop with ``hookee``.
 
 CLI Manager
 -----------

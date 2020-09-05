@@ -1,11 +1,10 @@
-import click
 from flask import current_app
 
 from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 plugin_type = pluginmanager.RESPONSE_PLUGIN
 print_util = None
@@ -23,11 +22,5 @@ def run(request, response):
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>",
             mimetype="application/xml",
         )
-
-    click.secho("Status Code: {}".format(response.status_code), fg="magenta")
-    if response.headers:
-        print_util.print_dict("Headers", dict(response.headers), fg="magenta")
-    if response.data:
-        print_util.print_xml("Body", response.data.decode("utf-8"), fg="magenta")
 
     return response
