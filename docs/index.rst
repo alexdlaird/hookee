@@ -54,12 +54,13 @@ Configuration
 Out of the box, a Flask Blueprint will mount the ``/webhook`` endpoint, and default plugins for dumping request
 data to the console and sending a 200 JSON response will be enabled.
 
-Plugins can be enabled and disabled easily from the command line. For instance, if we'd like an XML response instead:
+Plugins can be enabled and disabled easily from the command line. For instance, here we are disabling the default
+plugin that echo's request data back as the response and instead enabling our own JSON plugin:
 
 .. code-block:: sh
 
-    hookee disable-plugin response_json
-    hookee disable-plugin response_xml
+    hookee disable-plugin response_echo
+    hookee enable-plugin my_json_plugin
     hookee start
 
 Our own custom request or response plugins can be developed to be processed by the ``/webhook`` endpoint, or we can
@@ -77,19 +78,24 @@ and dirty, we can use the ``--response`` arg from the command line to inject our
     hookee --response "<Response>Ok</Response>" --content-type application/xml
 
 If we want a bit more flexibility, we can use the ``--response-script`` arg to inject our own script. All it needs is a
-``run(request, response)`` method. So, for example, if we have ``my_response.py`` that implements a simple XML response:
+``run(request, response)`` method. So, for example, if we have ``my_response_script.py`` that implements a simple
+Flask XML response:
 
 .. code-block:: python
 
+    from flask import current_app
+
     def run(request, response):
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-               "<Response>Ok</Response>"
+        return current_app.response_class(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>",
+            mimetype="application/xml",
+        )
 
 We can utilize it with:
 
 .. code-block:: sh
 
-    hookee start --response my_response.py
+    hookee --response-script my_response_script.py
 
 We can also do the same with the ``--request-script`` arg.
 

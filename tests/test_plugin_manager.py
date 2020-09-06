@@ -60,25 +60,7 @@ class TestPluginManager(HookeeTestCase):
 
         # THEN
 
-    def test_load_plugin_not_found(self):
-        # TODO implement
-        pass
-        # GIVEN
-
-        # WHEN
-
-        # THEN
-
     def test_load_plugins(self):
-        # TODO implement
-        pass
-        # GIVEN
-
-        # WHEN
-
-        # THEN
-
-    def test_load_plugins_missing_required_plugin(self):
         # TODO implement
         pass
         # GIVEN
