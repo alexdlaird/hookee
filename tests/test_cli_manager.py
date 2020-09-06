@@ -2,15 +2,14 @@ import time
 
 import requests
 
-from tests.testcase import ManagedTestCase
+from tests.managedtestcase import ManagedTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
 
 class TestCliManager(ManagedTestCase):
-
     def test_cli_manager(self):
         # GIVEN / WHEN
         # The test setup started the manager for us, so just assert the assumed state

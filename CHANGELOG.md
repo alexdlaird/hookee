@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.8...HEAD)
+### Added
+- Stable test suite.
+
 ### Changed
 - Replaced `response_json` and `response_xml` plugins with `response_echo` plugin.
 - Renamed `--list-plugins` to `--available-plugins`.

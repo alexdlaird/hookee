@@ -68,6 +68,13 @@ def update_config(ctx, key, value):
     """
     cli_manager = ctx.obj["cli_manager"]
 
+    if key == "plugins":
+        ctx.fail("Enable and disable plugins through the `enable-plugin` and `disable-plugin` commands.")
+
+    if value.isdigit():
+        value = int(value)
+    print(value)
+
     try:
         cli_manager.config.set(key, value)
 

@@ -1,9 +1,34 @@
-import unittest
+from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
 
-class TestConfig(unittest.TestCase):
-    pass
+class TestCli(HookeeTestCase):
+    def test_config_set(self):
+        # TODO implement
+        pass
+        # GIVEN
+
+        # WHEN
+
+        # THEN
+
+    def test_config_append(self):
+        # TODO implement
+        pass
+        # GIVEN
+
+        # WHEN
+
+        # THEN
+
+    def test_config_remove(self):
+        # TODO implement
+        pass
+        # GIVEN
+
+        # WHEN
+
+        # THEN

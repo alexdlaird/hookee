@@ -9,3 +9,5 @@ dist/
 MANIFEST
 *.egg-info
 _build
+
+tests/.config

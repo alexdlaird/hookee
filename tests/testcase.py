@@ -1,33 +1,35 @@
-import time
+import os
+import shutil
 import unittest
 
-from hookee.climanager import CliManager
+from click.testing import CliRunner
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
+
+from hookee.conf import Config
 
 
 class Context:
     obj = {}
 
 
-class ManagedTestCase(unittest.TestCase):
-    port = 5000
-    cli_manager = None
-    webhook_url = None
+class HookeeTestCase(unittest.TestCase):
+    ctx = Context()
 
-    @classmethod
-    def setUpClass(cls):
-        cls.cli_manager = CliManager(Context())
+    def setUp(self):
+        self.config_dir = os.path.normpath(
+            os.path.join(os.path.abspath(os.path.dirname(__file__)), ".config", "hookee"))
+        os.environ["HOOKEEDIR"] = self.config_dir
+        self.config = Config(self.ctx)
 
-        cls.cli_manager._init_server_and_tunnel()
+        self.plugins_dir = os.path.normpath(os.path.join(self.config_dir, "plugins"))
+        self.config.set("plugins_dir", self.plugins_dir)
+        os.makedirs(self.plugins_dir)
 
-        cls.webhook_url = "{}/webhook".format(cls.cli_manager.tunnel.public_url)
+        self.runner = CliRunner()
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.cli_manager:
-            cls.cli_manager.stop()
-
-            time.sleep(2)
+    def tearDown(self):
+        if os.path.exists(self.config_dir):
+            shutil.rmtree(self.config_dir)
