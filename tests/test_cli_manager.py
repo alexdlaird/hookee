@@ -33,18 +33,29 @@ class TestCliManager(ManagedTestCase):
         params = {"param_1": "param_value_1"}
 
         # WHEN
-        requests.get(self.webhook_url, params=params)
+        with self.captured_output() as (out, err):
+            response = requests.get(self.webhook_url, params=params)
 
-        # TODO: finish out test assertions
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("""Query Params: {
+    "param_1": "param_value_1"
+}""", out.getvalue())
 
     def test_http_post_form_data(self):
         # GIVEN
         data = {"form_data_1": "form_data_value_1"}
 
         # WHEN
-        requests.post(self.webhook_url, data=data)
+        with self.captured_output() as (out, err):
+            response = requests.post(self.webhook_url, data=data)
 
-        # TODO: finish out test assertions
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("\"Content-Type\": \"application/x-www-form-urlencoded\"", out.getvalue())
+        self.assertIn("""Body: {
+    "form_data_1": "form_data_value_1"
+}""", out.getvalue())
+        self.assertEqual(response.json(), data)
+        self.assertEqual(response.headers.get("Content-Type"), "application/json")
 
     def test_http_post_json_data(self):
         # GIVEN
@@ -52,6 +63,13 @@ class TestCliManager(ManagedTestCase):
         data = {"json_data_1": "json_data_value_1"}
 
         # WHEN
-        requests.post(self.webhook_url, headers=headers, json=data)
+        with self.captured_output() as (out, err):
+            response = requests.post(self.webhook_url, headers=headers, json=data)
 
-        # TODO: finish out test assertions
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("\"Content-Type\": \"application/json\"", out.getvalue())
+        self.assertIn("""Body: {
+    "json_data_1": "json_data_value_1"
+}""", out.getvalue())
+        self.assertEqual(response.json(), data)
+        self.assertEqual(response.headers.get("Content-Type"), "application/json")

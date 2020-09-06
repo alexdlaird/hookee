@@ -4,11 +4,11 @@ import unittest
 
 from click.testing import CliRunner
 
+from hookee.conf import Config
+
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.0.9"
-
-from hookee.conf import Config
 
 
 class Context:
