@@ -127,7 +127,7 @@ def available_plugins(ctx):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    plugins = sorted(cli_manager.plugin_manager.source.list_plugins())
+    plugins = cli_manager.plugin_manager.available_plugins()
 
     click.secho("\nAvailable Plugins: {}\n".format(plugins),
                 fg="green")
@@ -141,7 +141,7 @@ def enabled_plugins(ctx):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    plugins = sorted(cli_manager.config.get("plugins"))
+    plugins = cli_manager.plugin_manager.enabled_plugins()
 
     click.secho("\nEnabled Plugins: {}\n".format(plugins), fg="green")
 

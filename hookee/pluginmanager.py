@@ -115,7 +115,7 @@ class PluginManager:
         """
         Load and validate all built-in plugins and custom plugins from sources in the plugin base.
         """
-        enabled_plugins = self.config.get("plugins")
+        enabled_plugins = self.enabled_plugins()
 
         for plugin_name in REQUIRED_PLUGINS:
             if plugin_name not in enabled_plugins:
@@ -243,3 +243,21 @@ class PluginManager:
             return self.source.load_plugin(plugin_name)
         except ModuleNotFoundError:
             self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin_name))
+
+    def enabled_plugins(self):
+        """
+        Get a sorted list of enabled plugins.
+
+        :return: The list of enabled plugins.
+        :rtype: list[str]
+        """
+        return sorted(self.config.get("plugins"))
+
+    def available_plugins(self):
+        """
+        Get a sorted list of available plugins.
+
+        :return: The list of available plugins.
+        :rtype: list[str]
+        """
+        return sorted([str(p) for p in self.source.list_plugins()])
