@@ -13,9 +13,9 @@ hookee - command line webhooks, on demand
 .. image:: https://img.shields.io/pypi/l/hookee.svg
    :target: https://pypi.org/project/hookee/
 
-``hookee`` is a command line utility that gives you command line webhooks, on demand! Dump useful request information
-to the console, process request/response information, customize response data, and configure ``hookee`` and its routes
-further in any number of ways through through custom plugins.
+``hookee`` is a command line utility that provides command line webhooks, on demand! Dump useful request data
+to the console, process requests and responses, customize response data, and configure ``hookee`` and its routes
+further in any number of ways through custom plugins.
 
 Installation
 ------------
