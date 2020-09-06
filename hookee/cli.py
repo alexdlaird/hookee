@@ -1,4 +1,5 @@
 import click
+from hookee import pluginmanager
 
 from hookee.climanager import CliManager
 
@@ -6,7 +7,7 @@ from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
 
 @click.group(invoke_without_command=True)
@@ -38,11 +39,12 @@ def hookee(ctx, **kwargs):
         if value:
             ctx.obj[key] = value
 
-    manager = CliManager(ctx, load_plugins=ctx.invoked_subcommand not in ["enable-plugin", "disable-plugin"])
-    ctx.obj["cli_manager"] = manager
+    cli_manager = CliManager(ctx, load_plugins=ctx.invoked_subcommand not in ["enable-plugin", "disable-plugin",
+                                                                              "available-plugins", "enabled-plugins"])
+    ctx.obj["cli_manager"] = cli_manager
 
     if ctx.invoked_subcommand is None:
-        manager.start()
+        cli_manager.start()
 
 
 @hookee.command()
@@ -51,9 +53,9 @@ def start(ctx):
     """
     Start `hookee`.
     """
-    manager = ctx.obj["cli_manager"]
+    cli_manager = ctx.obj["cli_manager"]
 
-    manager.start()
+    cli_manager.start()
 
 
 @hookee.command()
@@ -64,12 +66,12 @@ def update_config(ctx, key, value):
     """
     Update the default value for a config.
     """
-    manager = ctx.obj["cli_manager"]
+    cli_manager = ctx.obj["cli_manager"]
 
     try:
-        manager.config_data.set(key, value)
+        cli_manager.config.set(key, value)
 
-        manager.print_util.print_config_update(
+        cli_manager.print_util.print_config_update(
             "The default value for \"{}\" has been updated in the config.".format(key))
     except KeyError:
         ctx.fail("No such key exists in the config: {}".format(key))
@@ -84,11 +86,11 @@ def enable_plugin(ctx, plugin):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    loaded_plugin = cli_manager.plugin_manager.source.load_plugin(plugin)
+    loaded_plugin = cli_manager.plugin_manager.load_plugin(plugin)
 
     cli_manager.plugin_manager.validate_plugin(loaded_plugin)
 
-    cli_manager.config_data.append("plugins", plugin)
+    cli_manager.config.append("plugins", plugin)
 
     cli_manager.print_util.print_config_update("Plugin \"{}\" has been enabled.".format(plugin))
 
@@ -100,19 +102,19 @@ def disable_plugin(ctx, plugin):
     """
     Disable the given plugin by default.
     """
-    manager = ctx.obj["cli_manager"]
+    cli_manager = ctx.obj["cli_manager"]
 
-    if plugin in manager.plugin_manager.REQUIRED_PLUGINS:
+    if plugin in pluginmanager.REQUIRED_PLUGINS:
         ctx.fail("Sorry, you can't disable the plugin {}.".format(plugin))
 
-    manager.config_data.remove("plugins", plugin)
+    cli_manager.config.remove("plugins", plugin)
 
-    manager.print_util.print_config_update("Plugin \"{}\" has been disabled.".format(plugin))
+    cli_manager.print_util.print_config_update("Plugin \"{}\" is disabled.".format(plugin))
 
 
 @hookee.command()
 @click.pass_context
-def list_plugins(ctx):
+def available_plugins(ctx):
     """
     List all available plugins.
     """
@@ -132,7 +134,7 @@ def enabled_plugins(ctx):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    plugins = sorted(cli_manager.config_data.get("plugins"))
+    plugins = sorted(cli_manager.config.get("plugins"))
 
     click.secho("\nEnabled Plugins: {}\n".format(plugins), fg="green")
 

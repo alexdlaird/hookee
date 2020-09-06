@@ -7,5 +7,5 @@ plugins:
   - "request_query_params"
   - "request_body"
   - "request_files"
-  - "response_json"
+  - "response_echo"
   - "response_info"

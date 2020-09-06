@@ -11,7 +11,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -72,37 +72,34 @@ class PluginManager:
         :return: ``True`` if the validated plugin has a ``setup()`` method, ``False`` otherwise.
         :type: bool
         """
-        try:
-            functions_list = util.get_functions(plugin)
-            attributes = dir(plugin)
+        functions_list = util.get_functions(plugin)
+        attributes = dir(plugin)
 
-            if "plugin_type" not in attributes:
-                self.ctx.fail("Plugin \"{}\" does not conform to the plugin spec.".format(self.get_plugin_name(plugin)))
-            elif plugin.plugin_type not in VALID_PLUGIN_TYPES:
-                self.ctx.fail("Plugin \"{}\" must specify a valid `plugin_type`.".format(self.get_plugin_name(plugin)))
-            elif plugin.plugin_type == REQUEST_PLUGIN:
-                if "run" not in functions_list:
-                    self.ctx.fail("Plugin \"{}\" must implement run(request).".format(self.get_plugin_name(plugin)))
-                elif len(util.get_args(plugin.run)[0]) < 1:
-                    self.ctx.fail(
-                        "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
-                            self.get_plugin_name(plugin)))
-            elif plugin.plugin_type == RESPONSE_PLUGIN:
-                if "run" not in functions_list:
-                    self.ctx.fail(
-                        "Plugin \"{}\" must implement run(request, response).".format(self.get_plugin_name(plugin)))
-                elif len(util.get_args(plugin.run)[0]) < 2:
-                    self.ctx.fail(
-                        "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
-                            self.get_plugin_name(plugin)))
-            elif plugin.plugin_type == BLUEPRINT_PLUGIN and "blueprint" not in attributes:
+        if "plugin_type" not in attributes:
+            self.ctx.fail("Plugin \"{}\" does not conform to the plugin spec.".format(self.get_plugin_name(plugin)))
+        elif plugin.plugin_type not in VALID_PLUGIN_TYPES:
+            self.ctx.fail("Plugin \"{}\" must specify a valid `plugin_type`.".format(self.get_plugin_name(plugin)))
+        elif plugin.plugin_type == REQUEST_PLUGIN:
+            if "run" not in functions_list:
+                self.ctx.fail("Plugin \"{}\" must implement run(request).".format(self.get_plugin_name(plugin)))
+            elif len(util.get_args(plugin.run)[0]) < 1:
                 self.ctx.fail(
-                    "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
+                    "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
                         self.get_plugin_name(plugin)))
+        elif plugin.plugin_type == RESPONSE_PLUGIN:
+            if "run" not in functions_list:
+                self.ctx.fail(
+                    "Plugin \"{}\" must implement run(request, response).".format(self.get_plugin_name(plugin)))
+            elif len(util.get_args(plugin.run)[0]) < 2:
+                self.ctx.fail(
+                    "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
+                        self.get_plugin_name(plugin)))
+        elif plugin.plugin_type == BLUEPRINT_PLUGIN and "blueprint" not in attributes:
+            self.ctx.fail(
+                "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
+                    self.get_plugin_name(plugin)))
 
-            return "setup" in functions_list
-        except ModuleNotFoundError:
-            self.ctx.fail("Plugin \"{}\" could not be found.".format(self.get_plugin_name(plugin)))
+        return "setup" in functions_list
 
     def source_plugins(self):
         """
@@ -130,7 +127,7 @@ class PluginManager:
 
         self.loaded_plugins = []
         for plugin_name in enabled_plugins:
-            plugin = self.source.load_plugin(plugin_name)
+            plugin = self.load_plugin(plugin_name)
             if self.validate_plugin(plugin):
                 plugin.setup(self.cli_manager)
             self.loaded_plugins.append(plugin)
@@ -232,3 +229,17 @@ class PluginManager:
             response = response_info_plugin.run(request, response)
 
         return response
+
+    def load_plugin(self, plugin_name):
+        """
+        Load the given plugin name from the sources.
+
+        :param plugin_name: The name of the plugin to load.
+        :type plugin_name: str
+        :return: The loaded plugin.
+        :rtype: module
+        """
+        try:
+            return self.source.load_plugin(plugin_name)
+        except ModuleNotFoundError:
+            self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin_name))
