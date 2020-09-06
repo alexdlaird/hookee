@@ -241,7 +241,7 @@ class PluginManager:
         """
         try:
             return self.source.load_plugin(plugin_name)
-        except ModuleNotFoundError:
+        except ImportError:
             self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin_name))
 
     def enabled_plugins(self):
@@ -251,7 +251,7 @@ class PluginManager:
         :return: The list of enabled plugins.
         :rtype: list[str]
         """
-        return sorted(self.config.get("plugins"))
+        return sorted(str(p) for p in self.config.get("plugins"))
 
     def available_plugins(self):
         """
