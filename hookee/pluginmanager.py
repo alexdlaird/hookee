@@ -4,7 +4,7 @@ from hookee import util
 
 from pluginbase import PluginBase
 
-if util.is_python_3():
+if util.python3_gte():
     import importlib.util
 else:
     import imp
@@ -174,7 +174,7 @@ class PluginManager:
         if path:
             module_name = os.path.basename(path).strip(".py")
 
-            if util.is_python_3():
+            if util.python3_gte():
                 spec = importlib.util.spec_from_file_location(module_name, path)
                 plugin = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(plugin)

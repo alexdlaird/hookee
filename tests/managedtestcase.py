@@ -6,7 +6,7 @@ from hookee.climanager import CliManager
 from hookee import util
 from tests.testcase import HookeeTestCase
 
-if util.is_python_3():
+if util.python3_gte():
     from io import StringIO
 else:
     from io import BytesIO as StringIO

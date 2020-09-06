@@ -17,6 +17,7 @@ class PrintUtil:
     :var config: The ``hookee`` configuration.
     :vartype config: Config
     """
+
     def __init__(self, config):
         self.config = config
 
@@ -80,7 +81,7 @@ class PrintUtil:
         click.secho("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), fg=fg)
 
 
-def is_python_3():
+def python3_gte():
     """
     Check if running on a Python 3.x interpreter.
 
@@ -89,7 +90,8 @@ def is_python_3():
     """
     return sys.version_info >= (3, 0)
 
-def is_python_36_or_higher():
+
+def python36_gte():
     """
     Check if running on a Python 3.6 or higher interpreter.
 
@@ -120,7 +122,7 @@ def get_args(func):
     :return: The list of args.
     :rtype: list[str]
     """
-    if is_python_3():
+    if python3_gte():
         return inspect.getfullargspec(func)[0]
     else:
         return inspect.getargspec(func)[0]
