@@ -1,6 +1,6 @@
 import os
 import shutil
-from unittest import mock
+from mock import mock
 
 from hookee.cli import hookee
 
