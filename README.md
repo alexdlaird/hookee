@@ -42,7 +42,7 @@ the `/webhook` endpoint will dump the request and response content to the consol
 We can also customize the response from `/webhook`, quick and dirty, using the `--response` arg.
 
 ```sh
-hookee start --response "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>" --content-type application/xml
+hookee --response "<Response>Ok</Response>" --content-type application/xml
 ```
 
 For more advanced customization of requests, responses, and available routes, refer to the documentation.

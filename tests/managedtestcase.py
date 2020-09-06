@@ -1,10 +1,15 @@
 import time
 import sys
 from contextlib import contextmanager
-from io import StringIO
 
 from hookee.climanager import CliManager
+from hookee import util
 from tests.testcase import HookeeTestCase
+
+if util.is_python_3():
+    from io import StringIO
+else:
+    from io import BytesIO as StringIO
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"

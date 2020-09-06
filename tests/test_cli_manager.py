@@ -2,6 +2,7 @@ import time
 
 import requests
 
+from hookee import util
 from tests.managedtestcase import ManagedTestCase
 
 __author__ = "Alex Laird"
@@ -30,7 +31,7 @@ class TestCliManager(ManagedTestCase):
 
     def test_http_get_query_params(self):
         # GIVEN
-        params = {"param_1": "param_value_1"}
+        params = {"param_1": ["param_value_1"]}
 
         # WHEN
         with self.captured_output() as (out, err):
@@ -38,12 +39,14 @@ class TestCliManager(ManagedTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("""Query Params: {
-    "param_1": "param_value_1"
+    "param_1": [
+        "param_value_1"
+    ]
 }""", out.getvalue())
 
     def test_http_post_form_data(self):
         # GIVEN
-        data = {"form_data_1": "form_data_value_1"}
+        data = {"form_data_1": ["form_data_value_1"]}
 
         # WHEN
         with self.captured_output() as (out, err):
@@ -52,7 +55,9 @@ class TestCliManager(ManagedTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("\"Content-Type\": \"application/x-www-form-urlencoded\"", out.getvalue())
         self.assertIn("""Body: {
-    "form_data_1": "form_data_value_1"
+    "form_data_1": [
+        "form_data_value_1"
+    ]
 }""", out.getvalue())
         self.assertEqual(response.json(), data)
         self.assertEqual(response.headers.get("Content-Type"), "application/json")
