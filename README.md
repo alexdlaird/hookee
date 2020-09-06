@@ -40,9 +40,17 @@ This will start a server on the default port 5000, open a [`ngrok`](https://ngro
 using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
 the `/webhook` endpoint will dump the request and response content to the console.
 
+We can also customize the response from `/webhook`, quick and dirty, using the `--response` arg.
+
+```sh
+hookee --response "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>" --content-type application/xml
+```
+
+For more advanced customization of requests, responses, and available routes, refer to the documentation.
+
 ## Documentation
 
-For more advanced usage, including extending `hookee` through plugin development, `hookee`'s official documentation is
+For more advanced usage, including extending `hookee` through plugins, `hookee`'s official documentation is
 available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
 
 ## Contributing
