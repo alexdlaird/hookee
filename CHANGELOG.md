@@ -9,6 +9,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - Usage examples to documentation.
 - Plugin development documentation.
+- `--request` and `--content-type` args to pass response body data directly from the CLI without the need for a plugin or script.
+
+### Changed
+- Replaced underscores with dashes in CLI args.
+- Renamed `--request` CLI arg to`--request-script`.
+- Renamed `--response` CLI arg to `--response-script`.
+- Renamed `last_request` config to `request_script`.
+- Renamed `last_response` config to `response_script`.
 
 ### Fixed
 - Documentation improvements.

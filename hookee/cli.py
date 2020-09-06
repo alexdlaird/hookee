@@ -33,7 +33,6 @@ def hookee(ctx, **kwargs):
 
     `hookee` documentation can be found at https://hookee.readthedocs.io.
     """
-    print(kwargs)
     ctx.ensure_object(dict)
     for key, value in iteritems(kwargs):
         if value:
