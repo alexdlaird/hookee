@@ -75,7 +75,7 @@ and dirty, we can use the ``--response`` arg from the command line to inject our
 
 .. code-block:: sh
 
-    hookee --response "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>" --content-type application/xml
+    hookee start --response "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>" --content-type application/xml
 
 If we want a bit more flexibility, we can use the ``--response-script`` arg to inject our own script. All it needs is a
 ``run(request, response)`` method. So, for example, if we have ``my_response.py`` that implements a simple XML response:
