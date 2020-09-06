@@ -2,7 +2,7 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.1.0"
+__version__ = "0.0.8"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -42,7 +42,7 @@ setup(
     classifiers=[
         "Environment :: Console",
         "Environment :: Web Environment",
-        "Development Status :: 4 - Beta",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Intended Audience :: Education",
         "Intended Audience :: Information Technology",
