@@ -38,7 +38,12 @@ class TestCliManager(ManagedTestCase):
             response = requests.get(self.webhook_url, params=params)
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("""Query Params: {
+        if util.is_python_3():
+            self.assertIn("""Query Params: {
+    "param_1": "param_value_1"
+}""", out.getvalue())
+        else:
+            self.assertIn("""Query Params: {
     "param_1": [
         "param_value_1"
     ]
@@ -46,7 +51,7 @@ class TestCliManager(ManagedTestCase):
 
     def test_http_post_form_data(self):
         # GIVEN
-        data = {"form_data_1": ["form_data_value_1"]}
+        data = {"form_data_1": "form_data_value_1"}
 
         # WHEN
         with self.captured_output() as (out, err):
@@ -54,13 +59,19 @@ class TestCliManager(ManagedTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("\"Content-Type\": \"application/x-www-form-urlencoded\"", out.getvalue())
-        self.assertIn("""Body: {
+        self.assertEqual(response.headers.get("Content-Type"), "application/json")
+        if util.is_python_3():
+            self.assertIn("""Body: {
+    "form_data_1": "form_data_value_1"
+}""", out.getvalue())
+            self.assertEqual(response.json(), data)
+        else:
+            self.assertIn("""Body: {
     "form_data_1": [
         "form_data_value_1"
     ]
 }""", out.getvalue())
-        self.assertEqual(response.json(), data)
-        self.assertEqual(response.headers.get("Content-Type"), "application/json")
+            self.assertEqual(response.content, "{\"form_data_1\": [\"form_data_value_1\"]}")
 
     def test_http_post_json_data(self):
         # GIVEN
@@ -76,5 +87,5 @@ class TestCliManager(ManagedTestCase):
         self.assertIn("""Body: {
     "json_data_1": "json_data_value_1"
 }""", out.getvalue())
-        self.assertEqual(response.json(), data)
         self.assertEqual(response.headers.get("Content-Type"), "application/json")
+        self.assertEqual(response.json(), data)
