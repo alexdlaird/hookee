@@ -71,7 +71,7 @@ class TestCliManager(ManagedTestCase):
         "form_data_value_1"
     ]
 }""", out.getvalue())
-            self.assertEqual(str(response.content), "{\"form_data_1\": [\"form_data_value_1\"]}")
+            self.assertEqual(response.json(), {"form_data_1": ["form_data_value_1"]})
 
     def test_http_post_json_data(self):
         # GIVEN
