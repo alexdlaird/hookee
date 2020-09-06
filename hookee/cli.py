@@ -6,29 +6,34 @@ from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.7"
+__version__ = "0.1.0"
 
 
 @click.group(invoke_without_command=True)
 @click.pass_context
 @click.option("--port", type=int, help="The port for the local webserver.")
-@click.option("--plugins_dir", type=click.Path(exists=True), help="The directory to scan for custom `hookee` plugins.")
+@click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom `hookee` plugins.")
 @click.option("--plugins", multiple=True, help="A list of `hookee` plugins to use.")
-@click.option("--auth_token", help="The `ngrok` auth token use.")
+@click.option("--auth-token", help="The `ngrok` auth token use.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
               help="The `ngrok` region to use.")
 @click.option("--subdomain", help="The `ngrok` subdomain token use.")
 @click.option("--auth", help="The `ngrok` auth token use for endpoints.")
-@click.option("--request", type=click.Path(exists=True),
+@click.option("--request-script", type=click.Path(exists=True),
               help="A Python script whose `run(request)` method will be called by the default `/webhook` after all request plugins have run.")
-@click.option("--response", type=click.Path(exists=True),
+@click.option("--response-script", type=click.Path(exists=True),
               help="A Python script whose `run(request, response)` method will be called by the default `/webhook` after all response plugins have run.")
+@click.option("--response", type=str,
+              help="Data to set for the response, will override all body data from plugins and `--response_script`.")
+@click.option("--content-type", type=str,
+              help="The \"Content-Type\" header to set when response body data is given with `--response` (defaults to \"text/plain\")")
 def hookee(ctx, **kwargs):
     """
     If options are given, they override the default values derived from the config file.
 
     `hookee` documentation can be found at https://hookee.readthedocs.io.
     """
+    print(kwargs)
     ctx.ensure_object(dict)
     for key, value in iteritems(kwargs):
         if value:

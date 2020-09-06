@@ -15,8 +15,10 @@ template = {
     "plugins_dir": confuse.Filename(),
     "plugins": list,
     "console_width": confuse.Integer(default=80),
-    "last_request": confuse.Filename(default=None),
-    "last_response": confuse.Filename(default=None),
+    "request_script": confuse.Filename(default=None),
+    "response_script": confuse.Filename(default=None),
+    "response": confuse.String(default=None),
+    "content_type": confuse.String(default=None)
 }
 
 

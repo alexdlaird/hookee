@@ -71,14 +71,20 @@ Customizing the Response
 ------------------------
 
 If we don't want to bother with plugin development and just want to customize the response from ``/webhook``, quick
-and dirty, we can use the ``--response`` arg from the command line to inject our own script. All it needs is a
+and dirty, we can use the ``--response`` arg from the command line to inject our own response body.
+
+.. code-block:: sh
+
+    hookee --response "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>" --content-type application/xml
+
+If we want a bit more flexibility, we can use the ``--response-script`` arg to inject our own script. All it needs is a
 ``run(request, response)`` method. So, for example, if we have ``my_response.py`` that implements a simple XML response:
 
 .. code-block:: python
 
     def run(request, response):
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-               "<Response><Message><Body>Hello world!</Body></Message></Response>"
+               "<Response>Ok</Response>"
 
 We can utilize it with:
 
@@ -86,7 +92,7 @@ We can utilize it with:
 
     hookee start --response my_response.py
 
-We can also do the same with the ``--request`` arg.
+We can also do the same with the ``--request-script`` arg.
 
 Plugins
 -------

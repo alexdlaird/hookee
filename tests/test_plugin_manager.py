@@ -5,5 +5,5 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "0.1.0"
 
 
-class TestConfig(unittest.TestCase):
+class TestPluginManager(unittest.TestCase):
     pass

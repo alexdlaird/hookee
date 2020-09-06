@@ -33,10 +33,12 @@ class PluginManager:
     :vartype config: Config
     :var source: The ``hookee`` configuration.
     :vartype source: pluginbase.PluginSource
-    :var last_request: A plugin loaded from the script at ``--request`` from the CLI arg.
-    :vartype last_request: module
-    :var last_response: A plugin loaded from the script at ``--response`` from the CLI arg.
-    :vartype last_response: module
+    :var request_script: A request plugin loaded from the script at ``--request_script``, run last.
+    :vartype request_script: module
+    :var response_script: A response plugin loaded from the script at ``--response_script``, run last.
+    :vartype response_script: module
+    :var response_body: The response body loaded from ``--response``, overrides any body data from response plugins.
+    :vartype response_body: module
     :var builtin_plugins_dir: The directory where built-in plugins reside.
     :vartype builtin_plugins_dir: str
     :var loaded_plugins: A list of plugins that have been validated and imported.
@@ -49,8 +51,10 @@ class PluginManager:
         self.config = cli_manager.config
 
         self.source = None
-        self.last_request = None
-        self.last_response = None
+        self.request_script = None
+        self.response_script = None
+        self.response_body = None
+        self.response_content_type = None
 
         self.builtin_plugins_dir = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "plugins"))
 
@@ -131,8 +135,13 @@ class PluginManager:
                 plugin.setup(self.cli_manager)
             self.loaded_plugins.append(plugin)
 
-        self.last_request = self.import_from_file(self.config.get("last_request"))
-        self.last_response = self.import_from_file(self.config.get("last_response"))
+        self.request_script = self.import_from_file(self.config.get("request_script"))
+        self.response_script = self.import_from_file(self.config.get("response_script"))
+        self.response_body = self.config.get("response")
+        self.response_content_type = self.config.get("content_type")
+
+        if self.response_content_type and not self.response_body:
+            self.ctx.fail("If `--content_type` is given, `--response` must also be given.")
 
     def get_plugin_name(self, plugin):
         """
@@ -191,8 +200,8 @@ class PluginManager:
         """
         for plugin in self.get_plugins_by_type(REQUEST_PLUGIN):
             request = plugin.run(request)
-        if self.last_request:
-            self.last_request.run(request)
+        if self.request_script:
+            self.request_script.run(request)
 
         return request
 
@@ -213,8 +222,12 @@ class PluginManager:
                 response_info_plugin = plugin
             else:
                 response = plugin.run(request, response)
-        if self.last_response:
-            response = self.last_response.run(request, response)
+        if self.response_script:
+            response = self.response_script.run(request, response)
+        if self.response_body:
+            response.data = self.response_body
+            response.headers[
+                "Content-Type"] = self.response_content_type if self.response_content_type else "text/plain"
         if response_info_plugin:
             response = response_info_plugin.run(request, response)
 
