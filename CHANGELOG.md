@@ -10,9 +10,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Usage examples to documentation.
 - Plugin development documentation.
 
-### Changed
-- Version bumped to `0.0.8`, "Beta" status to `setup.py` classifiers.
-
 ### Fixed
 - Documentation improvements.
 
