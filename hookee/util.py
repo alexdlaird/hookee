@@ -89,6 +89,15 @@ def is_python_3():
     """
     return sys.version_info >= (3, 0)
 
+def is_python_36_or_higher():
+    """
+    Check if running on a Python 3.6 or higher interpreter.
+
+    :return: True if Python 3.6 or higher, False otherwise.
+    :rtype: bool
+    """
+    return sys.version_info >= (3, 6)
+
 
 def get_functions(mod):
     """

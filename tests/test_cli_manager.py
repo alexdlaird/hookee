@@ -60,7 +60,7 @@ class TestCliManager(ManagedTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("\"Content-Type\": \"application/x-www-form-urlencoded\"", out.getvalue())
         self.assertEqual(response.headers.get("Content-Type"), "application/json")
-        if util.is_python_3():
+        if util.is_python_36_or_higher():
             self.assertIn("""Body: {
     "form_data_1": "form_data_value_1"
 }""", out.getvalue())
