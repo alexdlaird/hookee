@@ -7,7 +7,7 @@ from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.11"
+__version__ = "0.0.12"
 
 
 @click.group(invoke_without_command=True)
@@ -73,7 +73,6 @@ def update_config(ctx, key, value):
 
     if value.isdigit():
         value = int(value)
-    print(value)
 
     try:
         cli_manager.config.set(key, value)

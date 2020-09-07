@@ -10,7 +10,7 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "0.0.12"
 
 
 class CliManager:
