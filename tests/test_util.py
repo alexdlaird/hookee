@@ -10,26 +10,23 @@ __version__ = "0.0.9"
 
 
 class TestUtil(HookeeTestCase):
-    def test_get_functions(self):
-        # GIVEN
-        cli_manager = CliManager(self.ctx)
-        plugin_manager = PluginManager(cli_manager)
-        plugin = plugin_manager.get_plugin("request_url_info")
+    def setUp(self):
+        super(TestUtil, self).setUp()
 
+        self.cli_manager = CliManager(self.ctx)
+        self.plugin_manager = PluginManager(self.cli_manager)
+        self.plugin = self.plugin_manager.get_plugin("request_url_info")
+
+    def test_get_functions(self):
         # WHEN
-        funcs = util.get_functions(plugin)
+        funcs = util.get_functions(self.plugin)
 
         # THEN
         self.assertEqual(funcs, ["run", "setup"])
 
     def get_args(self):
-        # GIVEN
-        cli_manager = CliManager(self.ctx)
-        plugin_manager = PluginManager(cli_manager)
-        plugin = plugin_manager.get_plugin("request_url_info")
-
         # WHEN
-        args = util.get_args(plugin.run)
+        args = util.get_args(self.plugin.run)
 
         # THEN
         self.assertEqual(args, ["request"])

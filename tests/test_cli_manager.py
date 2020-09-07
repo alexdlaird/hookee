@@ -1,5 +1,3 @@
-import time
-
 import requests
 
 from hookee import util
@@ -11,24 +9,6 @@ __version__ = "0.0.9"
 
 
 class TestCliManager(ManagedTestCase):
-    def test_cli_manager(self):
-        # GIVEN / WHEN
-        # The test setup started the manager for us, so just assert the assumed state
-        self.assertIsNotNone(self.cli_manager.server._thread)
-        self.assertIsNotNone(self.cli_manager.tunnel._thread)
-
-        # THEN
-        self.cli_manager.stop()
-
-        # Wait for things to tear down
-        time.sleep(2)
-
-        self.assertIsNone(self.cli_manager.server._thread)
-        self.assertIsNone(self.cli_manager.tunnel._thread)
-
-        # Restart the manager for the next tests
-        self.cli_manager._init_server_and_tunnel()
-
     def test_http_get_query_params(self):
         # GIVEN
         params = {"param_1": ["param_value_1"]}

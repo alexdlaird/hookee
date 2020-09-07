@@ -12,7 +12,11 @@ __version__ = "0.0.9"
 
 
 class Context:
-    obj = {}
+    def __init__(self, obj=None):
+        if obj is None:
+            obj = {}
+
+        self.obj = obj
 
 
 class HookeeTestCase(unittest.TestCase):

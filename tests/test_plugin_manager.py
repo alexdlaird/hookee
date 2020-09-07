@@ -1,3 +1,6 @@
+from hookee.pluginmanager import PluginManager
+
+from hookee.climanager import CliManager
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
@@ -6,6 +9,12 @@ __version__ = "0.0.9"
 
 
 class TestPluginManager(HookeeTestCase):
+    def setUp(self):
+        super(TestPluginManager, self).setUp()
+
+        self.cli_manager = CliManager(self.ctx)
+        self.plugin_manager = PluginManager(self.cli_manager)
+
     def test_validate_plugin(self):
         # TODO implement
         pass

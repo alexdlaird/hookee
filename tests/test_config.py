@@ -1,4 +1,4 @@
-from unittest import mock
+from mock import mock
 
 from tests.testcase import HookeeTestCase
 

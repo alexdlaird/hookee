@@ -30,10 +30,10 @@ class TestCli(HookeeTestCase):
 
     def test_available_plugins_config(self):
         # GIVEN
+        builtin_plugin_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
+                                           "request_body.py")
         custom_plugin_path = os.path.join(self.plugins_dir, "custom_plugin.py")
-        shutil.copy(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins", "request_body.py"),
-            custom_plugin_path)
+        shutil.copy(builtin_plugin_path, custom_plugin_path)
 
         # WHEN
         result = self.runner.invoke(hookee, ["available-plugins"])
@@ -95,15 +95,55 @@ class TestCli(HookeeTestCase):
     @mock.patch("hookee.climanager.CliManager.start")
     def test_start(self, mock_cli_start):
         # WHEN
-        self.runner.invoke(hookee, ["start"])
+        result = self.runner.invoke(hookee, ["start"])
 
         # THEN
+        self.assertEqual(result.exit_code, 0)
         mock_cli_start.assert_called_once()
 
     @mock.patch("hookee.climanager.CliManager.start")
     def test_no_command_calls_start(self, mock_cli_start):
         # WHEN
-        self.runner.invoke(hookee)
+        result = self.runner.invoke(hookee)
 
         # THEN
+        self.assertEqual(result.exit_code, 0)
         mock_cli_start.assert_called_once()
+
+    @mock.patch("hookee.climanager.CliManager.start")
+    def test_start_with_script_import(self, mock_cli_start):
+        # GIVEN
+        builtin_plugin_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
+                                           "request_body.py")
+
+        # WHEN
+        result = self.runner.invoke(hookee, ["--response-script", builtin_plugin_path])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        mock_cli_start.assert_called_once()
+
+    def test_start_with_invalid_script_import(self):
+        # WHEN
+        result = self.runner.invoke(hookee, ["--response-script", "no_such_file.py"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 2)
+        self.assertIn("'no_such_file.py' does not exist", result.output)
+
+    @mock.patch("confuse.Configuration.set_args")
+    @mock.patch("hookee.climanager.CliManager.start")
+    def test_start_arg_passed_to_config(self, mock_cli_start, mock_set_args):
+        # GIVEn
+        response = "\"<Response>Ok</Response>\""
+
+        # WHEN
+        result = self.runner.invoke(hookee, ["--response", response])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        mock_cli_start.assert_called_once()
+        mock_set_args.assert_called_once()
+        call_args, call_kwargs = mock_set_args.call_args
+        self.assertIn("response", call_args[0])
+        self.assertEqual(call_args[0]["response"], response)
