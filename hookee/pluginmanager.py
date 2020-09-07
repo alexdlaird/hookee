@@ -21,6 +21,8 @@ VALID_PLUGIN_TYPES = [BLUEPRINT_PLUGIN, REQUEST_PLUGIN, RESPONSE_PLUGIN]
 REQUIRED_PLUGINS = ["blueprint_default"]
 
 
+# TODO: implement a Plugin class in here that abstracts out the validation and direct module interactions, pass that around instead
+
 class PluginManager:
     """
     An object that loads, validates, and manages available and enabled plugins.
@@ -149,7 +151,7 @@ class PluginManager:
         :return: The name of the plugin.
         :rtype: str
         """
-        return os.path.basename(plugin.__file__).strip(".py")
+        return os.path.splitext(os.path.basename(plugin.__file__))[0]
 
     def get_plugins_by_type(self, plugin_type):
         """
@@ -172,7 +174,7 @@ class PluginManager:
         :rtype: module
         """
         if path:
-            module_name = os.path.basename(path).strip(".py")
+            module_name = os.path.splitext(os.path.basename(path))[0]
 
             if util.python3_gte():
                 spec = importlib.util.spec_from_file_location(module_name, path)
