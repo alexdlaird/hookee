@@ -84,11 +84,7 @@ class Config:
         :type key: object
         """
         if value != self.config_data[key]:
-            self.config_data[key] = value
-
-            self.config_obj[key] = value
-            with open(self.config_path, "w") as f:
-                f.write(self.config_obj.dump())
+            self._update_config_objects(key, value)
 
     def append(self, key, value):
         """
@@ -104,11 +100,7 @@ class Config:
 
         if value not in list_item:
             list_item.append(value)
-            self.config_data[key] = list_item
-
-            self.config_obj[key] = list_item
-            with open(self.config_path, "w") as f:
-                f.write(self.config_obj.dump())
+            self._update_config_objects(key, list_item)
 
     def remove(self, key, value):
         """
@@ -124,8 +116,14 @@ class Config:
 
         if value in list_item:
             list_item.remove(value)
-            self.config_data[key] = list_item
+            self._update_config_objects(key, list_item)
 
-            self.config_obj[key] = list_item
-            with open(self.config_path, "w") as f:
-                f.write(self.config_obj.dump())
+    def _update_config_objects(self, key, value):
+        self.config_data[key] = value
+        self.config_obj[key] = value
+
+        self._write_config_objects_to_file()
+
+    def _write_config_objects_to_file(self):
+        with open(self.config_path, "w") as f:
+            f.write(self.config_obj.dump())

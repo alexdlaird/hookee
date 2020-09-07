@@ -93,7 +93,7 @@ def enable_plugin(ctx, plugin):
     """
     cli_manager = ctx.obj["cli_manager"]
 
-    loaded_plugin = cli_manager.plugin_manager.load_plugin(plugin)
+    loaded_plugin = cli_manager.plugin_manager.get_plugin(plugin)
 
     cli_manager.plugin_manager.validate_plugin(loaded_plugin)
 

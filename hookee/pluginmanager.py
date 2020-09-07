@@ -127,7 +127,7 @@ class PluginManager:
 
         self.loaded_plugins = []
         for plugin_name in enabled_plugins:
-            plugin = self.load_plugin(plugin_name)
+            plugin = self.get_plugin(plugin_name)
             if self.validate_plugin(plugin):
                 plugin.setup(self.cli_manager)
             self.loaded_plugins.append(plugin)
@@ -230,9 +230,9 @@ class PluginManager:
 
         return response
 
-    def load_plugin(self, plugin_name):
+    def get_plugin(self, plugin_name):
         """
-        Load the given plugin name from the sources.
+        Get the given plugin name from the sources.
 
         :param plugin_name: The name of the plugin to load.
         :type plugin_name: str
