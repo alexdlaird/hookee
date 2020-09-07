@@ -3,17 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.9...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.10...HEAD)
+
+## [0.0.10](https://github.com/alexdlaird/hookee/compare/0.0.8...0.0.10) - 2019-09-06
 ### Added
 - Stable test suite.
-
-### Fixed
-- Documentation improvements.
-
-## [0.0.9](https://github.com/alexdlaird/hookee/compare/0.0.8...0.0.9) - 2019-09-06
-### Added
-- Tests for CLI, test assertions in CLI Manager test stubs.
-- Stubs for additional tests.
 
 ### Changed
 - Replaced `response_json` and `response_xml` plugins with `response_echo` plugin.
@@ -21,6 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Fixed
 - Stability improvements.
+- Documentation improvements.
 
 ## [0.0.8](https://github.com/alexdlaird/hookee/compare/0.0.7...0.0.8) - 2019-09-05
 ### Added

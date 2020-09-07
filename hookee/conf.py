@@ -4,7 +4,7 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.9"
+__version__ = "0.0.10"
 
 template = {
     "auth_token": confuse.String(default=None),
