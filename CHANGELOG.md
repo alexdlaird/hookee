@@ -3,9 +3,9 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.10...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.11...HEAD)
 
-## [0.0.10](https://github.com/alexdlaird/hookee/compare/0.0.8...0.0.10) - 2019-09-06
+## [0.0.11](https://github.com/alexdlaird/hookee/compare/0.0.8...0.0.11) - 2019-09-06
 ### Added
 - Stable test suite.
 
@@ -49,23 +49,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Stability improvements.
 
 ## [0.0.6](https://github.com/alexdlaird/hookee/compare/0.0.5...0.0.6) - 2019-09-02
-### Fixed
-- Default config file was not being included in previous packages.
-
-## [0.0.5](https://github.com/alexdlaird/hookee/compare/0.0.4...0.0.5) - 2019-09-02
-### Added
-- Documentation now builds and publishes to [hookee.readthedocs.io](https://hookee.readthedocs.io).
-
-### Fixed
-- Build improvements.
-
-## [0.0.4](https://github.com/alexdlaird/hookee/compare/0.0.3...0.0.4) - 2019-09-01
 ### Added
 - Made Blueprints, request, and response pluggable, support for built-in and custom plugins (in `~/.config/hookee/plugins` by default).
 - Plugin management system to enable/disable plugins.
 - Configuration management system with defaults, overrides in `~/.config/hookee/config.yaml`, and overrides from command line args.
 - Configuration management of `config.yaml` defaults from the CLI.
 - Significant refactors to abstract functionality of `cli.py` and `manager.py`, among others.
+- Documentation now builds and publishes to [hookee.readthedocs.io](https://hookee.readthedocs.io).
+
+### Fixed
+- Default config file was not being included in previous packages.
+- Build improvements.
 
 ## [0.0.3](https://github.com/alexdlaird/hookee/compare/0.0.2...0.0.3) - 2019-08-14
 ### Added

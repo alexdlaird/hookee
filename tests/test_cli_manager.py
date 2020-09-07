@@ -5,7 +5,7 @@ from tests.managedtestcase import ManagedTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.10"
+__version__ = "0.0.11"
 
 
 class TestCliManager(ManagedTestCase):
