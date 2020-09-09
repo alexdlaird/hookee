@@ -97,7 +97,7 @@ We can utilize it with:
 
     hookee --response-script my_response_script.py
 
-We can also do the same with the ``--request-script`` arg.
+We can do the same with the ``--request-script`` arg.
 
 Plugins
 -------
@@ -131,12 +131,16 @@ implement ``run()``, but a request plugin implements ``run(request)``, and a res
 ``run(request, response)``.
 
 The `built-in plugins that come with hookee <https://github.com/alexdlaird/hookee/tree/master/hookee/plugins>`_ can
-also be used as a reference.
+be used as a reference.
 
 Dive Deeper
 -----------
 
-For more advanced usage, dive deeper in to the rest of the documentation.
+Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1.x/>`_ as its server and
+`pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
+two packages would allow ``hookee`` to be configured further.
+
+For more advanced ``hookee`` usage, its own API documentation is also available.
 
 .. toctree::
    :maxdepth: 2
