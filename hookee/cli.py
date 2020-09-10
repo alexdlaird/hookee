@@ -7,7 +7,7 @@ from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.0.0"
 
 
 @click.group(invoke_without_command=True)
@@ -58,18 +58,23 @@ def start(ctx):
     cli_manager.start()
 
 
-@hookee.command()
+@hookee.command(
+    short_help="Update the default value for a config. Any passable arg to the `hookee` can also be given here to set its default in the config so it doesn't need to be passed to the `hookee` each time."
+)
 @click.pass_context
 @click.argument("key")
 @click.argument("value")
 def update_config(ctx, key, value):
     """
-    Update the default value for a config.
+    Update the default value for a config. Any passable arg to the `hookee` can also be given here to set its
+    default in the config so it doesn't need to be passed to the `hookee` each time.
     """
     cli_manager = ctx.obj["cli_manager"]
 
     if key == "plugins":
         ctx.fail("Enable and disable plugins through the `enable-plugin` and `disable-plugin` commands.")
+    if "-" in key:
+        key = key.replace("-", "_")
 
     if value.isdigit():
         value = int(value)
