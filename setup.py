@@ -19,6 +19,7 @@ setup(
         "confuse",
         "python-dotenv",
         "flask",
+        "click",
         "pyngrok>=4.1.12",
     ],
     entry_points="""
