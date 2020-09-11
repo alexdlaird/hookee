@@ -10,13 +10,13 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 class CliManager:
     """
-    An object that manages the state of a CLI application. Reads application configuration, loads enabled plugins,
-    and manages the long-lived state of the application if a server and tunnel are started.
+    An object that manages the state of the ``hookee`` CLI. Reads app configuration, loads enabled plugins,
+    and manages the long-lived state of ``hookee`` if a server and tunnel are started.
 
     :var ctx: The ``click`` CLI context.
     :vartype ctx: click.Context
@@ -54,7 +54,7 @@ class CliManager:
     def start(self):
         """
         If one is not already running, start a managed server and tunnel and block until an interrupt
-        is received (or ``alive`` is set to False).
+        is received (or ``alive`` is set to ``False``).
         """
         if not self.alive:
             try:
@@ -69,7 +69,7 @@ class CliManager:
 
     def stop(self):
         """
-        If running, shutdown server and tunnel.
+        If running, shutdown the managed server and tunnel.
         """
         if self.alive:
             self.server.stop()

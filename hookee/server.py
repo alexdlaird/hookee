@@ -25,7 +25,7 @@ except ImportError:  # pragma: no cover
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.setLevel(logging.ERROR)
@@ -33,7 +33,7 @@ werkzeug_logger.setLevel(logging.ERROR)
 
 class Server:
     """
-    An object that manages a non-blocking Flask server thread.
+    An object that manages a non-blocking Flask server and thread.
 
     :var cli_manager: Reference to the CLI Manager.
     :vartype cli_manager: CliManager
@@ -119,7 +119,7 @@ class Server:
 
     def _server_status(self):
         """
-        Get the status code of the server's ``/status`` endpoint.
+        Get the response code of the server's ``/status`` endpoint.
 
         :return: The status code.
         :rtype: http.HTTPStatus

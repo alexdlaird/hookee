@@ -10,12 +10,12 @@ from pyngrok.exception import PyngrokError
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 class Tunnel:
     """
-    An object that manages a non-blocking ``pyngrok`` tunnel thread.
+    An object that manages a non-blocking ``pyngrok`` tunnel and thread.
 
     :var cli_manager: Reference to the CLI Manager.
     :vartype cli_manager: CliManager

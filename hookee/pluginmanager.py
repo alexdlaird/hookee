@@ -1,6 +1,6 @@
 import os
 
-from flask import current_app, Request
+from flask import current_app
 
 from hookee import util
 
@@ -27,7 +27,7 @@ REQUIRED_PLUGINS = ["blueprint_default"]
 
 class PluginManager:
     """
-    An object that loads, validates, and manages available and enabled plugins.
+    An object that loads, validates, and manages available plugins.
 
     :var cli_manager: Reference to the CLI Manager.
     :vartype cli_manager: CliManager
@@ -73,7 +73,7 @@ class PluginManager:
 
         :param plugin: The module to validate as a valid plugin.
         :type plugin: module
-        :return: ``True`` if the validated plugin has a ``setup()`` method, ``False`` otherwise.
+        :return: ``True`` if the validated plugin has a ``setup(cli_manager)`` method, ``False`` otherwise.
         :type: bool
         """
         functions_list = util.get_functions(plugin)
@@ -86,7 +86,7 @@ class PluginManager:
         elif plugin.plugin_type == REQUEST_PLUGIN:
             if "run" not in functions_list:
                 self.ctx.fail("Plugin \"{}\" must implement run(request).".format(self.get_plugin_name(plugin)))
-            elif len(util.get_args(plugin.run)[0]) < 1:
+            elif len(util.get_args(plugin.run)) < 1:
                 self.ctx.fail(
                     "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
                         self.get_plugin_name(plugin)))
@@ -94,7 +94,7 @@ class PluginManager:
             if "run" not in functions_list:
                 self.ctx.fail(
                     "Plugin \"{}\" must implement run(request, response).".format(self.get_plugin_name(plugin)))
-            elif len(util.get_args(plugin.run)[0]) < 2:
+            elif len(util.get_args(plugin.run)) < 2:
                 self.ctx.fail(
                     "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
                         self.get_plugin_name(plugin)))
@@ -103,11 +103,13 @@ class PluginManager:
                 "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
                     self.get_plugin_name(plugin)))
 
-        return "setup" in functions_list
+        has_setup = "setup" in functions_list and len(util.get_args(plugin.setup)) == 1
+
+        return has_setup
 
     def source_plugins(self):
         """
-        Source all paths in the plugin base to prepare for loading and validating plugins.
+        Source all paths to look for plugins (defined in the config) to prepare them for loading and validation.
         """
         plugins_dir = self.config.get("plugins_dir")
 
@@ -161,7 +163,7 @@ class PluginManager:
 
     def get_plugins_by_type(self, plugin_type):
         """
-        Filter loaded plugins by the given plugin type.
+        Get loaded plugins by the given plugin type.
 
         :param plugin_type: The plugin type for filtering.
         :type plugin_type: str
@@ -246,7 +248,7 @@ class PluginManager:
 
     def get_plugin(self, plugin_name):
         """
-        Get the given plugin name from the sources.
+        Get the given plugin name from modules parsed by :func:`~hookee.pluginmanager.PluginManager.source_plugins`.
 
         :param plugin_name: The name of the plugin to load.
         :type plugin_name: str

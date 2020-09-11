@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Fixed
 - `pluginmanager.get_plugins_by_type()` now properly returns a `list`, as documented, instead of a `filter`.
+- Plugin validation when `util.get_args()` is called.
 - Validation to fail when no `response` plugin (or arg override) is given.
 - Edge cases to properly populate response when it would otherwise be `None`.
 

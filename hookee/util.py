@@ -7,12 +7,12 @@ import click
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "1.0.1"
 
 
 class PrintUtil:
     """
-    An object that provides helpful methods for printing to the console through ``click`` CLI.
+    An object that provides helpful methods for printing to the console through ``click`` and the CLI.
 
     :var config: The ``hookee`` configuration.
     :vartype config: Config

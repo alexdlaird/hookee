@@ -48,7 +48,7 @@ With its default configuration, this will start a server on port 5000, open a `n
 using `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_, and mount a URL at ``/webhook``. Sending any
 request to the ``/webhook`` endpoint will dump request and response data to the console.
 
-To see the ways `hookee` can be tweaked right from the console, view its documented args and commands like this:
+To see the ways ``hookee`` can be tweaked right from the console, view its documented args and commands like this:
 
 .. code-block:: sh
 
@@ -147,7 +147,7 @@ Plugins
 from ``/webhook``. We can also build our own plugins and store them in the config's ``plugins_dir`` (which defaults to
 ``~/.config/hookee/plugins``).
 
-Plugins have a simple structure. Every plugin must define a ``plugin_type``, and valid values are
+Plugins have a simple structure. Every plugin must define a ``plugin_type``, and valid values are:
 
 - ``blueprint``
 - ``request``

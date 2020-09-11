@@ -27,8 +27,8 @@ template = {
 class Config:
     """
     An object with accessor methods containing ``hookee``'s configuration. Default configuration can be
-    overridden by creating a custom ``config.yaml`` in ``~/.config/hookee`` (when setting config
-    values from the command lind, this is where values are updated) which in turn can be overridden by
+    overridden by creating a custom config at ``~/.config/hookee/config.yaml`` (when setting config
+    values from the command line, this is where updated values are stored) which in turn can be overridden by
     passing args to the CLI.
 
     :var ctx: The ``click`` CLI context.
@@ -78,7 +78,7 @@ class Config:
 
     def set(self, key, value):
         """
-        Update the config value for the given key, persisting to user's ``config.yaml``.
+        Update the config key to the given value, persisting to ``config.yaml``.
 
         :param key: The key.
         :type key: str
@@ -90,8 +90,7 @@ class Config:
 
     def append(self, key, value):
         """
-        Update the config value by appending to the list for the given key, persisting to
-        user's ``config.yaml``.
+        Update the config key by appending to the list the given value, persisting to ``config.yaml``.
 
         :param key: The key.
         :type key: str
@@ -106,8 +105,8 @@ class Config:
 
     def remove(self, key, value):
         """
-        Update the config value by removing the given value from the list for the given key, persisting to
-        user's ``config.yaml``.
+        Update the config key by removing from the list the given value from the list for the given key, persisting to
+        ``config.yaml``.
 
         :param key: The key.
         :type key: str
