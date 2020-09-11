@@ -51,7 +51,7 @@ class Plugin:
 
     def setup(self, *args):
         """
-        Passes through to the underlying module's setup(*args), if it exists.
+        Passes through to the underlying module's ``setup(*args)``, if it exists.
 
         :param args: The args to pass through.
         :type args: tuple
@@ -63,7 +63,7 @@ class Plugin:
 
     def run(self, *args):
         """
-        Passes through to the underlying module's run(*args).
+        Passes through to the underlying module's ``run(*args)``.
 
         :param args: The args to pass through.
         :type args: tuple
