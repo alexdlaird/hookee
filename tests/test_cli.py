@@ -8,7 +8,7 @@ from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.0.0"
 
 
 class TestCli(HookeeTestCase):
@@ -90,7 +90,7 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 2)
-        self.assertIn("can't disable", result.output)
+        self.assertIn("Can't disable", result.output)
 
     @mock.patch("hookee.climanager.CliManager.start")
     def test_start(self, mock_cli_start):

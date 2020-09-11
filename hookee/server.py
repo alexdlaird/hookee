@@ -25,7 +25,7 @@ except ImportError:  # pragma: no cover
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "1.0.0"
 
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.setLevel(logging.ERROR)
@@ -76,13 +76,21 @@ class Server:
         return app
 
     def _loop(self):
-        thread = threading.current_thread()
-        thread.alive = True
+        thread = None
 
-        # This will block until stop() is invoked to shutdown the Werkzeug server
-        self.app.run(host="127.0.0.1", port=self.port, debug=True, use_reloader=False)
+        try:
+            thread = threading.current_thread()
+            thread.alive = True
 
-        thread.alive = False
+            # This will block until stop() is invoked to shutdown the Werkzeug server
+            self.app.run(host="127.0.0.1", port=self.port, debug=True, use_reloader=False)
+        except OSError as e:
+            click.echo(e)
+
+            self.stop()
+
+        if thread:
+            thread.alive = False
 
     def start(self):
         """

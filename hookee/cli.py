@@ -12,14 +12,16 @@ __version__ = "1.0.0"
 
 @click.group(invoke_without_command=True)
 @click.pass_context
-@click.option("--port", type=int, help="The port for the local webserver.")
+@click.option("--port", type=int, help="The local port for the webserver and `ngrok` tunnel.")
 @click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom `hookee` plugins.")
 @click.option("--plugins", multiple=True, help="A list of `hookee` plugins to use.")
-@click.option("--auth-token", help="The `ngrok` auth token use.")
+@click.option("--auth-token", help="A valid `ngrok` auth token.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
-              help="The `ngrok` region to use.")
-@click.option("--subdomain", help="The `ngrok` subdomain token use.")
-@click.option("--auth", help="The `ngrok` auth token use for endpoints.")
+              help="The region to use for `ngrok` endpoints.")
+@click.option("--subdomain", help="The subdomain to use for `ngrok` endpoints.")
+@click.option("--hostname", help="The hostname to use for `ngrok` endpoints.")
+@click.option("--host_header", help="The \"Host\" header value to use for `ngrok` endpoints.")
+@click.option("--auth", help="The basic auth to use for `ngrok` endpoints.")
 @click.option("--request-script", type=click.Path(exists=True),
               help="A Python script whose `run(request)` method will be called by the default `/webhook` after all request plugins have run.")
 @click.option("--response-script", type=click.Path(exists=True),
@@ -38,6 +40,9 @@ def hookee(ctx, **kwargs):
     for key, value in iteritems(kwargs):
         if value:
             ctx.obj[key] = value
+
+    if kwargs.get("subdomain") and kwargs.get("hostname"):
+        ctx.fail("Can't give both --subdomain and --hostname.")
 
     cli_manager = CliManager(ctx, load_plugins=ctx.invoked_subcommand not in ["enable-plugin", "disable-plugin",
                                                                               "available-plugins", "enabled-plugins"])
@@ -116,7 +121,7 @@ def disable_plugin(ctx, plugin):
     cli_manager = ctx.obj["cli_manager"]
 
     if plugin in pluginmanager.REQUIRED_PLUGINS:
-        ctx.fail("Sorry, you can't disable the plugin {}.".format(plugin))
+        ctx.fail("Can't disable the plugin \"{}\".".format(plugin))
 
     cli_manager.config.remove("plugins", plugin)
 

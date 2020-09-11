@@ -19,7 +19,7 @@ setup(
         "confuse",
         "python-dotenv",
         "flask",
-        "pyngrok>=4.1.10",
+        "pyngrok>=4.1.12",
     ],
     entry_points="""
         [console_scripts]

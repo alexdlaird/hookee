@@ -6,9 +6,11 @@ import click
 from pyngrok import ngrok
 from pyngrok.conf import PyngrokConfig
 
+from pyngrok.exception import PyngrokError
+
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "1.0.0"
 
 
 class Tunnel:
@@ -46,14 +48,21 @@ class Tunnel:
         self._thread = None
 
     def _loop(self):
-        self._start_tunnel()
+        thread = None
 
-        thread = threading.current_thread()
-        thread.alive = True
-        while thread.alive:
-            time.sleep(1)
+        try:
+            self._start_tunnel()
 
-        thread.alive = False
+            thread = threading.current_thread()
+            thread.alive = True
+            while thread.alive:
+                time.sleep(1)
+        except PyngrokError:
+            # pyngrok already logged this to the console for us
+            pass
+
+        if thread:
+            thread.alive = False
 
         self.stop()
 
@@ -76,9 +85,15 @@ class Tunnel:
     def _start_tunnel(self):
         options = {}
         subdomain = self.config.get("subdomain")
+        hostname = self.config.get("hostname")
+        host_header = self.config.get("host_header")
         auth = self.config.get("auth")
         if subdomain:
             options["subdomain"] = subdomain
+        if hostname:
+            options["hostname"] = hostname
+        if host_header:
+            options["host_header"] = host_header
         if auth:
             options["auth"] = auth
 

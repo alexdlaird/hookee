@@ -5,10 +5,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.12...HEAD)
 ### Added
+- Additional `ngrok` passthrough args: `hostname` and `host_header`.
 - Documentation improvements.
 
 ### Fixed
 - When calling `update-config`, dashes `-` are converted to underscores `_` to match the config.
+- Stability improvements.
 
 ## [0.0.12](https://github.com/alexdlaird/hookee/compare/0.0.8...0.0.12) - 2019-09-07
 ### Added

@@ -4,12 +4,14 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.0.0"
 
 template = {
     "auth_token": confuse.String(default=None),
     "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"], default=None),
     "subdomain": confuse.String(default=None),
+    "hostname": confuse.String(default=None),
+    "host_header": confuse.String(default=None),
     "auth": confuse.String(default=None),
     "port": int,
     "plugins_dir": confuse.Filename(),
