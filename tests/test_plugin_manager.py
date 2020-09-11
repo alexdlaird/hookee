@@ -1,14 +1,14 @@
 import os
 from types import ModuleType
 
-from hookee.pluginmanager import PluginManager
+from hookee.pluginmanager import PluginManager, Plugin
 
 from hookee.climanager import CliManager
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.0.1"
 
 
 class TestPluginManager(HookeeTestCase):
@@ -18,17 +18,21 @@ class TestPluginManager(HookeeTestCase):
         self.cli_manager = CliManager(self.ctx)
         self.plugin_manager = PluginManager(self.cli_manager)
 
-    def test_validate_plugin(self):
+    def test_build_from_module(self):
         # GIVEN
-        plugin = self.plugin_manager.get_plugin("request_body")
+        plugin = self.plugin_manager.source.load_plugin("request_body")
 
         # WHEN
-        has_setup = self.plugin_manager.validate_plugin(plugin)
+        plugin = Plugin.build_from_module(plugin)
 
         # THEN
-        self.assertTrue(has_setup)
+        self.assertTrue(isinstance(plugin, Plugin))
+        self.assertTrue(isinstance(plugin.module, ModuleType))
+        self.assertEqual(plugin.plugin_type, "request")
+        self.assertEqual(plugin.name, "request_body")
+        self.assertTrue(plugin.has_setup)
 
-    def test_validate_plugin_not_conform_to_spec(self):
+    def test_build_from_module_not_conform_to_spec(self):
         # TODO implement
         pass
         # GIVEN
@@ -37,7 +41,7 @@ class TestPluginManager(HookeeTestCase):
 
         # THEN
 
-    def test_validate_plugin_no_plugin_type(self):
+    def test_build_from_module_no_plugin_type(self):
         # TODO implement
         pass
         # GIVEN
@@ -46,7 +50,7 @@ class TestPluginManager(HookeeTestCase):
 
         # THEN
 
-    def test_validate_plugin_no_run(self):
+    def test_build_from_module_no_run(self):
         # TODO implement
         pass
         # GIVEN
@@ -55,7 +59,7 @@ class TestPluginManager(HookeeTestCase):
 
         # THEN
 
-    def test_validate_plugin_wrong_args(self):
+    def test_build_from_module_wrong_args(self):
         # TODO implement
         pass
         # GIVEN
@@ -64,7 +68,7 @@ class TestPluginManager(HookeeTestCase):
 
         # THEN
 
-    def test_validate_plugin_no_blueprint(self):
+    def test_build_from_module_no_blueprint(self):
         # TODO implement
         pass
         # GIVEN
@@ -91,10 +95,10 @@ class TestPluginManager(HookeeTestCase):
         # THEN
         self.assertEqual(8, len(self.plugin_manager.loaded_plugins))
         for plugin in self.plugin_manager.loaded_plugins:
-            self.assertTrue(isinstance(plugin, ModuleType))
-        self.assertTrue(isinstance(self.plugin_manager.request_script, ModuleType))
-        self.assertEqual(self.plugin_manager.request_script.__name__, "request_body")
-        self.assertTrue(isinstance(self.plugin_manager.response_script, ModuleType))
-        self.assertEqual(self.plugin_manager.response_script.__name__, "response_echo")
+            self.assertTrue(isinstance(plugin, Plugin))
+        self.assertTrue(isinstance(self.plugin_manager.request_script, Plugin))
+        self.assertEqual(self.plugin_manager.request_script.name, "request_body")
+        self.assertTrue(isinstance(self.plugin_manager.response_script, Plugin))
+        self.assertEqual(self.plugin_manager.response_script.name, "response_echo")
         self.assertEqual(self.plugin_manager.response_body, "<Response>Ok</Response>")
         self.assertEqual(self.plugin_manager.response_content_type, "application/xml")

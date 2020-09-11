@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - `--version` arg.
 - Documentation improvements.
+- `Plugin` class, which is what is now put in to `pluginmanager.PluginManager.loaded_plugins`. `Plugin` objects are now passed around instead of `module` objects.
 
 ### Fixed
 - `pluginmanager.get_plugins_by_type()` now properly returns a `list`, as documented, instead of a `filter`.

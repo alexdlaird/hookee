@@ -6,7 +6,7 @@ from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.0.1"
 
 
 class TestUtil(HookeeTestCase):
@@ -19,14 +19,14 @@ class TestUtil(HookeeTestCase):
 
     def test_get_functions(self):
         # WHEN
-        funcs = util.get_functions(self.plugin)
+        funcs = util.get_functions(self.plugin.module)
 
         # THEN
         self.assertEqual(funcs, ["run", "setup"])
 
     def get_args(self):
         # WHEN
-        args = util.get_args(self.plugin.run)
+        args = util.get_args(self.plugin.module.run)
 
         # THEN
         self.assertEqual(args, ["request"])

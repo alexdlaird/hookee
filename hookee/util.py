@@ -1,5 +1,6 @@
 import inspect
 import json
+import os
 import sys
 import xml.dom.minidom
 
@@ -106,9 +107,9 @@ def get_functions(mod):
     Get a list of functions for the given module.
 
     :param mod: The module to inspect for functions.
-    :type mod: module
+    :type mod: types.ModuleType
     :return: The list of functions.
-    :rtype: list[function]
+    :rtype: list[types.FunctionType]
     """
     return [o[0] for o in inspect.getmembers(mod, inspect.isfunction)]
 
@@ -118,7 +119,7 @@ def get_args(func):
     Get a list of args for the given function.
 
     :param func: The function to inspect for args.
-    :type func: function
+    :type func: types.FunctionType
     :return: The list of args.
     :rtype: list[str]
     """
@@ -126,3 +127,15 @@ def get_args(func):
         return inspect.getfullargspec(func)[0]
     else:
         return inspect.getargspec(func)[0]
+
+
+def get_module_name(module):
+    """
+    Get the name of the module from the basename of its path.
+
+    :param module: The module.
+    :type module: types.ModuleType
+    :return: The base name of the module.
+    :rtype: str
+    """
+    return os.path.splitext(os.path.basename(module.__file__))[0]

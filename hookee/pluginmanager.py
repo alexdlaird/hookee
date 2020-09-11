@@ -6,6 +6,8 @@ from hookee import util
 
 from pluginbase import PluginBase
 
+from hookee.exception import HookeePluginValidationError
+
 if util.python3_gte():
     import importlib.util
 else:
@@ -23,7 +25,121 @@ VALID_PLUGIN_TYPES = [BLUEPRINT_PLUGIN, REQUEST_PLUGIN, RESPONSE_PLUGIN]
 REQUIRED_PLUGINS = ["blueprint_default"]
 
 
-# TODO: implement a Plugin class in here that abstracts out the validation and direct module interactions, pass that around instead
+class Plugin:
+    """
+    An object that represents a ``hookee`` plugin.
+
+    :var module: The underlying plugin module.
+    :vartype module: types.ModuleType
+    :var plugin_type: The type of plugin.
+    :vartype plugin_type: str
+    :var name: The name of the plugin.
+    :vartype name: str
+    :var has_setup: ``True`` if the plugin has a ``setup(cli_manager)`` method, ``False`` otherwise.
+    :vartype has_setup: bool
+    """
+
+    def __init__(self, module, plugin_type, name, has_setup):
+        self.module = module
+
+        self.plugin_type = plugin_type
+        self.name = name
+        self.has_setup = has_setup
+
+        if self.plugin_type == BLUEPRINT_PLUGIN:
+            self.blueprint = self.module.blueprint
+
+    def setup(self, *args):
+        """
+        Passes through to the underlying module's setup(*args), if it exists.
+
+        :param args: The args to pass through.
+        :type args: tuple
+        :return: The value returned by the module's function (or nothing if the module's function returns nothing).
+        :rtype: object
+        """
+        if self.has_setup:
+            return self.module.setup(*args)
+
+    def run(self, *args):
+        """
+        Passes through to the underlying module's run(*args).
+
+        :param args: The args to pass through.
+        :type args: tuple
+        :return: The value returned by the module's function (or nothing if the module's function returns nothing).
+        :rtype: object
+        """
+        return self.module.run(*args)
+
+    @staticmethod
+    def build_from_module(module):
+        """
+        Validate and build a ``hookee`` plugin for the given module. If the module is not a valid ``hookee`` plugin,
+        an exception will be thrown.
+
+        :param module: The module to validate as a valid plugin.
+        :type module: types.ModuleType
+        :return: An object representing the validated plugin.
+        :rtype: Plugin
+        """
+        name = util.get_module_name(module)
+
+        functions_list = util.get_functions(module)
+        attributes = dir(module)
+
+        if "plugin_type" not in attributes:
+            raise HookeePluginValidationError(
+                "Plugin \"{}\" does not conform to the plugin spec.".format(name))
+        elif module.plugin_type not in VALID_PLUGIN_TYPES:
+            raise HookeePluginValidationError(
+                "Plugin \"{}\" must specify a valid `plugin_type`.".format(name))
+        elif module.plugin_type == REQUEST_PLUGIN:
+            if "run" not in functions_list:
+                raise HookeePluginValidationError(
+                    "Plugin \"{}\" must implement `run(request)`.".format(name))
+            elif len(util.get_args(module.run)) < 1:
+                raise HookeePluginValidationError(
+                    "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
+                        name))
+        elif module.plugin_type == RESPONSE_PLUGIN:
+            if "run" not in functions_list:
+                raise HookeePluginValidationError(
+                    "Plugin \"{}\" must implement `run(request, response)`.".format(name))
+            elif len(util.get_args(module.run)) < 2:
+                raise HookeePluginValidationError(
+                    "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
+                        name))
+        elif module.plugin_type == BLUEPRINT_PLUGIN and "blueprint" not in attributes:
+            raise HookeePluginValidationError(
+                "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
+                    name))
+
+        has_setup = "setup" in functions_list and len(util.get_args(module.setup)) == 1
+
+        return Plugin(module, module.plugin_type, name, has_setup)
+
+    @staticmethod
+    def build_from_file(path):
+        """
+        Import a Python script at the given path, then import it as a ``hookee`` plugin.
+
+        :param path: The path to the script to import.
+        :type path: str
+        :return: The imported script as a plugin.
+        :rtype: Plugin
+        """
+        module_name = os.path.splitext(os.path.basename(path))[0]
+
+        if util.python3_gte():
+            spec = importlib.util.spec_from_file_location(module_name, path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+        else:
+            module = imp.load_source(module_name, path)
+
+        return Plugin.build_from_module(module)
+
 
 class PluginManager:
     """
@@ -38,15 +154,15 @@ class PluginManager:
     :var source: The ``hookee`` configuration.
     :vartype source: pluginbase.PluginSource
     :var request_script: A request plugin loaded from the script at ``--request_script``, run last.
-    :vartype request_script: module
+    :vartype request_script: Plugin
     :var response_script: A response plugin loaded from the script at ``--response_script``, run last.
-    :vartype response_script: module
+    :vartype response_script: Plugin
     :var response_body: The response body loaded from ``--response``, overrides any body data from response plugins.
-    :vartype response_body: module
+    :vartype response_body: str
     :var builtin_plugins_dir: The directory where built-in plugins reside.
     :vartype builtin_plugins_dir: str
     :var loaded_plugins: A list of plugins that have been validated and imported.
-    :vartype loaded_plugins: list[module]
+    :vartype loaded_plugins: list[Plugin]
     """
 
     def __init__(self, cli_manager):
@@ -65,47 +181,6 @@ class PluginManager:
         self.loaded_plugins = []
 
         self.source_plugins()
-
-    def validate_plugin(self, plugin):
-        """
-        Validate a given module to see if it is a valid ``hookee`` plugin. If validation fails, an exception
-        will be thrown.
-
-        :param plugin: The module to validate as a valid plugin.
-        :type plugin: module
-        :return: ``True`` if the validated plugin has a ``setup(cli_manager)`` method, ``False`` otherwise.
-        :type: bool
-        """
-        functions_list = util.get_functions(plugin)
-        attributes = dir(plugin)
-
-        if "plugin_type" not in attributes:
-            self.ctx.fail("Plugin \"{}\" does not conform to the plugin spec.".format(self.get_plugin_name(plugin)))
-        elif plugin.plugin_type not in VALID_PLUGIN_TYPES:
-            self.ctx.fail("Plugin \"{}\" must specify a valid `plugin_type`.".format(self.get_plugin_name(plugin)))
-        elif plugin.plugin_type == REQUEST_PLUGIN:
-            if "run" not in functions_list:
-                self.ctx.fail("Plugin \"{}\" must implement run(request).".format(self.get_plugin_name(plugin)))
-            elif len(util.get_args(plugin.run)) < 1:
-                self.ctx.fail(
-                    "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
-                        self.get_plugin_name(plugin)))
-        elif plugin.plugin_type == RESPONSE_PLUGIN:
-            if "run" not in functions_list:
-                self.ctx.fail(
-                    "Plugin \"{}\" must implement run(request, response).".format(self.get_plugin_name(plugin)))
-            elif len(util.get_args(plugin.run)) < 2:
-                self.ctx.fail(
-                    "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
-                        self.get_plugin_name(plugin)))
-        elif plugin.plugin_type == BLUEPRINT_PLUGIN and "blueprint" not in attributes:
-            self.ctx.fail(
-                "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
-                    self.get_plugin_name(plugin)))
-
-        has_setup = "setup" in functions_list and len(util.get_args(plugin.setup)) == 1
-
-        return has_setup
 
     def source_plugins(self):
         """
@@ -134,12 +209,23 @@ class PluginManager:
         self.loaded_plugins = []
         for plugin_name in enabled_plugins:
             plugin = self.get_plugin(plugin_name)
-            if self.validate_plugin(plugin):
-                plugin.setup(self.cli_manager)
+            plugin.setup(self.cli_manager)
             self.loaded_plugins.append(plugin)
 
-        self.request_script = self.import_from_file(self.config.get("request_script"))
-        self.response_script = self.import_from_file(self.config.get("response_script"))
+        request_script = self.config.get("request_script")
+        if request_script:
+            self.request_script = Plugin.build_from_file(request_script)
+            self.request_script.setup(self.cli_manager)
+        else:
+            self.request_script = None
+
+        response_script = self.config.get("response_script")
+        if response_script:
+            self.response_script = Plugin.build_from_file(response_script)
+            self.response_script.setup(self.cli_manager)
+        else:
+            self.request_script = None
+
         self.response_body = self.config.get("response")
         self.response_content_type = self.config.get("content_type")
 
@@ -148,18 +234,8 @@ class PluginManager:
 
         if len(self.get_plugins_by_type(RESPONSE_PLUGIN)) == 0 and not self.response_script and not self.response_body:
             self.ctx.fail(
-                "No response plugin was loaded. Enable a pluing like `response_echo`, or pass `--response` or `--response-script`.")
-
-    def get_plugin_name(self, plugin):
-        """
-        Get the name of the plugin from the module.
-
-        :param plugin: The plugin.
-        :type plugin: module
-        :return: The name of the plugin.
-        :rtype: str
-        """
-        return os.path.splitext(os.path.basename(plugin.__file__))[0]
+                "No response plugin was loaded. Enable a pluing like `response_echo`, or pass `--response` "
+                "or `--response-script`.")
 
     def get_plugins_by_type(self, plugin_type):
         """
@@ -168,33 +244,9 @@ class PluginManager:
         :param plugin_type: The plugin type for filtering.
         :type plugin_type: str
         :return: The filtered list of plugins.
-        :rtype: list[module]
+        :rtype: list[Plugin]
         """
         return list(filter(lambda p: p.plugin_type == plugin_type, self.loaded_plugins))
-
-    def import_from_file(self, path):
-        """
-        Import a Python script at the given path as a module that is executable.
-
-        :param path: The path to the script to import.
-        :type path: str
-        :return: The imported script as a module.
-        :rtype: module
-        """
-        if path:
-            module_name = os.path.splitext(os.path.basename(path))[0]
-
-            if util.python3_gte():
-                spec = importlib.util.spec_from_file_location(module_name, path)
-                plugin = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(plugin)
-            else:
-                plugin = imp.load_source(module_name, path)
-
-            if self.validate_plugin(plugin):
-                plugin.setup(self.cli_manager)
-
-            return plugin
 
     def run_request_plugins(self, request):
         """
@@ -226,7 +278,7 @@ class PluginManager:
         """
         response_info_plugin = None
         for plugin in self.get_plugins_by_type(RESPONSE_PLUGIN):
-            if self.get_plugin_name(plugin) == "response_info":
+            if plugin.name == "response_info":
                 response_info_plugin = plugin
             else:
                 response = plugin.run(request, response)
@@ -253,12 +305,14 @@ class PluginManager:
         :param plugin_name: The name of the plugin to load.
         :type plugin_name: str
         :return: The loaded plugin.
-        :rtype: module
+        :rtype: Plugin
         """
         try:
-            return self.source.load_plugin(plugin_name)
+            return Plugin.build_from_module(self.source.load_plugin(plugin_name))
         except ImportError:
             self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin_name))
+        except HookeePluginValidationError as e:
+            self.ctx.fail(str(e))
 
     def enabled_plugins(self):
         """
