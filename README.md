@@ -25,32 +25,37 @@ or `conda`:
 conda install -c conda-forge hookee
 ```
 
-That's it! `hookee` is now available on the command line and as a package to our Python projects.
+That's it! `hookee` is now installed.
 
 ## Basic Usage
 
-This package puts `hookee` on our path, so it can be used by simply executing it from the command line.
+`hookee` makes it easy to get webhooks on the fly right from the console. Simply start it with:
 
 ```sh
 hookee start
 ```
 
-This will start a server on the default port 5000, open a [`ngrok`](https://ngrok.com/) tunnel to this server
+With its default configuration, this will start a server on port 5000, open a [`ngrok`](https://ngrok.com/) tunnel
 using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
-the `/webhook` endpoint will dump the request and response content to the console.
+the `/webhook` endpoint will dump the request and response data to the console.
 
-We can also customize the response from `/webhook`, quick and dirty, using the `--response` arg.
+`hookee` can be configured in a number of ways to quickly and easily tweak request and response data. For example,
+here we are customizing the response body from `/webhook` using the `--response` arg.
 
 ```sh
 hookee --response "<Response>Ok</Response>" --content-type application/xml
 ```
 
-For more advanced customization of requests, responses, and available routes, refer to the documentation.
+To see the ways `hookee` can be tweaked right from the console, view its documented args and commands like this:
+
+```sh
+hookee --help
+```
 
 ## Documentation
 
-For more advanced usage, including extending `hookee` through plugins, `hookee`'s official documentation is
-available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
+For more advanced usage, including how `hookee` default configuration can be changed, extended through plugins,
+and more, see its official documentation is available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
 
 ## Contributing
 

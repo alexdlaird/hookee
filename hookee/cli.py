@@ -1,41 +1,53 @@
-import click
-from hookee import pluginmanager
+import platform
 
+import click
+
+from hookee import pluginmanager
 from hookee.climanager import CliManager
 
 from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 @click.group(invoke_without_command=True)
 @click.pass_context
 @click.option("--port", type=int, help="The local port for the webserver and `ngrok` tunnel.")
-@click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom `hookee` plugins.")
-@click.option("--plugins", multiple=True, help="A list of `hookee` plugins to use.")
-@click.option("--auth-token", help="A valid `ngrok` auth token.")
+@click.option("--subdomain", help="The subdomain to use for `ngrok` endpoints.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
               help="The region to use for `ngrok` endpoints.")
-@click.option("--subdomain", help="The subdomain to use for `ngrok` endpoints.")
 @click.option("--hostname", help="The hostname to use for `ngrok` endpoints.")
-@click.option("--host_header", help="The \"Host\" header value to use for `ngrok` endpoints.")
 @click.option("--auth", help="The basic auth to use for `ngrok` endpoints.")
+@click.option("--host_header", help="The \"Host\" header value to use for `ngrok` endpoints.")
+@click.option("--response", type=str,
+              help="Data to set for the response, overriding all body data from plugins and `--response-script`.")
+@click.option("--content-type", type=str,
+              help="The \"Content-Type\" header to set when response body data is given with `--response`")
 @click.option("--request-script", type=click.Path(exists=True),
               help="A Python script whose `run(request)` method will be called by the default `/webhook` after all request plugins have run.")
 @click.option("--response-script", type=click.Path(exists=True),
               help="A Python script whose `run(request, response)` method will be called by the default `/webhook` after all response plugins have run.")
-@click.option("--response", type=str,
-              help="Data to set for the response, will override all body data from plugins and `--response_script`.")
-@click.option("--content-type", type=str,
-              help="The \"Content-Type\" header to set when response body data is given with `--response` (defaults to \"text/plain\")")
+@click.option("--auth-token", help="A valid `ngrok` auth token.")
+@click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom `hookee` plugins.")
+@click.option("--plugins", multiple=True, help="A list of `hookee` plugins to use.")
+@click.option('--version', is_flag=True, default=False, help="Display version information.")
 def hookee(ctx, **kwargs):
     """
+    `hookee` is a utility that provides command line webhooks, on demand! Dump useful request data to the
+    console, process requests and responses, customize response data, and configure `hookee` and its routes
+    further in any number of ways through custom plugins.
+
+    `hookee` can be started by using `hookee start` or simply `hookee`.
+
     If options are given, they override the default values derived from the config file.
 
     `hookee` documentation can be found at https://hookee.readthedocs.io.
     """
+    if kwargs["version"]:
+        ctx.exit("hookee/{} Python/{}".format(__version__, platform.python_version()))
+
     ctx.ensure_object(dict)
     for key, value in iteritems(kwargs):
         if value:
@@ -64,14 +76,14 @@ def start(ctx):
 
 
 @hookee.command(
-    short_help="Update the default value for a config. Any passable arg to the `hookee` can also be given here to set its default in the config so it doesn't need to be passed to the `hookee` each time."
+    short_help="Update the default value for a config. Any passable arg to `hookee` can also be given here to set its default in the config so it doesn't need to be passed to the `hookee` each time."
 )
 @click.pass_context
 @click.argument("key")
 @click.argument("value")
 def update_config(ctx, key, value):
     """
-    Update the default value for a config. Any passable arg to the `hookee` can also be given here to set its
+    Update the default value for a config. Any passable arg to `hookee` can also be given here to set its
     default in the config so it doesn't need to be passed to the `hookee` each time.
     """
     cli_manager = ctx.obj["cli_manager"]

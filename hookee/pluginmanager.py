@@ -1,5 +1,7 @@
 import os
 
+from flask import current_app, Request
+
 from hookee import util
 
 from pluginbase import PluginBase
@@ -11,7 +13,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.0.1"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -140,7 +142,11 @@ class PluginManager:
         self.response_content_type = self.config.get("content_type")
 
         if self.response_content_type and not self.response_body:
-            self.ctx.fail("If `--content_type` is given, `--response` must also be given.")
+            self.ctx.fail("If `--content-type` is given, `--response` must also be given.")
+
+        if len(self.get_plugins_by_type(RESPONSE_PLUGIN)) == 0 and not self.response_script and not self.response_body:
+            self.ctx.fail(
+                "No response plugin was loaded. Enable a pluing like `response_echo`, or pass `--response` or `--response-script`.")
 
     def get_plugin_name(self, plugin):
         """
@@ -162,7 +168,7 @@ class PluginManager:
         :return: The filtered list of plugins.
         :rtype: list[module]
         """
-        return filter(lambda p: p.plugin_type == plugin_type, self.loaded_plugins)
+        return list(filter(lambda p: p.plugin_type == plugin_type, self.loaded_plugins))
 
     def import_from_file(self, path):
         """
@@ -199,6 +205,7 @@ class PluginManager:
         """
         for plugin in self.get_plugins_by_type(REQUEST_PLUGIN):
             request = plugin.run(request)
+
         if self.request_script:
             self.request_script.run(request)
 
@@ -221,12 +228,17 @@ class PluginManager:
                 response_info_plugin = plugin
             else:
                 response = plugin.run(request, response)
+
         if self.response_script:
             response = self.response_script.run(request, response)
+
+        if not response:
+            response = current_app.response_class("")
         if self.response_body:
             response.data = self.response_body
             response.headers[
                 "Content-Type"] = self.response_content_type if self.response_content_type else "text/plain"
+
         if response_info_plugin:
             response = response_info_plugin.run(request, response)
 

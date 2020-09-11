@@ -4,23 +4,23 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 template = {
-    "auth_token": confuse.String(default=None),
-    "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"], default=None),
-    "subdomain": confuse.String(default=None),
-    "hostname": confuse.String(default=None),
-    "host_header": confuse.String(default=None),
-    "auth": confuse.String(default=None),
     "port": int,
+    "subdomain": confuse.String(default=None),
+    "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"], default=None),
+    "hostname": confuse.String(default=None),
+    "auth": confuse.String(default=None),
+    "host_header": confuse.String(default=None),
+    "response": confuse.String(default=None),
+    "content_type": confuse.String(default=None),
+    "request_script": confuse.Filename(default=None),
+    "response_script": confuse.Filename(default=None),
+    "auth_token": confuse.String(default=None),
     "plugins_dir": confuse.Filename(),
     "plugins": list,
     "console_width": confuse.Integer(default=80),
-    "request_script": confuse.Filename(default=None),
-    "response_script": confuse.Filename(default=None),
-    "response": confuse.String(default=None),
-    "content_type": confuse.String(default=None)
 }
 
 

@@ -3,7 +3,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.0.0...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.0.1...HEAD)
+
+## [1.0.1](https://github.com/alexdlaird/hookee/compare/1.0.0...1.0.1) - 2019-09-11
+### Added
+- `--version` arg.
+- Documentation improvements.
+
+### Fixed
+- `pluginmanager.get_plugins_by_type()` now properly returns a `list`, as documented, instead of a `filter`.
+- Validation to fail when no `response` plugin (or arg override) is given.
+- Edge cases to properly populate response when it would otherwise be `None`.
 
 ## [1.0.0](https://github.com/alexdlaird/hookee/compare/0.0.12...1.0.0) - 2019-09-10
 ### Added
