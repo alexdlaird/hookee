@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/0.0.12...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.0.0...HEAD)
+
+## [1.0.0](https://github.com/alexdlaird/hookee/compare/0.0.12...1.0.0) - 2019-09-10
 ### Added
 - Additional `ngrok` passthrough args: `hostname` and `host_header`.
 - Documentation improvements.

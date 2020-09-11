@@ -138,7 +138,7 @@ Dive Deeper
 
 Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1.x/>`_ as its server and
 `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
-two packages would allow ``hookee`` to be configured further.
+two packages would allow ``hookee`` to be configured and extended further.
 
 For more advanced ``hookee`` usage, its own API documentation is also available.
 
