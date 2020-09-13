@@ -1,3 +1,8 @@
+.. rst-class:: hide-header
+
+hookee - command line webhooks, on demand
+=========================================
+
 .. image:: _html/logo.png
    :alt: hookee - command line webhooks, on demand
    :align: center
