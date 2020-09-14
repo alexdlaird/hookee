@@ -18,7 +18,7 @@ hookee - command line webhooks, on demand
 .. image:: https://img.shields.io/pypi/l/hookee.svg
    :target: https://pypi.org/project/hookee/
 .. image:: https://img.shields.io/twitter/url/http/shields.io.svg?style=social
-   :target: https://twitter.com/intent/tweet?text=Check+out+hookee%2C+a+utility+that+provides+command+line+webhooks%2C+on+demand.&url=https://github.com/alexdlaird/hookee&via=alexdlaird&hashtags=python,webhooks,flask,ngrok
+   :target: https://twitter.com/intent/tweet?text=Check+out+%23hookee%2C+a+utility+that+provides+command+line+%23webhooks%2C+on+demand.%0D%0A%0D%0A&url=https://github.com/alexdlaird/hookee&via=alexdlaird&hashtags=python,flask,ngrok,pyngrok
 
 ``hookee`` is a utility that provides command line webhooks, on demand! Dump useful request data to the
 console, process requests and responses, customize response data, and configure ``hookee`` and its routes
