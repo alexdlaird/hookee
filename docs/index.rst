@@ -1,7 +1,8 @@
 .. rst-class:: hide-header
 
+*****************************************
 hookee - command line webhooks, on demand
-=========================================
+*****************************************
 
 .. image:: _html/logo.png
    :alt: hookee - command line webhooks, on demand
@@ -25,7 +26,7 @@ console, process requests and responses, customize response data, and configure 
 further in any number of ways through custom plugins.
 
 Installation
-------------
+============
 
 ``hookee`` is available on `PyPI <https://pypi.org/project/hookee/>`_ and can be installed
 using ``pip``:
@@ -43,7 +44,7 @@ or ``conda``:
 That's it! ``hookee`` is now installed.
 
 Basic Usage
------------
+===========
 
 ``hookee`` makes it easy to get webhooks on the fly right from the console. Simply start it like this:
 
@@ -62,10 +63,10 @@ To see the ways ``hookee`` can be tweaked right from the console, view its docum
     hookee --help
 
 Configuration
--------------
+=============
 
 Enabling/Disabling Plugins
-==========================
+--------------------------
 
 Out of the box, a `Flask Blueprint <https://flask.palletsprojects.com/en/1.1.x/blueprints/#my-first-blueprint>`_ will
 mount a URL at ``/webhook``, and default plugins for dumping request data to the console and echoing back the request
@@ -85,7 +86,7 @@ them. Or we can add additional Blueprint plugins to register endpoints of our ow
 below for documentation on plugin development.
 
 Changing the Defaults
-=====================
+---------------------
 
 If we find ourselves continually reusing the same args to configure ``hookee`` when starting it, we can instead just
 updated the config's defaults. For example, if we always want to reuse the same ``ngrok`` endpoint:
@@ -108,7 +109,7 @@ From now on, these args are no longer necessary when starting ``hookee``:
     hookee
 
 Customizing the Response
-------------------------
+========================
 
 If we don't want to bother with building our own plugins and just want to quickly customize the response from
 ``/webhook``, the ``--response`` arg is here for us.
@@ -148,7 +149,7 @@ We can utilize it with:
 We can do the same with the ``--request-script`` arg.
 
 Plugins
--------
+=======
 
 ``hookee`` comes with several built-in plugins that dump request and response data to the console and return a response
 from ``/webhook``. We can also build our own plugins and store them in the config's ``plugins_dir`` (which defaults to
@@ -164,7 +165,7 @@ All plugin types can optionally implement ``setup(cli_manager)``, which will be 
 first loaded.
 
 Blueprint Plugins
-=================
+-----------------
 
 A Blueprint plugin must define ``blueprint = Blueprint("<plugin_name>", __name__)``. Past that, simply implement
 `a Flask Blueprint <https://flask.palletsprojects.com/en/1.1.x/blueprints/#my-first-blueprint>`_. Any defined route
@@ -175,7 +176,7 @@ does, we can call :func:`hookee.pluginmanager.PluginManager.run_request_plugins`
 :func:`hookee.pluginmanager.PluginManager.run_response_plugins`
 
 Request and Response Plugins
-============================
+----------------------------
 
 Request and response plugins are nearly identical to each other, they only differ in one arg. A request plugin
 must implement ``run(request)`` (and return the ``request``), and a response plugin must implement
@@ -185,7 +186,7 @@ The `built-in plugins that come with hookee <https://github.com/alexdlaird/hooke
 be a useful reference when developing new plugins for ``hookee``.
 
 Dive Deeper
------------
+===========
 
 Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1.x/>`_ as its server and
 `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
