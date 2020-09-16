@@ -56,7 +56,7 @@ class TestCli(HookeeTestCase):
         # THEN
         self.assertEqual(result.exit_code, 0)
         self.assertIn(
-            "['blueprint_default', 'request_body', 'request_headers', 'request_url_info', 'response_echo', "
+            "['blueprint_default', 'request_url_info', 'request_headers', 'request_body', 'response_echo', "
             "'response_info']",
             result.output)
 
