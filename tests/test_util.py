@@ -1,4 +1,4 @@
-from hookee.climanager import CliManager
+from hookee.hookeemanager import HookeeManager
 from hookee.pluginmanager import PluginManager
 
 from hookee import util
@@ -6,15 +6,15 @@ from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 
 class TestUtil(HookeeTestCase):
     def setUp(self):
         super(TestUtil, self).setUp()
 
-        self.cli_manager = CliManager(self.ctx)
-        self.plugin_manager = PluginManager(self.cli_manager)
+        self.hookee_manager = HookeeManager(self.ctx)
+        self.plugin_manager = PluginManager(self.hookee_manager)
         self.plugin = self.plugin_manager.get_plugin("request_url_info")
 
     def test_get_functions(self):

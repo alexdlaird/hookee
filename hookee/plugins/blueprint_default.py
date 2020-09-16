@@ -1,12 +1,10 @@
-import click
-
 from flask import Blueprint, request
 
 from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.8"
+__version__ = "1.1.0"
 
 blueprint = Blueprint("default", __name__)
 
@@ -15,11 +13,11 @@ plugin_manager = None
 print_util = None
 
 
-def setup(cli_manager):
+def setup(hookee_manager):
     global plugin_manager, print_util
 
-    plugin_manager = cli_manager.plugin_manager
-    print_util = cli_manager.print_util
+    plugin_manager = hookee_manager.plugin_manager
+    print_util = hookee_manager.print_util
 
 
 @blueprint.route("/webhook",
@@ -35,9 +33,8 @@ def webhook():
 
     response = plugin_manager.run_response_plugins(request)
 
-    click.echo("")
     print_util.print_close_header("=", fg="magenta")
-    click.echo("")
+    print_util.print_basic()
 
     return response
 

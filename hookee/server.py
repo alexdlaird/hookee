@@ -2,8 +2,6 @@ import logging
 import threading
 import time
 
-import click
-
 from flask import Flask
 
 from future.standard_library import install_aliases
@@ -25,9 +23,9 @@ except ImportError:  # pragma: no cover
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
-werkzeug_logger = logging.getLogger('werkzeug')
+werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.ERROR)
 
 
@@ -35,8 +33,8 @@ class Server:
     """
     An object that manages a non-blocking Flask server and thread.
 
-    :var cli_manager: Reference to the CLI Manager.
-    :vartype cli_manager: CliManager
+    :var hookee_manager: Reference to the ``hookee`` Manager.
+    :vartype hookee_manager: HookeeManager
     :var plugin_manager: Reference to the Plugin Manager.
     :vartype plugin_manager: PluginManager
     :var print_util: Reference to the PrintUtil.
@@ -47,11 +45,11 @@ class Server:
     :vartype app: flask.Flask
     """
 
-    def __init__(self, cli_manager):
-        self.cli_manager = cli_manager
-        self.plugin_manager = cli_manager.plugin_manager
-        self.print_util = cli_manager.print_util
-        self.port = self.cli_manager.config.get("port")
+    def __init__(self, hookee_manager):
+        self.hookee_manager = hookee_manager
+        self.plugin_manager = self.hookee_manager.plugin_manager
+        self.print_util = self.hookee_manager.print_util
+        self.port = self.hookee_manager.config.get("port")
 
         self.app = self.create_app()
 
@@ -85,7 +83,7 @@ class Server:
             # This will block until stop() is invoked to shutdown the Werkzeug server
             self.app.run(host="127.0.0.1", port=self.port, debug=True, use_reloader=False)
         except OSError as e:
-            click.echo(e)
+            self.print_util.print_basic(e)
 
             self.stop()
 
@@ -130,7 +128,6 @@ class Server:
             return StatusCodes.INTERNAL_SERVER_ERROR
 
     def print_close_header(self):
-        click.echo(" * Port: {}".format(self.port))
-        click.echo(" * Blueprints: registered")
-        click.echo("")
+        self.print_util.print_basic(" * Port: {}".format(self.port))
+        self.print_util.print_basic(" * Blueprints: registered")
         self.print_util.print_close_header()

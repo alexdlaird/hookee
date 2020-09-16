@@ -3,9 +3,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.0.1...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.1.0...HEAD)
+
+## [1.1.0](https://github.com/alexdlaird/hookee/compare/1.0.1...1.1.0) - 2019-09-15
 ### Added
 - Documentation improvements.
+- Default `Context` object in `conf`, which is used as the default when `None` is given to `HookeeManager`.
+
+### Changed
+- Renamed `CliManager` class to `HookeeManager`.
+- Renamed `HookeeManager.start()` to `HookeeManager.run()`.
+- `PluginMananger.enabled_plugins()` no longer sorts the returned list, as plugins should be executed (and listed) in preferred order.
 
 ### Fixed
 - Build improvements.

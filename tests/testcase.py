@@ -3,25 +3,16 @@ import shutil
 import unittest
 
 from click.testing import CliRunner
+from hookee import conf
 
 from hookee.conf import Config
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
-
-
-class Context:
-    def __init__(self, obj=None):
-        if obj is None:
-            obj = {}
-
-        self.obj = obj
+__version__ = "1.1.0"
 
 
 class HookeeTestCase(unittest.TestCase):
-    ctx = Context()
-
     def setUp(self):
         self.config_dir = os.path.normpath(
             os.path.join(os.path.abspath(os.path.dirname(__file__)), ".config", "hookee"))
@@ -30,6 +21,7 @@ class HookeeTestCase(unittest.TestCase):
 
         os.environ["HOOKEEDIR"] = self.config_dir
 
+        self.ctx = conf.default_context
         self.config = Config(self.ctx)
 
         self.plugins_dir = os.path.normpath(os.path.join(self.config_dir, "plugins"))

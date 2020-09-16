@@ -15,7 +15,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -35,7 +35,7 @@ class Plugin:
     :vartype plugin_type: str
     :var name: The name of the plugin.
     :vartype name: str
-    :var has_setup: ``True`` if the plugin has a ``setup(cli_manager)`` method, ``False`` otherwise.
+    :var has_setup: ``True`` if the plugin has a ``setup(hookee_manager)`` method.
     :vartype has_setup: bool
     """
 
@@ -145,9 +145,9 @@ class PluginManager:
     """
     An object that loads, validates, and manages available plugins.
 
-    :var cli_manager: Reference to the CLI Manager.
-    :vartype cli_manager: CliManager
-    :var ctx: The ``click`` CLI context.
+    :var hookee_manager: Reference to the ``hookee`` Manager.
+    :vartype hookee_manager: HookeeManager
+    :var ctx: The ``click`` context.
     :vartype ctx: click.Context
     :var config: The ``hookee`` configuration.
     :vartype config: Config
@@ -165,10 +165,10 @@ class PluginManager:
     :vartype loaded_plugins: list[Plugin]
     """
 
-    def __init__(self, cli_manager):
-        self.cli_manager = cli_manager
-        self.ctx = cli_manager.ctx
-        self.config = cli_manager.config
+    def __init__(self, hookee_manager):
+        self.hookee_manager = hookee_manager
+        self.ctx = self.hookee_manager.ctx
+        self.config = self.hookee_manager.config
 
         self.source = None
         self.request_script = None
@@ -209,20 +209,20 @@ class PluginManager:
         self.loaded_plugins = []
         for plugin_name in enabled_plugins:
             plugin = self.get_plugin(plugin_name)
-            plugin.setup(self.cli_manager)
+            plugin.setup(self.hookee_manager)
             self.loaded_plugins.append(plugin)
 
         request_script = self.config.get("request_script")
         if request_script:
             self.request_script = Plugin.build_from_file(request_script)
-            self.request_script.setup(self.cli_manager)
+            self.request_script.setup(self.hookee_manager)
         else:
             self.request_script = None
 
         response_script = self.config.get("response_script")
         if response_script:
             self.response_script = Plugin.build_from_file(response_script)
-            self.response_script.setup(self.cli_manager)
+            self.response_script.setup(self.hookee_manager)
         else:
             self.request_script = None
 
@@ -316,12 +316,12 @@ class PluginManager:
 
     def enabled_plugins(self):
         """
-        Get a sorted list of enabled plugins.
+        Get a list of enabled plugins.
 
         :return: The list of enabled plugins.
         :rtype: list[str]
         """
-        return sorted(str(p) for p in self.config.get("plugins"))
+        return list(str(p) for p in self.config.get("plugins"))
 
     def available_plugins(self):
         """

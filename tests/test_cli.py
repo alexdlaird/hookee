@@ -8,7 +8,7 @@ from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 
 class TestCli(HookeeTestCase):
@@ -92,26 +92,26 @@ class TestCli(HookeeTestCase):
         self.assertEqual(result.exit_code, 2)
         self.assertIn("Can't disable", result.output)
 
-    @mock.patch("hookee.climanager.CliManager.start")
-    def test_start(self, mock_cli_start):
+    @mock.patch("hookee.hookeemanager.HookeeManager.run")
+    def test_start(self, mock_hookee_run):
         # WHEN
         result = self.runner.invoke(hookee, ["start"])
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_cli_start.assert_called_once()
+        mock_hookee_run.assert_called_once()
 
-    @mock.patch("hookee.climanager.CliManager.start")
-    def test_no_command_calls_start(self, mock_cli_start):
+    @mock.patch("hookee.hookeemanager.HookeeManager.run")
+    def test_no_command_calls_start(self, mock_hookee_run):
         # WHEN
         result = self.runner.invoke(hookee)
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_cli_start.assert_called_once()
+        mock_hookee_run.assert_called_once()
 
-    @mock.patch("hookee.climanager.CliManager.start")
-    def test_start_with_script_import(self, mock_cli_start):
+    @mock.patch("hookee.hookeemanager.HookeeManager.run")
+    def test_start_with_script_import(self, mock_hookee_run):
         # GIVEN
         builtin_plugin_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
                                            "request_body.py")
@@ -121,7 +121,7 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_cli_start.assert_called_once()
+        mock_hookee_run.assert_called_once()
 
     def test_start_with_invalid_script_import(self):
         # WHEN
@@ -132,8 +132,8 @@ class TestCli(HookeeTestCase):
         self.assertIn("'no_such_file.py' does not exist", result.output)
 
     @mock.patch("confuse.Configuration.set_args")
-    @mock.patch("hookee.climanager.CliManager.start")
-    def test_start_arg_passed_to_config(self, mock_cli_start, mock_set_args):
+    @mock.patch("hookee.hookeemanager.HookeeManager.run")
+    def test_start_arg_passed_to_config(self, mock_hookee_run, mock_set_args):
         # GIVEn
         response = "\"<Response>Ok</Response>\""
 
@@ -142,7 +142,7 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_cli_start.assert_called_once()
+        mock_hookee_run.assert_called_once()
         mock_set_args.assert_called_once()
         call_args, call_kwargs = mock_set_args.call_args
         self.assertIn("response", call_args[0])

@@ -161,7 +161,7 @@ Plugins have a simple structure. Every plugin must define a ``plugin_type``, and
 - ``request``
 - ``response``
 
-All plugin types can optionally implement ``setup(cli_manager)``, which will be called on the plugin when it is
+All plugin types can optionally implement ``setup(hookee_manager)``, which will be called on the plugin when it is
 first loaded.
 
 Blueprint Plugins

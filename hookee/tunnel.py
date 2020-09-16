@@ -1,8 +1,6 @@
 import threading
 import time
 
-import click
-
 from pyngrok import ngrok
 from pyngrok.conf import PyngrokConfig
 
@@ -10,15 +8,15 @@ from pyngrok.exception import PyngrokError
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 
 class Tunnel:
     """
     An object that manages a non-blocking ``pyngrok`` tunnel and thread.
 
-    :var cli_manager: Reference to the CLI Manager.
-    :vartype cli_manager: CliManager
+    :var hookee_manager: Reference to the ``hookee`` Manager.
+    :vartype hookee_manager: HookeeManager
     :var plugin_manager: Reference to the Plugin Manager.
     :vartype plugin_manager: PluginManager
     :var print_util: Reference to the PrintUtil.
@@ -33,11 +31,11 @@ class Tunnel:
     :vartype ngrok_process: pyngrok.process.NgrokProcess
     """
 
-    def __init__(self, cli_manager):
-        self.cli_manager = cli_manager
-        self.config = cli_manager.config
-        self.plugin_manager = cli_manager.plugin_manager
-        self.print_util = cli_manager.print_util
+    def __init__(self, hookee_manager):
+        self.hookee_manager = hookee_manager
+        self.config = self.hookee_manager.config
+        self.plugin_manager = self.hookee_manager.plugin_manager
+        self.print_util = self.hookee_manager.print_util
         self.port = self.config.get("port")
 
         self.pyngrok_config = PyngrokConfig(auth_token=self.config.get("auth_token"),
@@ -114,7 +112,6 @@ class Tunnel:
             self._thread = None
 
     def print_close_header(self):
-        click.echo(
-            "* Tunnel: {} -> http://127.0.0.1:{}".format(self.public_url.replace("http://", "https://"), self.port))
-        click.echo("")
+        self.print_util.print_basic(
+            " * Tunnel: {} -> http://127.0.0.1:{}".format(self.public_url.replace("http://", "https://"), self.port))
         self.print_util.print_close_header()

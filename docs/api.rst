@@ -4,10 +4,10 @@ API Documentation
 
 This part of the documentation covers the interfaces used to develop with ``hookee``.
 
-CLI Manager
------------
+``hookee`` Manager
+------------------
 
-.. automodule:: hookee.climanager
+.. automodule:: hookee.hookeemanager
     :members:
     :private-members:
     :show-inheritance:

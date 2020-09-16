@@ -3,20 +3,20 @@ from types import ModuleType
 
 from hookee.pluginmanager import PluginManager, Plugin
 
-from hookee.climanager import CliManager
+from hookee.hookeemanager import HookeeManager
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 
 class TestPluginManager(HookeeTestCase):
     def setUp(self):
         super(TestPluginManager, self).setUp()
 
-        self.cli_manager = CliManager(self.ctx)
-        self.plugin_manager = PluginManager(self.cli_manager)
+        self.hookee_manager = HookeeManager(self.ctx)
+        self.plugin_manager = PluginManager(self.hookee_manager)
 
     def test_build_from_module(self):
         # GIVEN
@@ -84,10 +84,10 @@ class TestPluginManager(HookeeTestCase):
                                            "request_body.py")
         response_script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
                                             "response_echo.py")
-        self.cli_manager.config.set("request_script", request_script_path)
-        self.cli_manager.config.set("response_script", response_script_path)
-        self.cli_manager.config.set("response", "<Response>Ok</Response>")
-        self.cli_manager.config.set("content_type", "application/xml")
+        self.hookee_manager.config.set("request_script", request_script_path)
+        self.hookee_manager.config.set("response_script", response_script_path)
+        self.hookee_manager.config.set("response", "<Response>Ok</Response>")
+        self.hookee_manager.config.set("content_type", "application/xml")
 
         # WHEN
         self.plugin_manager.load_plugins()

@@ -1,7 +1,5 @@
 import time
 
-import click
-
 from hookee import conf
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
@@ -10,16 +8,16 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 
-class CliManager:
+class HookeeManager:
     """
-    An object that manages the state of the ``hookee`` CLI. Reads app configuration, loads enabled plugins,
+    An object that manages the state of a ``hookee`` runtime. Reads app configuration, loads enabled plugins,
     and manages the long-lived state of ``hookee`` if a server and tunnel are started.
 
-    :var ctx: The ``click`` CLI context.
-    :vartype ctx: click.Context
+    :var ctx: The ``click`` context.
+    :vartype ctx: click.Context, optional
     :var config: The ``hookee`` configuration.
     :vartype config: Config
     :var plugin_manager: Reference to the Plugin Manager.
@@ -30,11 +28,14 @@ class CliManager:
     :vartype tunnel: Tunnel
     :var server: Reference to the Server.
     :vartype server: Server
-    :var alive: ``True`` when this object is managing an active tunnel and server, ``False`` otherwise.
+    :var alive: ``True`` when this object is managing an active tunnel and server.
     :vartype alive: bool
     """
 
-    def __init__(self, ctx, load_plugins=True):
+    def __init__(self, ctx=None, load_plugins=True):
+        if ctx is None:
+            ctx = conf.default_context
+
         self.ctx = ctx
 
         self.config = conf.Config(self.ctx)
@@ -51,7 +52,7 @@ class CliManager:
 
         self.print_hookee_banner()
 
-    def start(self):
+    def run(self):
         """
         If one is not already running, start a managed server and tunnel and block until an interrupt
         is received (or ``alive`` is set to ``False``).
@@ -84,14 +85,14 @@ class CliManager:
 
     def print_hookee_banner(self):
         self.print_util.print_open_header("", "=")
-        click.secho("""                .__                   __                  
+        self.print_util.print_basic("""                .__                   __                  
                 |  |__   ____   ____ |  | __ ____   ____  
                 |  |  \ /  _ \ /  _ \|  |/ // __ \_/ __ \ 
                 |   Y  (  <_> |  <_> )    <\  ___/\  ___/ 
                 |___|  /\____/ \____/|__|_ \\___  >\___  >
                      \/                   \/    \/     \/ 
                                                    v{}""".format(__version__), fg="green", bold=True)
-        self.print_util.print_close_header("=")
+        self.print_util.print_close_header("=", blank_line=False)
 
     def print_ready(self):
         self.print_util.print_open_header("Registered Endpoints")
@@ -99,15 +100,14 @@ class CliManager:
         rules = list(filter(lambda r: r.rule not in ["/shutdown", "/static/<path:filename>", "/status"],
                             self.server.app.url_map.iter_rules()))
         for rule in rules:
-            click.secho("* {}{}".format(self.tunnel.public_url, rule.rule))
-            click.secho("  Methods: {}".format(sorted(list(rule.methods))))
-            click.echo("")
+            self.print_util.print_basic(" * {}{}".format(self.tunnel.public_url, rule.rule))
+            self.print_util.print_basic("   Methods: {}".format(sorted(list(rule.methods))))
 
         self.print_util.print_close_header()
 
-        click.echo("")
-        click.secho("--> Ready, send a request to a registered endpoint ...", fg="green", bold=True)
-        click.echo("")
+        self.print_util.print_basic()
+        self.print_util.print_basic("--> Ready, send a request to a registered endpoint ...", fg="green", bold=True)
+        self.print_util.print_basic()
 
     def _init_server_and_tunnel(self):
         self.alive = True

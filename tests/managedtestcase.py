@@ -2,8 +2,8 @@ import time
 import sys
 from contextlib import contextmanager
 
-from hookee.climanager import CliManager
-from hookee import util
+from hookee.hookeemanager import HookeeManager
+from hookee import util, conf
 from tests.testcase import HookeeTestCase
 
 if util.python3_gte():
@@ -13,29 +13,29 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.1.0"
 
 
 class ManagedTestCase(HookeeTestCase):
     port = 5000
-    cli_manager = None
+    hookee_manager = None
     webhook_url = None
 
     def setUp(self):
         super(ManagedTestCase, self).setUp()
 
-        self.webhook_url = "{}/webhook".format(self.cli_manager.tunnel.public_url)
+        self.webhook_url = "{}/webhook".format(self.hookee_manager.tunnel.public_url)
 
     @classmethod
     def setUpClass(cls):
-        cls.cli_manager = CliManager(cls.ctx)
+        cls.hookee_manager = HookeeManager(conf.default_context)
 
-        cls.cli_manager._init_server_and_tunnel()
+        cls.hookee_manager._init_server_and_tunnel()
 
     @classmethod
     def tearDownClass(cls):
-        if cls.cli_manager:
-            cls.cli_manager.stop()
+        if cls.hookee_manager:
+            cls.hookee_manager.stop()
 
             time.sleep(2)
 

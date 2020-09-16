@@ -8,7 +8,7 @@ import click
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 
 class PrintUtil:
@@ -33,10 +33,12 @@ class PrintUtil:
         """
         Print an opening header to the CLI.
 
+        :param title: The header title.
+        :type title: str
         :param delimiter: The title of the XML blob.
-        :type delimiter: str
+        :type delimiter: str, optional
         :param fg: The color to make the text.
-        :type fg: str
+        :type fg: str, optional
         """
         width = int((self.console_width - len(title)) / 2)
 
@@ -44,15 +46,19 @@ class PrintUtil:
         click.secho("{}{}{}".format(delimiter * width, title, delimiter * width), fg=fg, bold=True)
         click.echo("")
 
-    def print_close_header(self, delimiter="-", fg="green"):
+    def print_close_header(self, delimiter="-", fg="green", blank_line=True):
         """
         Print a closing header to the CLI.
 
         :param delimiter: The title of the XML blob.
         :type delimiter: str
         :param fg: The color to make the text.
-        :type fg: str
+        :type fg: str, optional
+        :param blank_line: ``True`` if a blank line should preceed the closing header.
+        :type blank_line: bool
         """
+        if blank_line:
+            click.echo("")
         click.secho(delimiter * self.console_width, fg=fg, bold=True)
 
     def print_dict(self, title, data, fg="green"):
@@ -64,7 +70,7 @@ class PrintUtil:
         :param data: A dictionary.
         :type data: dict
         :param fg: The color to make the text.
-        :type fg: str
+        :type fg: str, optional
         """
         click.secho("{}: {}".format(title, json.dumps(data, indent=4)), fg=fg)
 
@@ -77,16 +83,29 @@ class PrintUtil:
         :param data: An XML string.
         :type data: str
         :param fg: The color to make the text.
-        :type fg: str
+        :type fg: str, optional
         """
         click.secho("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), fg=fg)
+
+    def print_basic(self, data="", fg="white", bold=False):
+        """
+        Print a status update in a boot sequence.
+
+        :param data: The update to print.
+        :type data: str, optional
+        :param fg: The color to make the text.
+        :type fg: str, optional
+        :param bold: True if the output should be bold.
+        :type bold: bool, optional
+        """
+        click.secho(data, fg=fg, bold=bold)
 
 
 def python3_gte():
     """
     Check if running on a Python 3.x interpreter.
 
-    :return: True if Python 3, False otherwise.
+    :return: ``True`` if Python 3.
     :rtype: bool
     """
     return sys.version_info >= (3, 0)
@@ -96,7 +115,7 @@ def python36_gte():
     """
     Check if running on a Python 3.6 or higher interpreter.
 
-    :return: True if Python 3.6 or higher, False otherwise.
+    :return: ``True`` if Python 3.6 or higher.
     :rtype: bool
     """
     return sys.version_info >= (3, 6)

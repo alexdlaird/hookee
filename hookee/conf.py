@@ -4,7 +4,7 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 template = {
     "port": int,
@@ -31,7 +31,7 @@ class Config:
     values from the command line, this is where updated values are stored) which in turn can be overridden by
     passing args to the CLI.
 
-    :var ctx: The ``click`` CLI context.
+    :var ctx: The ``click`` context.
     :vartype ctx: click.Context
     :var config_obj: The templated config object.
     :vartype config_obj: confuse.core.Configuration
@@ -128,3 +128,23 @@ class Config:
     def _write_config_objects_to_file(self):
         with open(self.config_path, "w") as f:
             f.write(self.config_obj.dump())
+
+
+class Context:
+    """
+    The ``HookeeManager`` class can be invoked programmatically, avoiding the CLI, and this object can be passed for
+    the ``ctx`` (which otherwise comes from the CLI). Populate the ``obj`` dictionary with keys/values that would
+    otherwise be passed as args to the CLI for proper initialization.
+
+    :var obj: A dictionary of keys/values matching valid CLI args.
+    :vartype obj: dict, optional
+    """
+
+    def __init__(self, obj=None):
+        if obj is None:
+            obj = {}
+
+        self.obj = obj
+
+
+default_context = Context()
