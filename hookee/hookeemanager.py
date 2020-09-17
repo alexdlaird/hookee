@@ -19,7 +19,7 @@ class HookeeManager:
     An object that manages the state of a ``hookee`` runtime. Reads app configuration, loads enabled plugins,
     and manages the long-lived state of ``hookee`` if a server and tunnel are started.
 
-    If instantiating programmatically, pass a :class:`~hookee.conf.Config` with args that otherwise would have
+    If instantiating for a custom integration, pass a :class:`~hookee.conf.Config` with args that otherwise would have
     been passed to the CLI (see ``hookee --help``). For example:
 
     .. code-block:: python
@@ -32,7 +32,7 @@ class HookeeManager:
         hookee_manager = HookeeManager(config=config)
 
     A ``response_callback`` function can also be passed instead of defining a raw ``response`` and ``content-type``
-    (or needing to use plugins) when instantiating programmatically:
+    (or needing to use plugins) when integrating with ``hookee``:
 
     .. code-block:: python
 
@@ -156,8 +156,8 @@ class HookeeManager:
 
     def fail(self, msg, e=None):
         """
-        Shutdown the curent application with a failure. If a CLI Context exists, that will be used to invoke the failure,
-        otherwise an exception will be thrown for failures to be caught programmatically.
+        Shutdown the current application with a failure. If a CLI Context exists, that will be used to invoke the
+        failure, otherwise an exception will be thrown for failures to be caught.
 
         :param msg: The failure message.
         :type msg: str

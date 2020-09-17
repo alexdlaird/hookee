@@ -56,7 +56,7 @@ hookee --help
 ## Documentation
 
 For more advanced usage, including how `hookee`'s default configuration can be changed, extended through plugins,
-integrated with programmatically, and more, see its official documentation is available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
+API integrations, and more, see its official documentation is available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
 
 ## Contributing
 

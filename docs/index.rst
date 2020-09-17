@@ -185,18 +185,17 @@ must implement ``run(request)`` (and return the ``request``), and a response plu
 The `built-in plugins that come with hookee <https://github.com/alexdlaird/hookee/tree/master/hookee/plugins>`_ may
 be a useful reference when developing new plugins for ``hookee``.
 
-Dive Deeper
-===========
+Integrating with ``hookee``
+===========================
 
-Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1.x/>`_ as its server and
-`pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
-two packages would allow ``hookee`` to be configured and extended further.
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/drive/1DO1yOw8sCkybSFP_Ci8sDmsSbOgB8r54?usp=sharing
 
-``hookee`` can also be instantiated programmatically instead of as a command line utility. To integrate with
-``hookee`` this way, have a look at the :class:`~hookee.hookeemanager.HookeeManager` as a starting point. To still
-get access to the output that would otherwise go to the console (for instance, request data dumped from plugins),
-`setup the hookee logger <https://docs.python.org/3/howto/logging.html>`_. For example, this would add a handler
-to the ``hookee`` logger that just logs output back to the console:
+We can also integrate with ``hookee`` instead of using its command line interface.
+:class:`~hookee.hookeemanager.HookeeManager` is a good starting point for custom integrations. If we still want
+access to the output that would otherwise have gone to the console (for instance, request data dumped from plugins),
+we can `setup the  logger <https://docs.python.org/3/howto/logging.html>`_. For example, this would add a handler
+to the ``hookee`` logger that logs output back to the console:
 
 .. code-block:: python
 
@@ -205,6 +204,13 @@ to the ``hookee`` logger that just logs output back to the console:
     logger = logging.getLogger("hookee")
     logger.setLevel(logging.INFO)
     logging.getLogger().addHandler(logging.StreamHandler())
+
+Dive Deeper
+===========
+
+Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1.x/>`_ as its server and
+`pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
+two packages would allow ``hookee`` to be configured and extended further.
 
 For more advanced ``hookee`` usage, API documentation is also available.
 

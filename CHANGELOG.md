@@ -19,15 +19,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - Output of enabled plugins on startup
 - `HookeeManager` class is now available with a simple `from hookee import HookeeManager` import.
-- `HookeeManager` can now be instantiated with a `config` arg, making programmatic use more accessible.
-- `response_callback` as a new config. Not accessible from command line, meant for programmatic use, and not compatible with `--response`.
+- `HookeeManager` can now be instantiated with a `config` arg, making integration more accessible.
+- `response_callback` as a new config. Not accessible from the command line, meant for integrations, and not compatible with `--response`.
 - When `--response`, a lambda is created for `response_callback` (in conjunction with `--content-type`, if present) and that is now used in `PluginManager.run_response_plugins()`.
 - Documentation improvements.
 
 ### Changed
 - `PluginManager`'s `response_body` and `response_content_type` variables have been replaced with `response_callback`, a lambda that is generated if these configuration values are given.
 - Removed `PluginManager`'s `request_script` and `response_script` variables, instead these are added to `loaded_plugins` after their `Plugin` is validated and instantiated.
-- If `hookee` was instantiated programmatically rather than from the CLI (i.e. `click.Context` is `None`), `HookeeManager` throws exceptions and `PrintUtil` appends to a logger instead of interacting with `click.Context` or `echo` functions.  
+- If `hookee` was instantiated via its API rather than from the CLI (i.e. `click.Context` is `None`), `HookeeManager` throws exceptions and `PrintUtil` appends to a logger instead of interacting with `click.Context` or `echo` functions.  
 
 ### Removed
 - `conf.Context` in favor of using `click.Context`.

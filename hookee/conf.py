@@ -5,7 +5,7 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 from hookee.exception import HookeeConfigError
 
@@ -34,7 +34,7 @@ class Config:
     values from the command line, this is where updated values are stored) which in turn can be overridden by
     passing args to the CLI.
 
-    If instantiating programmatically, args that would otherwise have been passed to and validated by the CLI
+    If instantiating for a custom integration, args that would otherwise have been passed to and validated by the CLI
     (see ``hookee --help``) can instead be passed as ``kwargs`` here to ensure the same validation is done.
     For example:
 
@@ -46,7 +46,7 @@ class Config:
                         region="eu")
 
     A callback function can also be passed instead of ``response`` and ``content-type`` (or needing to use
-    plugins) when instantiating programmatically:
+    plugins) when integrating with ``hookee``'s APIs:
 
     .. code-block:: python
 
