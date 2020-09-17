@@ -4,7 +4,7 @@ from types import ModuleType
 
 from flask import Response
 
-from hookee.pluginmanager import PluginManager, Plugin
+from hookee.pluginmanager import PluginManager, Plugin, VALID_PLUGIN_TYPES, BLUEPRINT_PLUGIN
 
 from hookee import HookeeManager
 from tests.testcase import HookeeTestCase
@@ -124,12 +124,20 @@ class TestPluginManager(HookeeTestCase):
         response_script_found = False
         for plugin in self.plugin_manager.loaded_plugins:
             self.assertTrue(isinstance(plugin, Plugin))
+            self.assertIn(plugin.plugin_type, VALID_PLUGIN_TYPES)
+            self.assertTrue(hasattr(plugin.module, "plugin_type"))
+            self.assertIn(plugin.module.plugin_type, VALID_PLUGIN_TYPES)
+            self.assertTrue(hasattr(plugin.module, "setup"))
+            if not plugin.plugin_type != BLUEPRINT_PLUGIN:
+                self.assertTrue(hasattr(plugin.module, "run"))
+
             if plugin.name == "custom_request_plugin":
                 request_script_found = True
             elif plugin.name == "custom_response_plugin":
                 response_script_found = True
         self.assertTrue(request_script_found)
         self.assertTrue(response_script_found)
+        # The last plugin should always be the response_script that we added
         self.assertEqual(self.plugin_manager.loaded_plugins[-1].name, "custom_response_plugin")
         self.assertIsNotNone(self.plugin_manager.response_callback)
         response = self.plugin_manager.response_callback(None, Response())
