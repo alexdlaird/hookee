@@ -24,6 +24,9 @@ class HookeeManager:
 
     .. code-block:: python
 
+        from hookee import HookeeManager
+        from hookee.conf import Config
+
         config = Config(subdomain="my_domain",
                         region="eu")
         hookee_manager = HookeeManager(config=config)
@@ -32,6 +35,9 @@ class HookeeManager:
     (or needing to use plugins) when instantiating programmatically:
 
     .. code-block:: python
+
+        from hookee import HookeeManager
+        from hookee.conf import Config
 
         def response_callback(request, response):
             response.data = "<Response>Ok</Response>"

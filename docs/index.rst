@@ -200,6 +200,8 @@ to the ``hookee`` logger that just logs output back to the console:
 
 .. code-block:: python
 
+    import logging
+
     logger = logging.getLogger("hookee")
     logger.setLevel(logging.INFO)
     logging.getLogger().addHandler(logging.StreamHandler())

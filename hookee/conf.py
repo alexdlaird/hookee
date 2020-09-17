@@ -40,6 +40,8 @@ class Config:
 
     .. code-block:: python
 
+        from hookee.conf import Config
+
         config = Config(subdomain="my_domain",
                         region="eu")
 
@@ -47,6 +49,8 @@ class Config:
     plugins) when instantiating programmatically:
 
     .. code-block:: python
+
+        from hookee.conf import Config
 
         def response_callback(request, response):
             response.data = "<Response>Ok</Response>"
@@ -65,7 +69,8 @@ class Config:
         to interact with the data.
     :vartype config_data: confuse.templates.AttrDict
     :var click_logging: ``True`` if ``click`` should be used for log output, which enables colors and formatting when
-        logging to a console, ``False`` if a logger should be used. Not persisted to the config file.
+        logging to a console, ``False`` if a logger should be used. If not passed, ``True`` if a :class:`click.Context`
+        is found to be active. Not persisted to the config file.
     :vartype click_logging: bool
     :var response_callback: The response callback function, if defined. Not persisted to the config file.
     :vartype response_callback: types.FunctionType, optional

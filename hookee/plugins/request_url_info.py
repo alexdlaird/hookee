@@ -4,7 +4,7 @@ from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.1"
 
 plugin_type = pluginmanager.REQUEST_PLUGIN
 print_util = None
@@ -19,7 +19,10 @@ def setup(hookee_manager):
 def run(request):
     now = datetime.now()
 
-    print_util.print_basic("[{}] \"{} {} {}\"".format(now.isoformat(), request.method, request.base_url,
+    timestamp = now.strftime("%m-%d-%Y %I:%M:%S %p")
+
+    print_util.print_basic("[{}] \"{} {} {}\"".format(timestamp, request.method, request.base_url,
                                                       request.environ["SERVER_PROTOCOL"]), fg="magenta", bold=True)
+    print_util.print_basic()
 
     return request

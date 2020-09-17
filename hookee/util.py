@@ -16,7 +16,21 @@ logger = logging.getLogger(__name__)
 
 class PrintUtil:
     """
-    An object that provides helpful methods for printing to the console through ``click`` and the CLI.
+    An object that provides helper methods for logging output. If :class:`~hookee.conf.Config`'s ``click_logging`` is
+    ``True`` (which will happen by default if a :class:`click.Context` is found to be active), this logging will be
+    done through ``click``, otherwise the ``hookee`` logger will be used.
+
+    If ``click_logging`` is disabled, output sent through this utility can still be interacted with by ensuring the a
+    logger is setup. For example, this would add a handler to the ``hookee`` logger that just logs output back to
+    the console:
+
+    .. code-block:: python
+
+        import logging
+
+        logger = logging.getLogger("hookee")
+        logger.setLevel(logging.INFO)
+        logging.getLogger().addHandler(logging.StreamHandler())
 
     :var config: The ``hookee`` configuration.
     :vartype config: Config
@@ -34,7 +48,7 @@ class PrintUtil:
 
     def print_open_header(self, title, delimiter="-", fg="green"):
         """
-        Print an opening header to the CLI.
+        Log an opening header with a title and a new line before and after.
 
         :param title: The header title.
         :type title: str
@@ -51,13 +65,13 @@ class PrintUtil:
 
     def print_close_header(self, delimiter="-", fg="green", blank_line=True):
         """
-        Print a closing header to the CLI.
+        Log a closing header with an optional new line before.
 
         :param delimiter: The title of the XML blob.
         :type delimiter: str
         :param fg: The color to make the text.
         :type fg: str, optional
-        :param blank_line: ``True`` if a blank line should preceed the closing header.
+        :param blank_line: ``True`` if a blank line should precede the closing header.
         :type blank_line: bool
         """
         if blank_line:
@@ -66,7 +80,7 @@ class PrintUtil:
 
     def print_dict(self, title, data, fg="green"):
         """
-        Print formatted dictionary data to the CLI.
+        Log formatted dictionary data.
 
         :param title: The title of the XML blob.
         :type title: str
@@ -79,7 +93,7 @@ class PrintUtil:
 
     def print_xml(self, title, data, fg="green"):
         """
-        Print formatted XML to the CLI.
+        Log formatted XML.
 
         :param title: The title of the XML blob.
         :type title: str
@@ -92,7 +106,8 @@ class PrintUtil:
 
     def print_basic(self, msg="", fg="white", bold=False, print_when_logging=False):
         """
-        Print a status update in a boot sequence.
+        Log a basic message. The message will be logged via ``click``, if ``click_logging`` is enabled in
+        :class:`~hookee.conf.Config`, or appended to the logger.
 
         :param msg: The update to print.
         :type msg: str, optional
@@ -100,8 +115,8 @@ class PrintUtil:
         :type fg: str, optional
         :param bold: ``True`` if the output should be bold.
         :type bold: bool, optional
-        :param print_when_logging: ``True`` if, when ``click_ctx`` is ``False``, ``msg`` should print to the console
-            instead appended to the logger.
+        :param print_when_logging: ``True`` if, when ``click_logging`` is ``False``, ``msg`` should print to the
+            console instead of appending to the logger.
         :type print_when_logging: bool, optional
         """
         if self.config.click_logging:
