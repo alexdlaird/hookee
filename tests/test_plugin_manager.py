@@ -1,4 +1,5 @@
 import os
+import shutil
 from types import ModuleType
 
 from flask import Response
@@ -103,10 +104,14 @@ class TestPluginManager(HookeeTestCase):
         self.assertEqual(0, len(self.plugin_manager.loaded_plugins))
         request_script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
                                            "request_body.py")
+        custom_request_plugin_path = os.path.join(self.plugins_dir, "custom_request_plugin.py")
+        shutil.copy(request_script_path, custom_request_plugin_path)
         response_script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
                                             "response_echo.py")
-        self.hookee_manager.config.set("request_script", request_script_path)
-        self.hookee_manager.config.set("response_script", response_script_path)
+        custom_response_plugin_path = os.path.join(self.plugins_dir, "custom_response_plugin.py")
+        shutil.copy(response_script_path, custom_response_plugin_path)
+        self.hookee_manager.config.set("request_script", custom_request_plugin_path)
+        self.hookee_manager.config.set("response_script", custom_response_plugin_path)
         self.hookee_manager.config.set("response", "<Response>Ok</Response>")
         self.hookee_manager.config.set("content_type", "application/xml")
 
@@ -114,13 +119,18 @@ class TestPluginManager(HookeeTestCase):
         self.plugin_manager.load_plugins()
 
         # THEN
-        self.assertEqual(8, len(self.plugin_manager.loaded_plugins))
+        self.assertEqual(10, len(self.plugin_manager.loaded_plugins))
+        request_script_found = False
+        response_script_found = False
         for plugin in self.plugin_manager.loaded_plugins:
             self.assertTrue(isinstance(plugin, Plugin))
-        self.assertTrue(isinstance(self.plugin_manager.request_script, Plugin))
-        self.assertEqual(self.plugin_manager.request_script.name, "request_body")
-        self.assertTrue(isinstance(self.plugin_manager.response_script, Plugin))
-        self.assertEqual(self.plugin_manager.response_script.name, "response_echo")
+            if plugin.name == "custom_request_plugin":
+                request_script_found = True
+            elif plugin.name == "custom_response_plugin":
+                response_script_found = True
+        self.assertTrue(request_script_found)
+        self.assertTrue(response_script_found)
+        self.assertEqual(self.plugin_manager.loaded_plugins[-1].name, "custom_response_plugin")
         self.assertIsNotNone(self.plugin_manager.response_callback)
         response = self.plugin_manager.response_callback(None, Response())
         self.assertEqual(response.data.decode("utf-8"), "<Response>Ok</Response>")

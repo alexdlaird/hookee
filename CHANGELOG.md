@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 - `PluginManager`'s `response_body` and `response_content_type` variables have been replaced with `response_callback`, a lambda that is generated if these configuration values are given.
+- Removed `PluginManager`'s `request_script` and `response_script` variables, instead these are added to `loaded_plugins` after their `Plugin` is validated and instantiated.  
 
 ### Removed
 - `conf.Context` in favor of using `click`'s own `Context` object.

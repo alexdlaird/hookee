@@ -169,8 +169,6 @@ class PluginManager:
         self.config = self.hookee_manager.config
 
         self.source = None
-        self.request_script = None
-        self.response_script = None
         self.response_callback = None
 
         self.builtin_plugins_dir = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "plugins"))
@@ -211,17 +209,15 @@ class PluginManager:
 
         request_script = self.config.get("request_script")
         if request_script:
-            self.request_script = Plugin.build_from_file(request_script)
-            self.request_script.setup(self.hookee_manager)
-        else:
-            self.request_script = None
+            request_script = Plugin.build_from_file(request_script)
+            request_script.setup(self.hookee_manager)
+            self.loaded_plugins.append(request_script)
 
         response_script = self.config.get("response_script")
         if response_script:
-            self.response_script = Plugin.build_from_file(response_script)
-            self.response_script.setup(self.hookee_manager)
-        else:
-            self.request_script = None
+            response_script = Plugin.build_from_file(response_script)
+            response_script.setup(self.hookee_manager)
+            self.loaded_plugins.append(response_script)
 
         response_body = self.config.get("response")
         response_content_type = self.config.get("content_type")
@@ -242,8 +238,7 @@ class PluginManager:
 
             self.response_callback = response_callback
 
-        if len(self.get_plugins_by_type(
-                RESPONSE_PLUGIN)) == 0 and not self.response_script and not self.response_callback:
+        if len(self.get_plugins_by_type(RESPONSE_PLUGIN)) == 0 and not self.response_callback:
             self.hookee_manager.fail(
                 "No response plugin was loaded. Enable a pluing like `response_echo`, or pass `--response` "
                 "or `--response-script`.")
@@ -271,9 +266,6 @@ class PluginManager:
         for plugin in self.get_plugins_by_type(REQUEST_PLUGIN):
             request = plugin.run(request)
 
-        if self.request_script:
-            self.request_script.run(request)
-
         return request
 
     def run_response_plugins(self, request=None, response=None):
@@ -293,9 +285,6 @@ class PluginManager:
                 response_info_plugin = plugin
             else:
                 response = plugin.run(request, response)
-
-        if self.response_script:
-            response = self.response_script.run(request, response)
 
         if not response:
             response = current_app.response_class("")
