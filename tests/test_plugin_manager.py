@@ -88,7 +88,7 @@ class TestPluginManager(HookeeTestCase):
             return response
 
         self.assertEqual(0, len(self.plugin_manager.loaded_plugins))
-        self.hookee_manager.config.set("response_callback", response_callback)
+        self.hookee_manager.config.response_callback = response_callback
 
         # WHEN
         self.plugin_manager.load_plugins()
@@ -128,7 +128,7 @@ class TestPluginManager(HookeeTestCase):
             self.assertTrue(hasattr(plugin.module, "plugin_type"))
             self.assertIn(plugin.module.plugin_type, VALID_PLUGIN_TYPES)
             self.assertTrue(hasattr(plugin.module, "setup"))
-            if not plugin.plugin_type != BLUEPRINT_PLUGIN:
+            if plugin.plugin_type != BLUEPRINT_PLUGIN:
                 self.assertTrue(hasattr(plugin.module, "run"))
 
             if plugin.name == "custom_request_plugin":

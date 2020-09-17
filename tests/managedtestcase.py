@@ -31,6 +31,7 @@ class ManagedTestCase(HookeeTestCase):
     @classmethod
     def setUpClass(cls):
         cls.hookee_manager = HookeeManager()
+        cls.hookee_manager.config.click_ctx = True
 
         cls.hookee_manager._init_server_and_tunnel()
 

@@ -65,10 +65,7 @@ class HookeeManager:
                 data = self.ctx.obj if self.ctx is not None else {}
                 config = Config(**data)
             except HookeeConfigError as e:
-                if self.ctx is not None:
-                    self.fail(str(e))
-                else:
-                    raise e
+                self.fail(str(e), e)
 
         self.config = config
         self.plugin_manager = PluginManager(self)
@@ -124,6 +121,7 @@ class HookeeManager:
                 |___|  /\____/ \____/|__|_ \\___  >\___  >
                      \/                   \/    \/     \/ 
                                                    v{}""".format(__version__), fg="green", bold=True)
+        self.print_util.print_basic()
         self.print_util.print_close_header("=", blank_line=False)
 
     def print_ready(self):
@@ -141,8 +139,8 @@ class HookeeManager:
         rules = list(filter(lambda r: r.rule not in ["/shutdown", "/static/<path:filename>", "/status"],
                             self.server.app.url_map.iter_rules()))
         for rule in rules:
-            self.print_util.print_basic(" * {}{}".format(self.tunnel.public_url, rule.rule))
-            self.print_util.print_basic("   Methods: {}".format(sorted(list(rule.methods))))
+            self.print_util.print_basic(" * {}{}".format(self.tunnel.public_url, rule.rule), print_when_logging=True)
+            self.print_util.print_basic("   Methods: {}".format(sorted(list(rule.methods))), print_when_logging=True)
 
         self.print_util.print_close_header()
 
@@ -150,16 +148,20 @@ class HookeeManager:
         self.print_util.print_basic("--> Ready, send a request to a registered endpoint ...", fg="green", bold=True)
         self.print_util.print_basic()
 
-    def fail(self, msg):
+    def fail(self, msg, e=None):
         """
         Shutdown the curent application with a failure. If a CLI Context exists, that will be used to invoke the failure,
         otherwise an exception will be thrown for failures to be caught programmatically.
 
         :param msg: The failure message.
         :type msg: str
+        :param e: The error being raised.
+        :type e: HookeeError, optional
         """
         if self.ctx is not None:
             self.ctx.fail(msg)
+        elif e:
+            raise e
         else:
             raise HookeeError(msg)
 

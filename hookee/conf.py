@@ -1,5 +1,6 @@
 import os
 
+import click
 import confuse
 
 __author__ = "Alex Laird"
@@ -58,11 +59,16 @@ class Config:
     :vartype config_obj: confuse.core.Configuration
     :var config_dir: The directory of the config being used.
     :vartype config_dir: str
-    :var config_filename: The full path to the config file being used.
-    :vartype config_filename: str
+    :var config_path: The full path to the config file being used.
+    :vartype config_path: str
     :var config_data: The parsed and validated config data. Use :func:`get`, :func:`set`, and other accessors
         to interact with the data.
     :vartype config_data: confuse.templates.AttrDict
+    :var click_ctx: ``True`` if the app is running from a ``click`` CLI, ``False`` if it was started programmatically.
+        Not persisted to the config file.
+    :vartype click_ctx: bool
+    :var response_callback: The response callback function, if defined. Not persisted to the config file.
+    :vartype response_callback: types.FunctionType, optional
     """
 
     def __init__(self, **kwargs):
@@ -77,6 +83,8 @@ class Config:
             self.config_path = os.path.join(self.config_dir, confuse.CONFIG_FILENAME)
 
             self.config_data = config.get(template)
+
+            self.click_ctx = click.get_current_context(silent=True) is not None
 
             if self.config_data.get("response") and self.response_callback:
                 raise HookeeConfigError("Can't define both \"response\" and \"response_callback\".")
@@ -93,16 +101,13 @@ class Config:
 
     def get(self, key):
         """
-        Get the config value for the given key.
+        Get the config value for the given key of persisted data.
 
         :param key: The key.
         :type key: str
         :return: The config value.
         :rtype: object
         """
-        if key == "response_callback":
-            return self.response_callback
-
         return self.config_data[key]
 
     def set(self, key, value):
@@ -114,17 +119,8 @@ class Config:
         :param value: The value to set.
         :type key: object
         """
-        if key == "response_callback":
-            print(value)
-            print(type(value))
-            if not callable(value):
-                raise HookeeConfigError("\"response_callback\" must be a function.")
-            else:
-                self.response_callback = value
-
-        else:
-            if value != self.config_data[key]:
-                self._update_config_objects(key, value)
+        if value != self.config_data[key]:
+            self._update_config_objects(key, value)
 
     def append(self, key, value):
         """

@@ -5,7 +5,7 @@ from tests.managedtestcase import ManagedTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 
 class TestHookeeManager(ManagedTestCase):

@@ -225,7 +225,7 @@ class PluginManager:
         if response_content_type and not response_body:
             self.hookee_manager.fail("If `--content-type` is given, `--response` must also be given.")
 
-        self.response_callback = self.config.get("response_callback")
+        self.response_callback = self.config.response_callback
 
         if self.response_callback and response_body:
             self.hookee_manager.fail("If `response_callback` is given, `response` cannot also be given.")
@@ -310,10 +310,7 @@ class PluginManager:
         except ImportError:
             self.hookee_manager.fail("Plugin \"{}\" could not be found.".format(plugin_name))
         except HookeePluginValidationError as e:
-            if self.hookee_manager.ctx is not None:
-                self.hookee_manager.fail(str(e))
-            else:
-                raise e
+            self.hookee_manager.fail(str(e), e)
 
     def enabled_plugins(self):
         """

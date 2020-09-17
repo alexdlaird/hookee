@@ -113,5 +113,6 @@ class Tunnel:
 
     def print_close_header(self):
         self.print_util.print_basic(
-            " * Tunnel: {} -> http://127.0.0.1:{}".format(self.public_url.replace("http://", "https://"), self.port))
+            " * Tunnel: {} -> http://127.0.0.1:{}".format(self.public_url.replace("http://", "https://"), self.port),
+            print_when_logging=True)
         self.print_util.print_close_header()

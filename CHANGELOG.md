@@ -16,11 +16,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 - `PluginManager`'s `response_body` and `response_content_type` variables have been replaced with `response_callback`, a lambda that is generated if these configuration values are given.
-- Removed `PluginManager`'s `request_script` and `response_script` variables, instead these are added to `loaded_plugins` after their `Plugin` is validated and instantiated.  
+- Removed `PluginManager`'s `request_script` and `response_script` variables, instead these are added to `loaded_plugins` after their `Plugin` is validated and instantiated.
+- If `hookee` was instantiated programmatically rather than from the CLI (i.e. `click.Context` is `None`), `HookeeManager` throws exceptions and `PrintUtil` appends to a logger instead of interacting with `click.Context` or `echo` functions.  
 
 ### Removed
-- `conf.Context` in favor of using `click`'s own `Context` object.
-- Access to the `click` `Context` except in `HookeeManager`, which now has its own abstraction around `Context`-related actions.
+- `conf.Context` in favor of using `click.Context`.
+- Access to the `click.Context` except in `HookeeManager`, which now has its own abstraction around such actions.
 
 ## [1.1.0](https://github.com/alexdlaird/hookee/compare/1.0.1...1.1.0) - 2019-09-15
 ### Added

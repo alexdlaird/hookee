@@ -192,6 +192,11 @@ Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1
 `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
 two packages would allow ``hookee`` to be configured and extended further.
 
+``hookee`` can also be instantiated programmatically instead of from the console. To integrate with ``hookee``
+this way, have a look at the :class:`~hookee.hookeemanager.HookeeManager` as a starting point. When instantiating
+``hookee`` this way, be sure to configure logging, otherwise request data that would otherwise be output to the
+console (for instance request data dumped from plugins) won't be seen.
+
 For more advanced ``hookee`` usage, its own API documentation is also available.
 
 .. toctree::

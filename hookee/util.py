@@ -1,5 +1,6 @@
 import inspect
 import json
+import logging
 import os
 import sys
 import xml.dom.minidom
@@ -8,7 +9,9 @@ import click
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
+
+logger = logging.getLogger(__name__)
 
 
 class PrintUtil:
@@ -27,7 +30,7 @@ class PrintUtil:
         return self.config.get("console_width")
 
     def print_config_update(self, msg):
-        click.secho("\n--> {}\n".format(msg), fg="green")
+        self.print_basic("\n--> {}\n".format(msg), fg="green")
 
     def print_open_header(self, title, delimiter="-", fg="green"):
         """
@@ -42,9 +45,8 @@ class PrintUtil:
         """
         width = int((self.console_width - len(title)) / 2)
 
-        click.echo("")
-        click.secho("{}{}{}".format(delimiter * width, title, delimiter * width), fg=fg, bold=True)
-        click.echo("")
+        self.print_basic()
+        self.print_basic("{}{}{}".format(delimiter * width, title, delimiter * width), fg=fg, bold=True)
 
     def print_close_header(self, delimiter="-", fg="green", blank_line=True):
         """
@@ -58,8 +60,8 @@ class PrintUtil:
         :type blank_line: bool
         """
         if blank_line:
-            click.echo("")
-        click.secho(delimiter * self.console_width, fg=fg, bold=True)
+            self.print_basic()
+        self.print_basic(delimiter * self.console_width, fg=fg, bold=True)
 
     def print_dict(self, title, data, fg="green"):
         """
@@ -72,7 +74,7 @@ class PrintUtil:
         :param fg: The color to make the text.
         :type fg: str, optional
         """
-        click.secho("{}: {}".format(title, json.dumps(data, indent=4)), fg=fg)
+        self.print_basic("{}: {}".format(title, json.dumps(data, indent=4)), fg=fg)
 
     def print_xml(self, title, data, fg="green"):
         """
@@ -85,20 +87,28 @@ class PrintUtil:
         :param fg: The color to make the text.
         :type fg: str, optional
         """
-        click.secho("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), fg=fg)
+        self.print_basic("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), fg=fg)
 
-    def print_basic(self, data="", fg="white", bold=False):
+    def print_basic(self, msg="", fg="white", bold=False, print_when_logging=False):
         """
         Print a status update in a boot sequence.
 
-        :param data: The update to print.
-        :type data: str, optional
+        :param msg: The update to print.
+        :type msg: str, optional
         :param fg: The color to make the text.
         :type fg: str, optional
-        :param bold: True if the output should be bold.
+        :param bold: ``True`` if the output should be bold.
         :type bold: bool, optional
+        :param print_when_logging: ``True`` if, when ``click_ctx`` is ``False``, ``msg`` should print to the console
+            instead appended to the logger.
+        :type print_when_logging: bool, optional
         """
-        click.secho(data, fg=fg, bold=bold)
+        if self.config.click_ctx:
+            click.secho(msg, fg=fg, bold=bold)
+        elif not print_when_logging:
+            logger.info(msg)
+        else:
+            print(msg)
 
 
 def python3_gte():
