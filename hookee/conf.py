@@ -64,15 +64,18 @@ class Config:
     :var config_data: The parsed and validated config data. Use :func:`get`, :func:`set`, and other accessors
         to interact with the data.
     :vartype config_data: confuse.templates.AttrDict
-    :var click_ctx: ``True`` if the app is running from a ``click`` CLI, ``False`` if it was started programmatically.
-        Not persisted to the config file.
-    :vartype click_ctx: bool
+    :var click_logging: ``True`` if ``click`` should be used for log output, which enables colors and formatting when
+        logging to a console, ``False`` if a logger should be used. Not persisted to the config file.
+    :vartype click_logging: bool
     :var response_callback: The response callback function, if defined. Not persisted to the config file.
     :vartype response_callback: types.FunctionType, optional
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, click_logging=None, **kwargs):
         try:
+            if click_logging is None:
+                click_logging = click.get_current_context(silent=True) is not None
+
             self.response_callback = kwargs.pop("response_callback", None)
 
             config = confuse.Configuration("hookee", __name__)
@@ -84,7 +87,7 @@ class Config:
 
             self.config_data = config.get(template)
 
-            self.click_ctx = click.get_current_context(silent=True) is not None
+            self.click_logging = click_logging
 
             if self.config_data.get("response") and self.response_callback:
                 raise HookeeConfigError("Can't define both \"response\" and \"response_callback\".")

@@ -26,7 +26,7 @@ or `conda`:
 conda install -c conda-forge hookee
 ```
 
-That's it! `hookee` is now installed.
+That's it! `hookee` is now available as a Python package is available from the command line.
 
 ## Basic Usage
 
@@ -55,8 +55,8 @@ hookee --help
 
 ## Documentation
 
-For more advanced usage, including how `hookee` default configuration can be changed, extended through plugins,
-and more, see its official documentation is available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
+For more advanced usage, including how `hookee`'s default configuration can be changed, extended through plugins,
+integrated with programmatically, and more, see its official documentation is available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
 
 ## Contributing
 

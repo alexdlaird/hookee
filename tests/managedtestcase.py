@@ -2,9 +2,8 @@ import time
 import sys
 from contextlib import contextmanager
 
-from click import Context
+from hookee.conf import Config
 
-from hookee.cli import hookee as hookee_command
 from hookee import HookeeManager, util
 from tests.testcase import HookeeTestCase
 
@@ -15,7 +14,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
+__version__ = "1.2.01"
 
 
 class ManagedTestCase(HookeeTestCase):
@@ -30,8 +29,8 @@ class ManagedTestCase(HookeeTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.hookee_manager = HookeeManager()
-        cls.hookee_manager.config.click_ctx = True
+        cls.config = Config(click_logging=True)
+        cls.hookee_manager = HookeeManager(config=cls.config)
 
         cls.hookee_manager._init_server_and_tunnel()
 

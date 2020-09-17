@@ -9,7 +9,7 @@ import click
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +47,7 @@ class PrintUtil:
 
         self.print_basic()
         self.print_basic("{}{}{}".format(delimiter * width, title, delimiter * width), fg=fg, bold=True)
+        self.print_basic()
 
     def print_close_header(self, delimiter="-", fg="green", blank_line=True):
         """
@@ -103,7 +104,7 @@ class PrintUtil:
             instead appended to the logger.
         :type print_when_logging: bool, optional
         """
-        if self.config.click_ctx:
+        if self.config.click_logging:
             click.secho(msg, fg=fg, bold=bold)
         elif not print_when_logging:
             logger.info(msg)

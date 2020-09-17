@@ -12,8 +12,8 @@ __version__ = "1.2.0"
 
 
 class TestHookeeManagerEdges(HookeeTestCase):
-    def test_not_click_ctx(self):
-        self.assertFalse(self.config.click_ctx)
+    def test_not_click_logging(self):
+        self.assertFalse(self.config.click_logging)
     
     def test_hookee_manager(self):
         # GIVEN

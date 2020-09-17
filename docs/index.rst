@@ -41,7 +41,7 @@ or ``conda``:
 
     conda install -c conda-forge hookee
 
-That's it! ``hookee`` is now installed.
+That's it! ``hookee`` is now available as a Python package is available from the command line.
 
 Basic Usage
 ===========
@@ -192,12 +192,19 @@ Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1
 `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
 two packages would allow ``hookee`` to be configured and extended further.
 
-``hookee`` can also be instantiated programmatically instead of from the console. To integrate with ``hookee``
-this way, have a look at the :class:`~hookee.hookeemanager.HookeeManager` as a starting point. When instantiating
-``hookee`` this way, be sure to configure logging, otherwise request data that would otherwise be output to the
-console (for instance request data dumped from plugins) won't be seen.
+``hookee`` can also be instantiated programmatically instead of as a command line utility. To integrate with
+``hookee`` this way, have a look at the :class:`~hookee.hookeemanager.HookeeManager` as a starting point. To still
+get access to the output that would otherwise go to the console (for instance, request data dumped from plugins),
+`setup the hookee logger <https://docs.python.org/3/howto/logging.html>`_. For example, this would add a handler
+to the ``hookee`` logger that just logs output back to the console:
 
-For more advanced ``hookee`` usage, its own API documentation is also available.
+.. code-block:: python
+
+    logger = logging.getLogger("hookee")
+    logger.setLevel(logging.INFO)
+    logging.getLogger().addHandler(logging.StreamHandler())
+
+For more advanced ``hookee`` usage, API documentation is also available.
 
 .. toctree::
    :maxdepth: 2
