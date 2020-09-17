@@ -4,7 +4,9 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
+
+from hookee.exception import HookeeConfigError
 
 template = {
     "port": int,
@@ -31,8 +33,27 @@ class Config:
     values from the command line, this is where updated values are stored) which in turn can be overridden by
     passing args to the CLI.
 
-    :var ctx: The ``click`` context.
-    :vartype ctx: click.Context
+    If instantiating programmatically, args that would otherwise have been passed to and validated by the CLI
+    (see ``hookee --help``) can instead be passed as ``kwargs`` here to ensure the same validation is done.
+    For example:
+
+    .. code-block:: python
+
+        config = Config(subdomain="my_domain",
+                        region="eu")
+
+    A callback function can also be passed instead of ``response`` and ``content-type`` (or needing to use
+    plugins) when instantiating programmatically:
+
+    .. code-block:: python
+
+        def response_callback(request, response):
+            response.data = "<Response>Ok</Response>"
+            response.headers["Content-Type"] = "application/xml"
+            return response
+
+        config = Config(response_callback=response_callback)
+
     :var config_obj: The templated config object.
     :vartype config_obj: confuse.core.Configuration
     :var config_dir: The directory of the config being used.
@@ -44,12 +65,12 @@ class Config:
     :vartype config_data: confuse.templates.AttrDict
     """
 
-    def __init__(self, ctx):
-        self.ctx = ctx
-
+    def __init__(self, **kwargs):
         try:
+            self.response_callback = kwargs.pop("response_callback", None)
+
             config = confuse.Configuration("hookee", __name__)
-            config.set_args(ctx.obj)
+            config.set_args(kwargs)
 
             self.config_obj = config
             self.config_dir = self.config_obj.config_dir()
@@ -57,13 +78,18 @@ class Config:
 
             self.config_data = config.get(template)
 
+            if self.config_data.get("response") and self.response_callback:
+                raise HookeeConfigError("Can't define both \"response\" and \"response_callback\".")
+            elif self.response_callback and not callable(self.response_callback):
+                raise HookeeConfigError("\"response_callback\" must be a function.")
+
             plugins_dir = os.path.expanduser(self.config_data["plugins_dir"])
             if not os.path.exists(plugins_dir):
                 os.makedirs(plugins_dir)
         except confuse.NotFoundError as e:
-            ctx.fail("The config file is invalid: {}.".format(str(e)))
+            raise HookeeConfigError("The config file is invalid: {}.".format(str(e)))
         except (confuse.ConfigReadError, ValueError):
-            ctx.fail("The config file is not valid YAML.")
+            raise HookeeConfigError("The config file is not valid YAML.")
 
     def get(self, key):
         """
@@ -74,6 +100,9 @@ class Config:
         :return: The config value.
         :rtype: object
         """
+        if key == "response_callback":
+            return self.response_callback
+
         return self.config_data[key]
 
     def set(self, key, value):
@@ -85,8 +114,17 @@ class Config:
         :param value: The value to set.
         :type key: object
         """
-        if value != self.config_data[key]:
-            self._update_config_objects(key, value)
+        if key == "response_callback":
+            print(value)
+            print(type(value))
+            if not callable(value):
+                raise HookeeConfigError("\"response_callback\" must be a function.")
+            else:
+                self.response_callback = value
+
+        else:
+            if value != self.config_data[key]:
+                self._update_config_objects(key, value)
 
     def append(self, key, value):
         """
@@ -126,25 +164,6 @@ class Config:
         self._write_config_objects_to_file()
 
     def _write_config_objects_to_file(self):
+        # TODO: confuse's dump() should actually take care of this, we just need to set a source as `default`
         with open(self.config_path, "w") as f:
             f.write(self.config_obj.dump())
-
-
-class Context:
-    """
-    The ``HookeeManager`` class can be invoked programmatically, avoiding the CLI, and this object can be passed for
-    the ``ctx`` (which otherwise comes from the CLI). Populate the ``obj`` dictionary with keys/values that would
-    otherwise be passed as args to the CLI for proper initialization.
-
-    :var obj: A dictionary of keys/values matching valid CLI args.
-    :vartype obj: dict, optional
-    """
-
-    def __init__(self, obj=None):
-        if obj is None:
-            obj = {}
-
-        self.obj = obj
-
-
-default_context = Context()

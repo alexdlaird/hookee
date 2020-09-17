@@ -15,7 +15,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -147,8 +147,6 @@ class PluginManager:
 
     :var hookee_manager: Reference to the ``hookee`` Manager.
     :vartype hookee_manager: HookeeManager
-    :var ctx: The ``click`` context.
-    :vartype ctx: click.Context
     :var config: The ``hookee`` configuration.
     :vartype config: Config
     :var source: The ``hookee`` configuration.
@@ -157,7 +155,8 @@ class PluginManager:
     :vartype request_script: Plugin
     :var response_script: A response plugin loaded from the script at ``--response_script``, run last.
     :vartype response_script: Plugin
-    :var response_body: The response body loaded from ``--response``, overrides any body data from response plugins.
+    :var response_callback: The response body loaded from either ``--response``, or the lambda defined in the config's
+        ``response_calback``. Overrides any body data from response plugins.
     :vartype response_body: str
     :var builtin_plugins_dir: The directory where built-in plugins reside.
     :vartype builtin_plugins_dir: str
@@ -167,14 +166,12 @@ class PluginManager:
 
     def __init__(self, hookee_manager):
         self.hookee_manager = hookee_manager
-        self.ctx = self.hookee_manager.ctx
         self.config = self.hookee_manager.config
 
         self.source = None
         self.request_script = None
         self.response_script = None
-        self.response_body = None
-        self.response_content_type = None
+        self.response_callback = None
 
         self.builtin_plugins_dir = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "plugins"))
 
@@ -200,7 +197,7 @@ class PluginManager:
 
         for plugin_name in REQUIRED_PLUGINS:
             if plugin_name not in enabled_plugins:
-                self.ctx.fail(
+                self.hookee_manager.fail(
                     "Sorry, the plugin {} is required. Run `hookee enable-plugin {}` before continuing.".format(
                         plugin_name, plugin_name))
 
@@ -226,14 +223,28 @@ class PluginManager:
         else:
             self.request_script = None
 
-        self.response_body = self.config.get("response")
-        self.response_content_type = self.config.get("content_type")
+        response_body = self.config.get("response")
+        response_content_type = self.config.get("content_type")
 
-        if self.response_content_type and not self.response_body:
-            self.ctx.fail("If `--content-type` is given, `--response` must also be given.")
+        if response_content_type and not response_body:
+            self.hookee_manager.fail("If `--content-type` is given, `--response` must also be given.")
 
-        if len(self.get_plugins_by_type(RESPONSE_PLUGIN)) == 0 and not self.response_script and not self.response_body:
-            self.ctx.fail(
+        self.response_callback = self.config.get("response_callback")
+
+        if self.response_callback and response_body:
+            self.hookee_manager.fail("If `response_callback` is given, `response` cannot also be given.")
+        elif response_body and not self.response_callback:
+            def response_callback(request, response):
+                response.data = response_body
+                response.headers[
+                    "Content-Type"] = response_content_type if response_content_type else "text/plain"
+                return response
+
+            self.response_callback = response_callback
+
+        if len(self.get_plugins_by_type(
+                RESPONSE_PLUGIN)) == 0 and not self.response_script and not self.response_callback:
+            self.hookee_manager.fail(
                 "No response plugin was loaded. Enable a pluing like `response_echo`, or pass `--response` "
                 "or `--response-script`.")
 
@@ -288,10 +299,8 @@ class PluginManager:
 
         if not response:
             response = current_app.response_class("")
-        if self.response_body:
-            response.data = self.response_body
-            response.headers[
-                "Content-Type"] = self.response_content_type if self.response_content_type else "text/plain"
+        if self.response_callback:
+            response = self.response_callback(request, response)
 
         if response_info_plugin:
             response = response_info_plugin.run(request, response)
@@ -310,9 +319,12 @@ class PluginManager:
         try:
             return Plugin.build_from_module(self.source.load_plugin(plugin_name))
         except ImportError:
-            self.ctx.fail("Plugin \"{}\" could not be found.".format(plugin_name))
+            self.hookee_manager.fail("Plugin \"{}\" could not be found.".format(plugin_name))
         except HookeePluginValidationError as e:
-            self.ctx.fail(str(e))
+            if self.hookee_manager.ctx is not None:
+                self.hookee_manager.fail(str(e))
+            else:
+                raise e
 
     def enabled_plugins(self):
         """

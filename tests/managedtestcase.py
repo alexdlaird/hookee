@@ -2,8 +2,10 @@ import time
 import sys
 from contextlib import contextmanager
 
-from hookee.hookeemanager import HookeeManager
-from hookee import util, conf
+from click import Context
+
+from hookee.cli import hookee as hookee_command
+from hookee import HookeeManager, util
 from tests.testcase import HookeeTestCase
 
 if util.python3_gte():
@@ -13,7 +15,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 
 class ManagedTestCase(HookeeTestCase):
@@ -28,7 +30,7 @@ class ManagedTestCase(HookeeTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.hookee_manager = HookeeManager(conf.default_context)
+        cls.hookee_manager = HookeeManager()
 
         cls.hookee_manager._init_server_and_tunnel()
 

@@ -1,11 +1,18 @@
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.0.1"
+__version__ = "1.2.0"
 
 
 class HookeeError(Exception):
     """
     Raised when a general ``hookee`` error has occurred.
+    """
+    pass
+
+
+class HookeeConfigError(HookeeError):
+    """
+    Raised when there is an error initializing ``hookee` configuration.
     """
     pass
 

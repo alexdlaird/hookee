@@ -2,14 +2,13 @@ import platform
 
 import click
 
-from hookee import pluginmanager
-from hookee.hookeemanager import HookeeManager
+from hookee import HookeeManager, pluginmanager
 
 from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 
 @click.group(invoke_without_command=True)
@@ -22,7 +21,7 @@ __version__ = "1.1.0"
 @click.option("--auth", help="The basic auth to use for ngrok endpoints.")
 @click.option("--host_header", help="The \"Host\" header value to use for ngrok endpoints.")
 @click.option("--response", type=str,
-              help="Data to set for the response, overriding all body data from plugins and `--response-script`.")
+              help="Data to set for the response, overriding all body data from plugins and `--response-script` to be used as its own response callback.")
 @click.option("--content-type", type=str,
               help="The \"Content-Type\" header to set when response body data is given with `--response`")
 @click.option("--request-script", type=click.Path(exists=True),
@@ -56,9 +55,9 @@ def hookee(ctx, **kwargs):
     if kwargs.get("subdomain") and kwargs.get("hostname"):
         ctx.fail("Can't give both --subdomain and --hostname.")
 
-    hookee_manager = HookeeManager(ctx, load_plugins=ctx.invoked_subcommand not in ["enable-plugin", "disable-plugin",
-                                                                                    "available-plugins",
-                                                                                    "enabled-plugins"])
+    hookee_manager = HookeeManager(load_plugins=ctx.invoked_subcommand not in ["enable-plugin", "disable-plugin",
+                                                                               "available-plugins",
+                                                                               "enabled-plugins"])
     ctx.obj["hookee_manager"] = hookee_manager
 
     if ctx.invoked_subcommand is None:

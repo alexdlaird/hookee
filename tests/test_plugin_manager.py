@@ -1,21 +1,23 @@
 import os
 from types import ModuleType
 
+from flask import Response
+
 from hookee.pluginmanager import PluginManager, Plugin
 
-from hookee.hookeemanager import HookeeManager
+from hookee import HookeeManager
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 
 class TestPluginManager(HookeeTestCase):
     def setUp(self):
         super(TestPluginManager, self).setUp()
 
-        self.hookee_manager = HookeeManager(self.ctx)
+        self.hookee_manager = HookeeManager()
         self.plugin_manager = PluginManager(self.hookee_manager)
 
     def test_build_from_module(self):
@@ -77,6 +79,25 @@ class TestPluginManager(HookeeTestCase):
 
         # THEN
 
+    def test_response_callback(self):
+        # GIVEN
+        def response_callback(request, response):
+            response.data = "<Response>Ok</Response>"
+            response.headers["Content-Type"] = "application/xml"
+            return response
+
+        self.assertEqual(0, len(self.plugin_manager.loaded_plugins))
+        self.hookee_manager.config.set("response_callback", response_callback)
+
+        # WHEN
+        self.plugin_manager.load_plugins()
+
+        # THEN
+        self.assertIsNotNone(self.plugin_manager.response_callback)
+        response = self.plugin_manager.response_callback(None, Response())
+        self.assertEqual(response.data.decode("utf-8"), "<Response>Ok</Response>")
+        self.assertEqual(response.headers["Content-Type"], "application/xml")
+
     def test_load_plugins(self):
         # GIVEN
         self.assertEqual(0, len(self.plugin_manager.loaded_plugins))
@@ -100,5 +121,7 @@ class TestPluginManager(HookeeTestCase):
         self.assertEqual(self.plugin_manager.request_script.name, "request_body")
         self.assertTrue(isinstance(self.plugin_manager.response_script, Plugin))
         self.assertEqual(self.plugin_manager.response_script.name, "response_echo")
-        self.assertEqual(self.plugin_manager.response_body, "<Response>Ok</Response>")
-        self.assertEqual(self.plugin_manager.response_content_type, "application/xml")
+        self.assertIsNotNone(self.plugin_manager.response_callback)
+        response = self.plugin_manager.response_callback(None, Response())
+        self.assertEqual(response.data.decode("utf-8"), "<Response>Ok</Response>")
+        self.assertEqual(response.headers["Content-Type"], "application/xml")

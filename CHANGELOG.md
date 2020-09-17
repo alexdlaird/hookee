@@ -3,7 +3,23 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.1.0...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.2.0...HEAD)
+
+## [1.2.0](https://github.com/alexdlaird/hookee/compare/1.1.0...1.2.0) - 2019-09-16
+### Added
+- Output of enabled plugins on startup
+- `HookeeManager` class is now available with a simple `from hookee import HookeeManager` import.
+- `HookeeManager` can now be instantiated with a `config` arg, making programmatic use more accessible.
+- `response_callback` as a new config. Not accessible from command line, meant for programmatic use, and not compatible with `--response`.
+- When `--response`, a lambda is created for `response_callback` (in conjunction with `--content-type`, if present) and that is now used in `PluginManager.run_response_plugins()`.
+- Documentation improvements.
+
+### Changed
+- `PluginManager`'s `response_body` and `response_content_type` variables have been replaced with `response_callback`, a lambda that is generated if these configuration values are given.
+
+### Removed
+- `conf.Context` in favor of using `click`'s own `Context` object.
+- Access to the `click` `Context` except in `HookeeManager`, which now has its own abstraction around `Context`-related actions.
 
 ## [1.1.0](https://github.com/alexdlaird/hookee/compare/1.0.1...1.1.0) - 2019-09-15
 ### Added

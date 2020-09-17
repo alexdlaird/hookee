@@ -1,6 +1,9 @@
 import time
 
-from hookee import conf
+import click
+from hookee.exception import HookeeError, HookeeConfigError
+
+from hookee.conf import Config
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
 from hookee.tunnel import Tunnel
@@ -8,7 +11,7 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 
 class HookeeManager:
@@ -16,8 +19,30 @@ class HookeeManager:
     An object that manages the state of a ``hookee`` runtime. Reads app configuration, loads enabled plugins,
     and manages the long-lived state of ``hookee`` if a server and tunnel are started.
 
+    If instantiating programmatically, pass a :class:`~hookee.conf.Config` with args that otherwise would have
+    been passed to the CLI (see ``hookee --help``). For example:
+
+    .. code-block:: python
+
+        config = Config(subdomain="my_domain",
+                        region="eu")
+        hookee_manager = HookeeManager(config=config)
+
+    A ``response_callback`` function can also be passed instead of defining a raw ``response`` and ``content-type``
+    (or needing to use plugins) when instantiating programmatically:
+
+    .. code-block:: python
+
+        def response_callback(request, response):
+            response.data = "<Response>Ok</Response>"
+            response.headers["Content-Type"] = "application/xml"
+            return response
+
+        config = Config(response_callback=response_callback)
+        hookee_manager = HookeeManager(config=config)
+
     :var ctx: The ``click`` context.
-    :vartype ctx: click.Context, optional
+    :vartype ctx: click.Context
     :var config: The ``hookee`` configuration.
     :vartype config: Config
     :var plugin_manager: Reference to the Plugin Manager.
@@ -32,13 +57,20 @@ class HookeeManager:
     :vartype alive: bool
     """
 
-    def __init__(self, ctx=None, load_plugins=True):
-        if ctx is None:
-            ctx = conf.default_context
+    def __init__(self, config=None, load_plugins=True):
+        self.ctx = click.get_current_context(silent=True)
 
-        self.ctx = ctx
+        if config is None:
+            try:
+                data = self.ctx.obj if self.ctx is not None else {}
+                config = Config(**data)
+            except HookeeConfigError as e:
+                if self.ctx is not None:
+                    self.fail(str(e))
+                else:
+                    raise e
 
-        self.config = conf.Config(self.ctx)
+        self.config = config
         self.plugin_manager = PluginManager(self)
         self.print_util = PrintUtil(self.config)
 
@@ -95,6 +127,15 @@ class HookeeManager:
         self.print_util.print_close_header("=", blank_line=False)
 
     def print_ready(self):
+        self.print_util.print_open_header("Registered Plugins")
+
+        plugins = self.plugin_manager.enabled_plugins()
+        self.print_util.print_basic(" * Enabled Plugins: {}".format(plugins))
+        if self.plugin_manager.response_callback:
+            self.print_util.print_basic("   Response callback: enabled")
+
+        self.print_util.print_close_header()
+
         self.print_util.print_open_header("Registered Endpoints")
 
         rules = list(filter(lambda r: r.rule not in ["/shutdown", "/static/<path:filename>", "/status"],
@@ -108,6 +149,19 @@ class HookeeManager:
         self.print_util.print_basic()
         self.print_util.print_basic("--> Ready, send a request to a registered endpoint ...", fg="green", bold=True)
         self.print_util.print_basic()
+
+    def fail(self, msg):
+        """
+        Shutdown the curent application with a failure. If a CLI Context exists, that will be used to invoke the failure,
+        otherwise an exception will be thrown for failures to be caught programmatically.
+
+        :param msg: The failure message.
+        :type msg: str
+        """
+        if self.ctx is not None:
+            self.ctx.fail(msg)
+        else:
+            raise HookeeError(msg)
 
     def _init_server_and_tunnel(self):
         self.alive = True
