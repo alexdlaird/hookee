@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.2.1...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.2.2...HEAD)
+
+## [1.2.2](https://github.com/alexdlaird/hookee/compare/1.2.1...1.2.2) - 2019-09-20
 ### Added
 - Console output colors are now configurable.
 - Improved formatting for enabled/available plugin listing from CLI.
