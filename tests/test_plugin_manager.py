@@ -40,13 +40,11 @@ class TestPluginManager(HookeeTestCase):
         # GIVEN
         invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
         with open(invalid_plugin_path, "w") as f:
-            f.write("""
-def setup(hookee_manager):
+            f.write("""def setup(hookee_manager):
     pass
 
-def run(request, response):
-    return response""")
-        self.plugin_manager.source_plugins()
+def run(request):
+    return request""")
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
@@ -66,7 +64,6 @@ plugin_type = REQUEST_PLUGIN
 
 def setup(hookee_manager):
     pass""")
-        self.plugin_manager.source_plugins()
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
@@ -88,8 +85,7 @@ def setup(hookee_manager):
     pass
 
 def run():
-    return response""")
-        self.plugin_manager.source_plugins()
+    pass""")
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
@@ -109,7 +105,6 @@ plugin_type = BLUEPRINT_PLUGIN
 
 def setup(hookee_manager):
     pass""")
-        self.plugin_manager.source_plugins()
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
