@@ -10,6 +10,8 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "1.2.2"
 
 plugin_type = RESPONSE_PLUGIN
+description = "If the `response` object has not been initialized, create a response that echo's back the request data."
+
 print_util = None  # type: PrintUtil
 
 

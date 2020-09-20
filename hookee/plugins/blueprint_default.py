@@ -8,8 +8,10 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "1.2.2"
 
 blueprint = Blueprint("default", __name__)
-
 plugin_type = BLUEPRINT_PLUGIN
+description = "Mount required management endpoints along with the default `/webhook` endpoint that processes incoming " \
+              "requests with enabled plugins."
+
 plugin_manager = None  # type: PluginManager
 print_util = None  # type: PrintUtil
 

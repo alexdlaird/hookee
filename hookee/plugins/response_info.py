@@ -6,6 +6,8 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "1.2.2"
 
 plugin_type = RESPONSE_PLUGIN
+description = "Print the `response`'s status code, headers, and body, if defined."
+
 print_util = None  # type: PrintUtil
 
 

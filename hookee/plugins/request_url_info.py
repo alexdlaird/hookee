@@ -8,6 +8,8 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "1.2.2"
 
 plugin_type = REQUEST_PLUGIN
+description = "Print the timestamp along with the request URL and method being invoked."
+
 print_util = None  # type: PrintUtil
 
 

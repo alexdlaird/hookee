@@ -6,6 +6,8 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "1.2.2"
 
 plugin_type = REQUEST_PLUGIN
+description = "Print the `request`'s body, if defined, and attempt to identify the body type."
+
 print_util = None  # type: PrintUtil
 
 
