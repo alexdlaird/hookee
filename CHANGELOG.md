@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.2.1...HEAD)
 ### Added
 - Console output colors are now configurable.
+- Improved formatting for enabled/available plugin listing from CLI.
+- Support for `description` for a Plugin.
 
 ### Changed
 - Removed "Beta" label in PyPI classifiers.

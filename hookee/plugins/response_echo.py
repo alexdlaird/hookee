@@ -2,14 +2,15 @@ import json
 
 from flask import current_app
 
-from hookee import pluginmanager
+from hookee.pluginmanager import RESPONSE_PLUGIN
+from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.2"
 
-plugin_type = pluginmanager.RESPONSE_PLUGIN
-print_util = None
+plugin_type = RESPONSE_PLUGIN
+print_util = None  # type: PrintUtil
 
 
 def setup(hookee_manager):

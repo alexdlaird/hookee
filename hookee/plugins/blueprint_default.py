@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 
-from hookee import pluginmanager
+from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager
+from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
@@ -8,9 +9,9 @@ __version__ = "1.2.2"
 
 blueprint = Blueprint("default", __name__)
 
-plugin_type = pluginmanager.BLUEPRINT_PLUGIN
-plugin_manager = None
-print_util = None
+plugin_type = BLUEPRINT_PLUGIN
+plugin_manager = None  # type: PluginManager
+print_util = None  # type: PrintUtil
 
 
 def setup(hookee_manager):

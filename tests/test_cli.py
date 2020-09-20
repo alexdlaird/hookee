@@ -28,7 +28,7 @@ class TestCli(HookeeTestCase):
         self.assertEqual(result.exit_code, 2)
         self.assertIn("No such key", result.output)
 
-    def test_available_plugins_config(self):
+    def test_available_plugins(self):
         # GIVEN
         builtin_plugin_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
                                            "request_body.py")
@@ -41,11 +41,18 @@ class TestCli(HookeeTestCase):
         # THEN
         self.assertEqual(result.exit_code, 0)
         self.assertIn(
-            "['blueprint_default', 'custom_plugin', 'request_body', 'request_files', 'request_headers', "
-            "'request_query_params', 'request_url_info', 'response_echo', 'response_info']",
+            """ * blueprint_default
+ * custom_plugin
+ * request_body
+ * request_files
+ * request_headers
+ * request_query_params
+ * request_url_info
+ * response_echo
+ * response_info""",
             result.output)
 
-    def test_enabled_plugins_config(self):
+    def test_enabled_plugins(self):
         # GIVEN
         self.config.remove("plugins", "request_files")
         self.config.remove("plugins", "request_query_params")
@@ -56,8 +63,12 @@ class TestCli(HookeeTestCase):
         # THEN
         self.assertEqual(result.exit_code, 0)
         self.assertIn(
-            "['blueprint_default', 'request_url_info', 'request_headers', 'request_body', 'response_echo', "
-            "'response_info']",
+            """ * blueprint_default
+ * request_url_info
+ * request_headers
+ * request_body
+ * response_echo
+ * response_info""",
             result.output)
 
     def test_enable_plugin(self):

@@ -15,7 +15,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
+__version__ = "1.2.2"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -27,7 +27,7 @@ REQUIRED_PLUGINS = ["blueprint_default"]
 
 class Plugin:
     """
-    An object that represents a ``hookee`` plugin.
+    An object that represents a validated and loaded ``hookee`` plugin.
 
     :var module: The underlying plugin module.
     :vartype module: types.ModuleType
@@ -35,16 +35,19 @@ class Plugin:
     :vartype plugin_type: str
     :var name: The name of the plugin.
     :vartype name: str
+    :var name: The description of the plugin.
+    :vartype name: str, optional
     :var has_setup: ``True`` if the plugin has a ``setup(hookee_manager)`` method.
     :vartype has_setup: bool
     """
 
-    def __init__(self, module, plugin_type, name, has_setup):
+    def __init__(self, module, plugin_type, name, has_setup, description=None):
         self.module = module
 
         self.plugin_type = plugin_type
         self.name = name
         self.has_setup = has_setup
+        self.description = description
 
         if self.plugin_type == BLUEPRINT_PLUGIN:
             self.blueprint = self.module.blueprint
@@ -117,7 +120,7 @@ class Plugin:
 
         has_setup = "setup" in functions_list and len(util.get_args(module.setup)) == 1
 
-        return Plugin(module, module.plugin_type, name, has_setup)
+        return Plugin(module, module.plugin_type, name, has_setup, getattr(module, "description", None))
 
     @staticmethod
     def build_from_file(path):
@@ -296,20 +299,28 @@ class PluginManager:
 
         return response
 
-    def get_plugin(self, plugin_name):
+    def get_plugin(self, plugin_name, throw_error=False):
         """
         Get the given plugin name from modules parsed by :func:`~hookee.pluginmanager.PluginManager.source_plugins`.
 
         :param plugin_name: The name of the plugin to load.
         :type plugin_name: str
+        :param throw_error: ``True`` if errors encountered should be thrown to the caller, ``False`` if
+            :func:`~hookee.hookeemanager.HookeeManager.fail` should be called.
         :return: The loaded plugin.
         :rtype: Plugin
         """
         try:
             return Plugin.build_from_module(self.source.load_plugin(plugin_name))
-        except ImportError:
+        except ImportError as e:
+            if throw_error:
+                raise e
+
             self.hookee_manager.fail("Plugin \"{}\" could not be found.".format(plugin_name))
         except HookeePluginValidationError as e:
+            if throw_error:
+                raise e
+
             self.hookee_manager.fail(str(e), e)
 
     def enabled_plugins(self):

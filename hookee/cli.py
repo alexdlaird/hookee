@@ -21,13 +21,15 @@ __version__ = "1.2.2"
 @click.option("--auth", help="The basic auth to use for ngrok endpoints.")
 @click.option("--host_header", help="The \"Host\" header value to use for ngrok endpoints.")
 @click.option("--response", type=str,
-              help="Data to set for the response, overriding all body data from plugins and `--response-script` to be used as its own response callback.")
+              help="Data to set for the response, overriding all body data from plugins and `--response-script`.")
 @click.option("--content-type", type=str,
               help="The \"Content-Type\" header to set when response body data is given with `--response`")
 @click.option("--request-script", type=click.Path(exists=True),
-              help="A Python script whose `run(request)` method will be called by the default `/webhook` after all request plugins have run.")
+              help="A Python script whose `run(request)` method will be called by the default `/webhook` after all "
+                   "request plugins have run.")
 @click.option("--response-script", type=click.Path(exists=True),
-              help="A Python script whose `run(request, response)` method will be called by the default `/webhook` after all response plugins have run.")
+              help="A Python script whose `run(request, response)` method will be called by the default `/webhook` "
+                   "after all response plugins have run.")
 @click.option("--auth-token", help="A valid ngrok auth token.")
 @click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom hookee plugins.")
 @click.option("--plugins", multiple=True, help="A list of hookee plugins to use.")
@@ -55,9 +57,10 @@ def hookee(ctx, **kwargs):
     if kwargs.get("subdomain") and kwargs.get("hostname"):
         ctx.fail("Can't give both --subdomain and --hostname.")
 
-    hookee_manager = HookeeManager(load_plugins=ctx.invoked_subcommand not in ["enable-plugin", "disable-plugin",
-                                                                               "available-plugins",
-                                                                               "enabled-plugins"])
+    hookee_manager = HookeeManager(load_plugins=ctx.invoked_subcommand not in [enable_plugin.name,
+                                                                               disable_plugin.name,
+                                                                               available_plugins.name,
+                                                                               enabled_plugins.name])
     ctx.obj["hookee_manager"] = hookee_manager
 
     if ctx.invoked_subcommand is None:
@@ -76,7 +79,8 @@ def start(ctx):
 
 
 @hookee.command(
-    short_help="Update the default value for a config. Any passable arg to hookee can also be given here to set its default in the config so it doesn't need to be passed to the hookee each time."
+    short_help="Update the default value for a config. Any passable arg to hookee can also be given here to set its "
+               "default in the config so it doesn't need to be passed to the hookee each time."
 )
 @click.pass_context
 @click.argument("key")
@@ -148,8 +152,20 @@ def available_plugins(ctx):
 
     plugins = hookee_manager.plugin_manager.available_plugins()
 
-    hookee_manager.print_util.print_basic("\nAvailable Plugins: {}\n".format(plugins),
-                                          color=hookee_manager.print_util.header_color)
+    hookee_manager.print_util.print_open_header("Available Plugins")
+
+    for plugin_name in plugins:
+        hookee_manager.print_util.print_basic(" * {}".format(plugin_name))
+
+        try:
+            plugin = hookee_manager.plugin_manager.get_plugin(plugin_name)
+            if plugin.description:
+                hookee_manager.print_util.print_basic("   Description: {}".format(plugin.description))
+        except Exception as e:
+            hookee_manager.print_util.print_basic("   Error: {}".format(e))
+
+    hookee_manager.print_util.print_close_header()
+    hookee_manager.print_util.print_basic()
 
 
 @hookee.command()
@@ -162,8 +178,20 @@ def enabled_plugins(ctx):
 
     plugins = hookee_manager.plugin_manager.enabled_plugins()
 
-    hookee_manager.print_util.print_basic("\nEnabled Plugins: {}\n".format(plugins),
-                                          color=hookee_manager.print_util.header_color)
+    hookee_manager.print_util.print_open_header("Enabled Plugins (Order of Execution)")
+
+    for plugin_name in plugins:
+        hookee_manager.print_util.print_basic(" * {}".format(plugin_name))
+
+        try:
+            plugin = hookee_manager.plugin_manager.get_plugin(plugin_name)
+            if plugin.description:
+                hookee_manager.print_util.print_basic("   Description: {}".format(plugin.description))
+        except Exception as e:
+            hookee_manager.print_util.print_basic("   Error: {}".format(e))
+
+    hookee_manager.print_util.print_close_header()
+    hookee_manager.print_util.print_basic()
 
 
 if __name__ == "__main__":

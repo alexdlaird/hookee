@@ -162,7 +162,10 @@ Plugins have a simple structure. Every plugin must define a ``plugin_type``, and
 - ``response``
 
 All plugin types can optionally implement ``setup(hookee_manager)``, which will be called on the plugin when it is
-first loaded.
+first loaded. References to :class:`~hookee.pluginmanager.PluginManager`, :class:`~hookee.util.PrintUtil`, and more
+can be access from the passed in :class:`~hookee.hookeemanager.HookeeManager`.
+
+Plugins can also optionally define a ``description``, which will be output when listing available and enabled plugins.
 
 Blueprint Plugins
 -----------------
