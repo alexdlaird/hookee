@@ -3,6 +3,7 @@ import shutil
 from types import ModuleType
 
 from flask import Response
+from hookee.exception import HookeePluginValidationError
 
 from hookee.pluginmanager import PluginManager, Plugin, VALID_PLUGIN_TYPES, BLUEPRINT_PLUGIN
 
@@ -11,7 +12,7 @@ from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
+__version__ = "1.2.2"
 
 
 class TestPluginManager(HookeeTestCase):
@@ -35,50 +36,84 @@ class TestPluginManager(HookeeTestCase):
         self.assertEqual(plugin.name, "request_body")
         self.assertTrue(plugin.has_setup)
 
-    def test_build_from_module_not_conform_to_spec(self):
-        # TODO implement
-        pass
-        # GIVEN
-
-        # WHEN
-
-        # THEN
-
     def test_build_from_module_no_plugin_type(self):
-        # TODO implement
-        pass
         # GIVEN
+        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
+        with open(invalid_plugin_path, "w") as f:
+            f.write("""
+def setup(hookee_manager):
+    pass
+
+def run(request, response):
+    return response""")
+        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
+        with self.assertRaises(HookeePluginValidationError) as cm:
+            Plugin.build_from_module(plugin)
 
         # THEN
+        self.assertIn("does not conform to the plugin spec", str(cm.exception))
 
     def test_build_from_module_no_run(self):
-        # TODO implement
-        pass
         # GIVEN
+        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
+        with open(invalid_plugin_path, "w") as f:
+            f.write("""from hookee.pluginmanager import REQUEST_PLUGIN
+
+plugin_type = REQUEST_PLUGIN
+
+def setup(hookee_manager):
+    pass""")
+        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
+        with self.assertRaises(HookeePluginValidationError) as cm:
+            Plugin.build_from_module(plugin)
 
         # THEN
+        self.assertIn("must implement `run", str(cm.exception))
 
     def test_build_from_module_wrong_args(self):
-        # TODO implement
-        pass
         # GIVEN
+        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
+        with open(invalid_plugin_path, "w") as f:
+            f.write("""from hookee.pluginmanager import REQUEST_PLUGIN
+
+plugin_type = REQUEST_PLUGIN
+            
+def setup(hookee_manager):
+    pass
+
+def run():
+    return response""")
+        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
+        with self.assertRaises(HookeePluginValidationError) as cm:
+            Plugin.build_from_module(plugin)
 
         # THEN
+        self.assertIn("`run(request)` must be defined", str(cm.exception))
 
     def test_build_from_module_no_blueprint(self):
-        # TODO implement
-        pass
         # GIVEN
+        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
+        with open(invalid_plugin_path, "w") as f:
+            f.write("""from hookee.pluginmanager import BLUEPRINT_PLUGIN
+
+plugin_type = BLUEPRINT_PLUGIN
+
+def setup(hookee_manager):
+    pass""")
+        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
+        with self.assertRaises(HookeePluginValidationError) as cm:
+            Plugin.build_from_module(plugin)
 
         # THEN
+        self.assertIn("must define `blueprint", str(cm.exception))
 
     def test_response_callback(self):
         # GIVEN
@@ -102,6 +137,10 @@ class TestPluginManager(HookeeTestCase):
     def test_load_plugins(self):
         # GIVEN
         self.assertEqual(0, len(self.plugin_manager.loaded_plugins))
+        builtin_plugin_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
+                                           "request_url_info.py")
+        custom_plugin_path = os.path.join(self.plugins_dir, "custom_plugin.py")
+        shutil.copy(builtin_plugin_path, custom_plugin_path)
         request_script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
                                            "request_body.py")
         custom_request_plugin_path = os.path.join(self.plugins_dir, "custom_request_plugin.py")
@@ -110,6 +149,8 @@ class TestPluginManager(HookeeTestCase):
                                             "response_echo.py")
         custom_response_plugin_path = os.path.join(self.plugins_dir, "custom_response_plugin.py")
         shutil.copy(response_script_path, custom_response_plugin_path)
+
+        self.hookee_manager.config.append("plugins", "custom_plugin")
         self.hookee_manager.config.set("request_script", custom_request_plugin_path)
         self.hookee_manager.config.set("response_script", custom_response_plugin_path)
         self.hookee_manager.config.set("response", "<Response>Ok</Response>")
@@ -119,7 +160,7 @@ class TestPluginManager(HookeeTestCase):
         self.plugin_manager.load_plugins()
 
         # THEN
-        self.assertEqual(10, len(self.plugin_manager.loaded_plugins))
+        self.assertEqual(11, len(self.plugin_manager.loaded_plugins))
         request_script_found = False
         response_script_found = False
         for plugin in self.plugin_manager.loaded_plugins:

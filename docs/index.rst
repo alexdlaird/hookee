@@ -111,12 +111,16 @@ From now on, these args are no longer necessary when starting ``hookee``:
 Customizing the Response
 ========================
 
-If we don't want to bother with building our own plugins and just want to quickly customize the response from
-``/webhook``, the ``--response`` arg is here for us.
+If we don't want to bother with building our own plugins, the response from ``/webhook`` and be customized right from
+the command line with the ``--response`` arg.
 
 .. code-block:: sh
 
     hookee --response "<Response>Ok</Response>" --content-type application/xml
+
+This approach can be particularly useful in tutorials where we want to quickly allow a developer to see and interact
+with webhooks from our service before they've done any actual integration with our service themselves—all they would
+have to do is copy and paste a simple ``hookee`` command like the one shown above.
 
 As with any config, if we find ourselves continually passing this response to ``hookee`` every time we run it, we can
 make it the default:

@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Console output colors are now configurable.
 - Improved formatting for enabled/available plugin listing from CLI.
 - Support for `description` for a Plugin.
+- More tests for `PluginManager` edge cases.
+- Documentation improvements.
 
 ### Changed
 - Removed "Beta" label in PyPI classifiers.
