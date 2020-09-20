@@ -40,17 +40,15 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        self.assertIn(
-            """ * blueprint_default
- * custom_plugin
- * request_body
- * request_files
- * request_headers
- * request_query_params
- * request_url_info
- * response_echo
- * response_info""",
-            result.output)
+        self.assertIn(" * blueprint_default", result.output)
+        self.assertIn(" * custom_plugin", result.output)
+        self.assertIn(" * request_body", result.output)
+        self.assertIn(" * request_files", result.output)
+        self.assertIn(" * request_headers", result.output)
+        self.assertIn(" * request_query_params", result.output)
+        self.assertIn(" * request_url_info", result.output)
+        self.assertIn(" * response_echo", result.output)
+        self.assertIn(" * response_info", result.output)
 
     def test_enabled_plugins(self):
         # GIVEN
@@ -62,14 +60,12 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        self.assertIn(
-            """ * blueprint_default
- * request_url_info
- * request_headers
- * request_body
- * response_echo
- * response_info""",
-            result.output)
+        self.assertIn(" * blueprint_default", result.output)
+        self.assertIn(" * request_url_info", result.output)
+        self.assertIn(" * request_headers", result.output)
+        self.assertIn(" * request_body", result.output)
+        self.assertIn(" * response_echo", result.output)
+        self.assertIn(" * response_info", result.output)
 
     def test_enable_plugin(self):
         # WHEN
