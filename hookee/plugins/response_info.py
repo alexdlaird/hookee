@@ -2,7 +2,7 @@ from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.2"
 
 plugin_type = pluginmanager.RESPONSE_PLUGIN
 print_util = None
@@ -15,13 +15,13 @@ def setup(hookee_manager):
 
 
 def run(request, response):
-    print_util.print_basic("Status Code: {}".format(response.status_code), fg="magenta")
+    print_util.print_basic("Status Code: {}".format(response.status_code), color=print_util.request_color)
     if response.headers:
-        print_util.print_dict("Headers", dict(response.headers), fg="magenta")
+        print_util.print_dict("Headers", dict(response.headers), color=print_util.request_color)
     if response.data:
         if response.is_json:
-            print_util.print_dict("Body", response.get_json(), fg="magenta")
+            print_util.print_dict("Body", response.get_json(), color=print_util.request_color)
         else:
-            print_util.print_basic("Body: {}".format(response.data.decode("utf-8")), fg="magenta")
+            print_util.print_basic("Body: {}".format(response.data.decode("utf-8")), color=print_util.request_color)
 
     return response

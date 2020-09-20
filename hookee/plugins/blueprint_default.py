@@ -4,7 +4,7 @@ from hookee import pluginmanager
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "1.2.2"
 
 blueprint = Blueprint("default", __name__)
 
@@ -23,17 +23,17 @@ def setup(hookee_manager):
 @blueprint.route("/webhook",
                  methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "TRACE", "CONNECT"])
 def webhook():
-    print_util.print_close_header(delimiter="=", fg="magenta")
+    print_util.print_close_header(delimiter="=", color=print_util.request_color)
 
-    print_util.print_open_header("Request", delimiter="-", fg="magenta")
+    print_util.print_open_header("Request", delimiter="-", color=print_util.request_color)
 
     plugin_manager.run_request_plugins(request)
 
-    print_util.print_open_header("Response", fg="magenta")
+    print_util.print_open_header("Response", color=print_util.request_color)
 
     response = plugin_manager.run_response_plugins(request)
 
-    print_util.print_close_header("=", fg="magenta")
+    print_util.print_close_header("=", color=print_util.request_color)
     print_util.print_basic()
 
     return response

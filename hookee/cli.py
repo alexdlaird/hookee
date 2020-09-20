@@ -8,7 +8,7 @@ from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
+__version__ = "1.2.2"
 
 
 @click.group(invoke_without_command=True)
@@ -148,7 +148,8 @@ def available_plugins(ctx):
 
     plugins = hookee_manager.plugin_manager.available_plugins()
 
-    hookee_manager.print_util.print_basic("\nAvailable Plugins: {}\n".format(plugins), fg="green")
+    hookee_manager.print_util.print_basic("\nAvailable Plugins: {}\n".format(plugins),
+                                          color=hookee_manager.print_util.header_color)
 
 
 @hookee.command()
@@ -161,7 +162,8 @@ def enabled_plugins(ctx):
 
     plugins = hookee_manager.plugin_manager.enabled_plugins()
 
-    hookee_manager.print_util.print_basic("\nEnabled Plugins: {}\n".format(plugins), fg="green")
+    hookee_manager.print_util.print_basic("\nEnabled Plugins: {}\n".format(plugins),
+                                          color=hookee_manager.print_util.header_color)
 
 
 if __name__ == "__main__":

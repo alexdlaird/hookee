@@ -5,7 +5,7 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 from hookee.exception import HookeeConfigError
 
@@ -24,6 +24,9 @@ template = {
     "plugins_dir": confuse.Filename(),
     "plugins": list,
     "console_width": confuse.Integer(default=80),
+    "header_color": confuse.Integer(default="green"),
+    "default_color": confuse.Integer(default="white"),
+    "request_color": confuse.Integer(default="white"),
 }
 
 

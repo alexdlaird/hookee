@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/1.2.1...HEAD)
+### Added
+- Console output colors are now configurable.
+
+### Changed
+- Removed "Beta" label in PyPI classifiers.
+- Default console output for request data is now white, but configurable.
 
 ## [1.2.1](https://github.com/alexdlaird/hookee/compare/1.2.0...1.2.1) - 2019-09-17
 ### Added

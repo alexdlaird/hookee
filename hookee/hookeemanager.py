@@ -126,7 +126,7 @@ class HookeeManager:
                 |   Y  (  <_> |  <_> )    <\  ___/\  ___/ 
                 |___|  /\____/ \____/|__|_ \\___  >\___  >
                      \/                   \/    \/     \/ 
-                                                   v{}""".format(__version__), fg="green", bold=True)
+                                                   v{}""".format(__version__), color="green", bold=True)
         self.print_util.print_basic()
         self.print_util.print_close_header("=", blank_line=False)
 
@@ -151,7 +151,7 @@ class HookeeManager:
         self.print_util.print_close_header()
 
         self.print_util.print_basic()
-        self.print_util.print_basic("--> Ready, send a request to a registered endpoint ...", fg="green", bold=True)
+        self.print_util.print_basic("--> Ready, send a request to a registered endpoint ...", color="green", bold=True)
         self.print_util.print_basic()
 
     def fail(self, msg, e=None):

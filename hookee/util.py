@@ -9,7 +9,7 @@ import click
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 logger = logging.getLogger(__name__)
 
@@ -43,10 +43,22 @@ class PrintUtil:
     def console_width(self):
         return self.config.get("console_width")
 
-    def print_config_update(self, msg):
-        self.print_basic("\n--> {}\n".format(msg), fg="green")
+    @property
+    def header_color(self):
+        return self.config.get("header_color")
 
-    def print_open_header(self, title, delimiter="-", fg="green"):
+    @property
+    def default_color(self):
+        return self.config.get("default_color")
+
+    @property
+    def request_color(self):
+        return self.config.get("request_color")
+
+    def print_config_update(self, msg):
+        self.print_basic("\n--> {}\n".format(msg), color=self.header_color)
+
+    def print_open_header(self, title, delimiter="-", color=None):
         """
         Log an opening header with a title and a new line before and after.
 
@@ -54,31 +66,37 @@ class PrintUtil:
         :type title: str
         :param delimiter: The title of the XML blob.
         :type delimiter: str, optional
-        :param fg: The color to make the text.
-        :type fg: str, optional
+        :param color: The color to make the text.
+        :type color: str, optional
         """
+        if color is None:
+            color = self.header_color
+
         width = int((self.console_width - len(title)) / 2)
 
         self.print_basic()
-        self.print_basic("{}{}{}".format(delimiter * width, title, delimiter * width), fg=fg, bold=True)
+        self.print_basic("{}{}{}".format(delimiter * width, title, delimiter * width), color=color, bold=True)
         self.print_basic()
 
-    def print_close_header(self, delimiter="-", fg="green", blank_line=True):
+    def print_close_header(self, delimiter="-", color=None, blank_line=True):
         """
         Log a closing header with an optional new line before.
 
         :param delimiter: The title of the XML blob.
         :type delimiter: str
-        :param fg: The color to make the text.
-        :type fg: str, optional
+        :param color: The color to make the text.
+        :type color: str, optional
         :param blank_line: ``True`` if a blank line should precede the closing header.
         :type blank_line: bool
         """
+        if color is None:
+            color = self.header_color
+
         if blank_line:
             self.print_basic()
-        self.print_basic(delimiter * self.console_width, fg=fg, bold=True)
+        self.print_basic(delimiter * self.console_width, color=color, bold=True)
 
-    def print_dict(self, title, data, fg="green"):
+    def print_dict(self, title, data, color=None):
         """
         Log formatted dictionary data.
 
@@ -86,12 +104,15 @@ class PrintUtil:
         :type title: str
         :param data: A dictionary.
         :type data: dict
-        :param fg: The color to make the text.
-        :type fg: str, optional
+        :param color: The color to make the text.
+        :type color: str, optional
         """
-        self.print_basic("{}: {}".format(title, json.dumps(data, indent=4)), fg=fg)
+        if color is None:
+            color = self.default_color
 
-    def print_xml(self, title, data, fg="green"):
+        self.print_basic("{}: {}".format(title, json.dumps(data, indent=4)), color=color)
+
+    def print_xml(self, title, data, color=None):
         """
         Log formatted XML.
 
@@ -99,28 +120,34 @@ class PrintUtil:
         :type title: str
         :param data: An XML string.
         :type data: str
-        :param fg: The color to make the text.
-        :type fg: str, optional
+        :param color: The color to make the text.
+        :type color: str, optional
         """
-        self.print_basic("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), fg=fg)
+        if color is None:
+            color = self.default_color
 
-    def print_basic(self, msg="", fg="white", bold=False, print_when_logging=False):
+        self.print_basic("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), color=color)
+
+    def print_basic(self, msg="", color=None, bold=False, print_when_logging=False):
         """
         Log a basic message. The message will be logged via ``click``, if ``click_logging`` is enabled in
         :class:`~hookee.conf.Config`, or appended to the logger.
 
         :param msg: The update to print.
         :type msg: str, optional
-        :param fg: The color to make the text.
-        :type fg: str, optional
+        :param color: The color to make the text.
+        :type color: str, optional
         :param bold: ``True`` if the output should be bold.
         :type bold: bool, optional
         :param print_when_logging: ``True`` if, when ``click_logging`` is ``False``, ``msg`` should print to the
             console instead of appending to the logger.
         :type print_when_logging: bool, optional
         """
+        if color is None:
+            color = self.default_color
+
         if self.config.click_logging:
-            click.secho(msg, fg=fg, bold=bold)
+            click.secho(msg, fg=color, bold=bold)
         elif not print_when_logging:
             logger.info(msg)
         else:
