@@ -210,7 +210,7 @@ to the ``hookee`` logger that logs output back to the console:
 
     logger = logging.getLogger("hookee")
     logger.setLevel(logging.INFO)
-    logging.getLogger().addHandler(logging.StreamHandler())
+    logger.addHandler(logging.StreamHandler())
 
 Dive Deeper
 ===========
