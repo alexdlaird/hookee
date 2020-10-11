@@ -45,6 +45,7 @@ class TestPluginManager(HookeeTestCase):
 
 def run(request):
     return request""")
+        self.plugin_manager.source_plugins()
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
@@ -64,6 +65,7 @@ plugin_type = REQUEST_PLUGIN
 
 def setup(hookee_manager):
     pass""")
+        self.plugin_manager.loaded_plugins()
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
@@ -86,6 +88,7 @@ def setup(hookee_manager):
 
 def run():
     pass""")
+        self.plugin_manager.source_plugins()
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
@@ -105,6 +108,7 @@ plugin_type = BLUEPRINT_PLUGIN
 
 def setup(hookee_manager):
     pass""")
+        self.plugin_manager.source_plugins()
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
