@@ -65,7 +65,7 @@ plugin_type = REQUEST_PLUGIN
 
 def setup(hookee_manager):
     pass""")
-        self.plugin_manager.loaded_plugins()
+        self.plugin_manager.source_plugins()
         plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
 
         # WHEN
