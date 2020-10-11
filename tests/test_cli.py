@@ -1,14 +1,13 @@
 import os
-import shutil
-from mock import mock
+
+import mock
 
 from hookee.cli import hookee
-
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "1.2.4"
 
 
 class TestCli(HookeeTestCase):
@@ -29,12 +28,6 @@ class TestCli(HookeeTestCase):
         self.assertIn("No such key", result.output)
 
     def test_available_plugins(self):
-        # GIVEN
-        builtin_plugin_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
-                                           "request_body.py")
-        custom_plugin_path = os.path.join(self.plugins_dir, "custom_plugin.py")
-        shutil.copy(builtin_plugin_path, custom_plugin_path)
-
         # WHEN
         result = self.runner.invoke(hookee, ["available-plugins"])
 

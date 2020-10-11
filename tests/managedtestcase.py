@@ -14,7 +14,7 @@ else:
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.01"
+__version__ = "1.2.1"
 
 
 class ManagedTestCase(HookeeTestCase):

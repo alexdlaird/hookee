@@ -1,5 +1,4 @@
 import os
-import shutil
 from types import ModuleType
 
 from flask import Response
@@ -12,7 +11,7 @@ from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "1.2.4"
 
 
 class TestPluginManager(HookeeTestCase):
@@ -102,18 +101,9 @@ class TestPluginManager(HookeeTestCase):
     def test_load_plugins(self):
         # GIVEN
         self.assertEqual(0, len(self.plugin_manager.loaded_plugins))
-        builtin_plugin_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
-                                           "request_url_info.py")
         custom_plugin_path = os.path.join(self.plugins_dir, "custom_plugin.py")
-        shutil.copy(builtin_plugin_path, custom_plugin_path)
-        request_script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
-                                           "request_body.py")
         custom_request_plugin_path = os.path.join(self.plugins_dir, "custom_request_plugin.py")
-        shutil.copy(request_script_path, custom_request_plugin_path)
-        response_script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "hookee", "plugins",
-                                            "response_echo.py")
         custom_response_plugin_path = os.path.join(self.plugins_dir, "custom_response_plugin.py")
-        shutil.copy(response_script_path, custom_response_plugin_path)
 
         self.hookee_manager.config.append("plugins", "custom_plugin")
         self.hookee_manager.config.set("request_script", custom_request_plugin_path)

@@ -3,7 +3,7 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "1.2.4"
 
 plugin_type = REQUEST_PLUGIN
 description = "Print the `request`'s body, if defined, and attempt to identify the body type."

@@ -7,7 +7,7 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "1.2.4"
 
 plugin_type = RESPONSE_PLUGIN
 description = "If the `response` object has not been initialized, create a response that echo's back the request data."

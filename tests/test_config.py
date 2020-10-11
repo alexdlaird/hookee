@@ -1,10 +1,10 @@
-from mock import mock
+import mock
 
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "0.0.12"
+__version__ = "1.2.4"
 
 
 class TestConfig(HookeeTestCase):

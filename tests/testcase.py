@@ -8,7 +8,7 @@ from hookee.conf import Config
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
+__version__ = "1.2.4"
 
 
 class HookeeTestCase(unittest.TestCase):
@@ -24,8 +24,6 @@ class HookeeTestCase(unittest.TestCase):
 
         self.plugins_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "plugins_dir")
         self.config.set("plugins_dir", self.plugins_dir)
-        if not os.path.exists(self.plugins_dir):
-            os.mkdir(self.plugins_dir)
 
         self.runner = CliRunner()
 
