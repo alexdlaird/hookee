@@ -22,7 +22,7 @@ class HookeeTestCase(unittest.TestCase):
 
         self.config = Config()
 
-        self.plugins_dir = os.path.normpath(os.path.join(self.config_dir, "plugins"))
+        self.plugins_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "plugins_dir")
         self.config.set("plugins_dir", self.plugins_dir)
         if not os.path.exists(self.plugins_dir):
             os.mkdir(self.plugins_dir)

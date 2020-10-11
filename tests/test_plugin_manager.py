@@ -1,6 +1,5 @@
 import os
 import shutil
-import time
 from types import ModuleType
 
 from flask import Response
@@ -39,15 +38,7 @@ class TestPluginManager(HookeeTestCase):
 
     def test_build_from_module_no_plugin_type(self):
         # GIVEN
-        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
-        with open(invalid_plugin_path, "w") as f:
-            f.write("""def setup(hookee_manager):
-    pass
-
-def run(request):
-    return request""")
-        time.sleep(1)
-        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
+        plugin = self.plugin_manager.source.load_plugin("no_plugin_type")
 
         # WHEN
         with self.assertRaises(HookeePluginValidationError) as cm:
@@ -58,16 +49,7 @@ def run(request):
 
     def test_build_from_module_no_run(self):
         # GIVEN
-        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
-        with open(invalid_plugin_path, "w") as f:
-            f.write("""from hookee.pluginmanager import REQUEST_PLUGIN
-
-plugin_type = REQUEST_PLUGIN
-
-def setup(hookee_manager):
-    pass""")
-        time.sleep(1)
-        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
+        plugin = self.plugin_manager.source.load_plugin("no_run")
 
         # WHEN
         with self.assertRaises(HookeePluginValidationError) as cm:
@@ -78,19 +60,7 @@ def setup(hookee_manager):
 
     def test_build_from_module_wrong_args(self):
         # GIVEN
-        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
-        with open(invalid_plugin_path, "w") as f:
-            f.write("""from hookee.pluginmanager import REQUEST_PLUGIN
-
-plugin_type = REQUEST_PLUGIN
-            
-def setup(hookee_manager):
-    pass
-
-def run():
-    pass""")
-        time.sleep(1)
-        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
+        plugin = self.plugin_manager.source.load_plugin("wrong_args")
 
         # WHEN
         with self.assertRaises(HookeePluginValidationError) as cm:
@@ -101,16 +71,7 @@ def run():
 
     def test_build_from_module_no_blueprint(self):
         # GIVEN
-        invalid_plugin_path = os.path.join(self.plugins_dir, "invalid_plugin.py")
-        with open(invalid_plugin_path, "w") as f:
-            f.write("""from hookee.pluginmanager import BLUEPRINT_PLUGIN
-
-plugin_type = BLUEPRINT_PLUGIN
-
-def setup(hookee_manager):
-    pass""")
-        time.sleep(1)
-        plugin = self.plugin_manager.source.load_plugin("invalid_plugin")
+        plugin = self.plugin_manager.source.load_plugin("no_blueprint")
 
         # WHEN
         with self.assertRaises(HookeePluginValidationError) as cm:
