@@ -56,6 +56,13 @@ With its default configuration, this will start a server on port 5000, open a `n
 using `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_, and mount a URL at ``/webhook``. Sending any
 request to the ``/webhook`` endpoint will dump request and response data to the console.
 
+``hookee`` can be configured in a number of ways to quickly and easily tweak request and response data. For example,
+here we are customizing the response body from ``/webhook`` using the ``--response`` arg.
+
+.. code-block:: sh
+
+    hookee --response "<Response>Ok</Response>" --content-type application/xml
+
 To see the ways ``hookee`` can be tweaked right from the console, view its documented args and commands like this:
 
 .. code-block:: sh
