@@ -20,24 +20,24 @@ Plugin Manager
     :private-members:
     :show-inheritance:
 
-Config
-------
+Configuration
+-------------
 
 .. automodule:: hookee.conf
     :members:
     :private-members:
     :show-inheritance:
 
-Server
-------
+Server Manager
+--------------
 
 .. automodule:: hookee.server
     :members:
     :private-members:
     :show-inheritance:
 
-Tunnel
-------
+Tunnel Manager
+--------------
 
 .. automodule:: hookee.tunnel
     :members:
