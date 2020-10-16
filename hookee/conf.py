@@ -5,7 +5,7 @@ import confuse
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "1.2.5"
 
 from hookee.exception import HookeeConfigError
 
@@ -87,6 +87,7 @@ class Config:
             self.response_callback = kwargs.pop("response_callback", None)
 
             config = confuse.Configuration("hookee", __name__)
+            print(config.sources)
             config.set_args(kwargs)
 
             self.config_obj = config
@@ -171,6 +172,5 @@ class Config:
         self._write_config_objects_to_file()
 
     def _write_config_objects_to_file(self):
-        # TODO: confuse's dump() should actually take care of this, we just need to set a source as `default`
         with open(self.config_path, "w") as f:
             f.write(self.config_obj.dump())
