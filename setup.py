@@ -20,7 +20,7 @@ setup(
         "python-dotenv",
         "flask",
         "click",
-        "pyngrok>=4.1,<4.2",
+        "pyngrok>=4.1,<4.3",
     ],
     entry_points="""
         [console_scripts]
