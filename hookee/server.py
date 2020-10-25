@@ -3,7 +3,6 @@ import threading
 import time
 
 from flask import Flask
-
 from future.standard_library import install_aliases
 
 from hookee import pluginmanager

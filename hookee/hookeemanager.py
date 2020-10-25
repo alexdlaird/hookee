@@ -1,9 +1,9 @@
 import time
 
 import click
-from hookee.exception import HookeeError, HookeeConfigError
 
 from hookee.conf import Config
+from hookee.exception import HookeeError, HookeeConfigError
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
 from hookee.tunnel import Tunnel

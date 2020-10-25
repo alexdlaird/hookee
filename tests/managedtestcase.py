@@ -1,10 +1,9 @@
-import time
 import sys
+import time
 from contextlib import contextmanager
 
-from hookee.conf import Config
-
 from hookee import HookeeManager, util
+from hookee.conf import Config
 from tests.testcase import HookeeTestCase
 
 if util.python3_gte():

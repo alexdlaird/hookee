@@ -1,7 +1,6 @@
 from hookee import HookeeManager
-from hookee.pluginmanager import PluginManager
-
 from hookee import util
+from hookee.pluginmanager import PluginManager
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"

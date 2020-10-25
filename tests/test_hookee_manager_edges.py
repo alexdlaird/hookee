@@ -1,9 +1,9 @@
 import time
 
 import requests
-from hookee.conf import Config
 
 from hookee import HookeeManager
+from hookee.conf import Config
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
@@ -14,7 +14,7 @@ __version__ = "1.2.0"
 class TestHookeeManagerEdges(HookeeTestCase):
     def test_not_click_logging(self):
         self.assertFalse(self.config.click_logging)
-    
+
     def test_hookee_manager(self):
         # GIVEN
         hookee_manager = HookeeManager()

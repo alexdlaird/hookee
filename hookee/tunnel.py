@@ -3,7 +3,6 @@ import time
 
 from pyngrok import ngrok
 from pyngrok.conf import PyngrokConfig
-
 from pyngrok.exception import PyngrokError
 
 __author__ = "Alex Laird"

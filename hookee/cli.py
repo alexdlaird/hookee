@@ -1,10 +1,9 @@
 import platform
 
 import click
+from future.utils import iteritems
 
 from hookee import HookeeManager, pluginmanager
-
-from future.utils import iteritems
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"

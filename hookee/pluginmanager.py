@@ -1,11 +1,9 @@
 import os
 
 from flask import current_app
-
-from hookee import util
-
 from pluginbase import PluginBase
 
+from hookee import util
 from hookee.exception import HookeePluginValidationError
 
 if util.python3_gte():

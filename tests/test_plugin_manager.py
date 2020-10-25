@@ -2,11 +2,10 @@ import os
 from types import ModuleType
 
 from flask import Response
-from hookee.exception import HookeePluginValidationError
-
-from hookee.pluginmanager import PluginManager, Plugin, VALID_PLUGIN_TYPES, BLUEPRINT_PLUGIN
 
 from hookee import HookeeManager
+from hookee.exception import HookeePluginValidationError
+from hookee.pluginmanager import PluginManager, Plugin, VALID_PLUGIN_TYPES, BLUEPRINT_PLUGIN
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
