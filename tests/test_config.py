@@ -30,7 +30,7 @@ class TestConfig(HookeeTestCase):
 
         # THEN
         self.assertEqual(self.config.get("auth_token"), "test123")
-        mock_write_config_objects_to_file.assert_called_once()
+        self.assertTrue(mock_write_config_objects_to_file.called)
 
     @mock.patch("hookee.conf.Config._write_config_objects_to_file")
     def test_config_append(self, mock_write_config_objects_to_file):
@@ -42,7 +42,7 @@ class TestConfig(HookeeTestCase):
 
         # THEN
         self.assertIn("foo_bar", self.config.get("plugins"))
-        mock_write_config_objects_to_file.assert_called_once()
+        self.assertTrue(mock_write_config_objects_to_file.called)
 
     @mock.patch("hookee.conf.Config._write_config_objects_to_file")
     def test_config_remove(self, mock_write_config_objects_to_file):
@@ -54,4 +54,4 @@ class TestConfig(HookeeTestCase):
 
         # THEN
         self.assertNotIn("request_headers", self.config.get("plugins"))
-        mock_write_config_objects_to_file.assert_called_once()
+        self.assertTrue(mock_write_config_objects_to_file.called)

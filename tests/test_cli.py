@@ -98,7 +98,7 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_hookee_run.assert_called_once()
+        self.assertTrue(mock_hookee_run.called)
 
     @mock.patch("hookee.hookeemanager.HookeeManager.run")
     def test_no_command_calls_start(self, mock_hookee_run):
@@ -107,7 +107,7 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_hookee_run.assert_called_once()
+        self.assertTrue(mock_hookee_run.called)
 
     @mock.patch("hookee.hookeemanager.HookeeManager.run")
     def test_start_with_script_import(self, mock_hookee_run):
@@ -120,7 +120,7 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_hookee_run.assert_called_once()
+        self.assertTrue(mock_hookee_run.called)
 
     def test_start_with_invalid_script_import(self):
         # WHEN
@@ -141,8 +141,8 @@ class TestCli(HookeeTestCase):
 
         # THEN
         self.assertEqual(result.exit_code, 0)
-        mock_hookee_run.assert_called_once()
-        mock_set_args.assert_called_once()
+        self.assertTrue(mock_hookee_run.called)
+        self.assertTrue(mock_set_args.called)
         call_args, call_kwargs = mock_set_args.call_args
         self.assertIn("response", call_args[0])
         self.assertEqual(call_args[0]["response"], response)
