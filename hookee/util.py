@@ -2,6 +2,7 @@ import inspect
 import json
 import logging
 import os
+import sys
 import xml.dom.minidom
 
 import click
@@ -151,6 +152,16 @@ class PrintUtil:
             logger.info(msg)
         else:
             print(msg)
+
+
+def python36_gte():
+    """
+    Check if running on a Python 3.6 or higher interpreter.
+
+    :return: ``True`` if Python 3.6 or higher.
+    :rtype: bool
+    """
+    return sys.version_info >= (3, 6)
 
 
 def get_functions(mod):

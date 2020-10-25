@@ -1,5 +1,6 @@
 import requests
 
+from hookee import util
 from tests.managedtestcase import ManagedTestCase
 
 __author__ = "Alex Laird"
@@ -17,8 +18,15 @@ class TestHookeeManager(ManagedTestCase):
             response = requests.get(self.webhook_url, params=params)
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("""Query Params: {
+        if util.python36_gte():
+            self.assertIn("""Query Params: {
     "param_1": "param_value_1"
+}""", out.getvalue())
+        else:
+            self.assertIn("""Query Params: {
+    "param_1": [
+        "param_value_1"
+    ]
 }""", out.getvalue())
 
     def test_http_post_form_data(self):
@@ -32,10 +40,18 @@ class TestHookeeManager(ManagedTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("\"Content-Type\": \"application/x-www-form-urlencoded\"", out.getvalue())
         self.assertEqual(response.headers.get("Content-Type"), "application/json")
-        self.assertIn("""Body: {
+        if util.python36_gte():
+            self.assertIn("""Body: {
     "form_data_1": "form_data_value_1"
 }""", out.getvalue())
-        self.assertEqual(response.json(), data)
+            self.assertEqual(response.json(), data)
+        else:
+            self.assertIn("""Body: {
+    "form_data_1": [
+        "form_data_value_1"
+    ]
+}""", out.getvalue())
+            self.assertEqual(response.json(), {"form_data_1": ["form_data_value_1"]})
 
     def test_http_post_json_data(self):
         # GIVEN
