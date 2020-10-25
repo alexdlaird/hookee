@@ -1,20 +1,15 @@
-import time
 import sys
+import time
 from contextlib import contextmanager
+from io import StringIO
 
+from hookee import HookeeManager
 from hookee.conf import Config
-
-from hookee import HookeeManager, util
 from tests.testcase import HookeeTestCase
-
-if util.python3_gte():
-    from io import StringIO
-else:
-    from io import BytesIO as StringIO
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.1"
+__version__ = "2.0.0"
 
 
 class ManagedTestCase(HookeeTestCase):

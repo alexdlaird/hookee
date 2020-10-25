@@ -3,11 +3,11 @@ import os
 import click
 import confuse
 
+from hookee.exception import HookeeConfigError
+
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.5"
-
-from hookee.exception import HookeeConfigError
+__version__ = "2.0.0"
 
 template = {
     "port": int,

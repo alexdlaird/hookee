@@ -4,11 +4,9 @@ import click
 
 from hookee import HookeeManager, pluginmanager
 
-from future.utils import iteritems
-
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "2.0.0"
 
 
 @click.group(invoke_without_command=True)
@@ -50,7 +48,7 @@ def hookee(ctx, **kwargs):
         ctx.exit("hookee/{} Python/{}".format(__version__, platform.python_version()))
 
     ctx.ensure_object(dict)
-    for key, value in iteritems(kwargs):
+    for key, value in kwargs.items():
         if value:
             ctx.obj[key] = value
 

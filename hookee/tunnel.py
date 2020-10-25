@@ -1,14 +1,13 @@
 import threading
 import time
 
-from pyngrok import ngrok
+from pyngrok import ngrok, conf
 from pyngrok.conf import PyngrokConfig
-
 from pyngrok.exception import PyngrokError
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "2.0.0"
 
 
 class Tunnel:
@@ -40,6 +39,7 @@ class Tunnel:
 
         self.pyngrok_config = PyngrokConfig(auth_token=self.config.get("auth_token"),
                                             region=self.config.get("region"))
+        conf.set_default(self.pyngrok_config)
 
         self.public_url = None
         self.ngrok_process = None
@@ -81,7 +81,7 @@ class Tunnel:
             self.print_close_header()
 
     def _start_tunnel(self):
-        options = {}
+        options = {"bind_tls": True}
         subdomain = self.config.get("subdomain")
         hostname = self.config.get("hostname")
         host_header = self.config.get("host_header")
@@ -96,8 +96,7 @@ class Tunnel:
             options["auth"] = auth
 
         self.public_url = ngrok.connect(self.port,
-                                        pyngrok_config=self.pyngrok_config,
-                                        options=options).replace("http", "https")
+                                        **options).public_url
         self.ngrok_process = ngrok.get_ngrok_process()
 
     def stop(self):
@@ -113,6 +112,6 @@ class Tunnel:
 
     def print_close_header(self):
         self.print_util.print_basic(
-            " * Tunnel: {} -> http://127.0.0.1:{}".format(self.public_url.replace("http://", "https://"), self.port),
+            " * Tunnel: {} -> http://127.0.0.1:{}".format(self.public_url, self.port),
             print_when_logging=True)
         self.print_util.print_close_header()

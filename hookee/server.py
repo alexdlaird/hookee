@@ -1,29 +1,17 @@
 import logging
 import threading
 import time
+from http import HTTPStatus
+from urllib.error import URLError
+from urllib.request import urlopen, Request
 
 from flask import Flask
 
-from future.standard_library import install_aliases
-
 from hookee import pluginmanager
-
-install_aliases()
-
-from urllib.request import urlopen, Request
-from urllib.error import URLError
-
-try:
-    from http import HTTPStatus as StatusCodes
-except ImportError:  # pragma: no cover
-    try:
-        from http import client as StatusCodes
-    except ImportError:
-        import httplib as StatusCodes
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.1.0"
+__version__ = "2.0.0"
 
 werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.ERROR)
@@ -100,7 +88,7 @@ class Server:
             self._thread = threading.Thread(target=self._loop)
             self._thread.start()
 
-            while self._server_status() != StatusCodes.OK:
+            while self._server_status() != HTTPStatus.OK:
                 time.sleep(1)
 
             self.print_close_header()
@@ -125,7 +113,7 @@ class Server:
         try:
             return urlopen("http://127.0.0.1:{}/status".format(self.port)).getcode()
         except URLError:
-            return StatusCodes.INTERNAL_SERVER_ERROR
+            return HTTPStatus.INTERNAL_SERVER_ERROR
 
     def print_close_header(self):
         self.print_util.print_basic(" * Port: {}".format(self.port))

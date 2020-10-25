@@ -2,14 +2,13 @@ import inspect
 import json
 import logging
 import os
-import sys
 import xml.dom.minidom
 
 import click
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "2.0.0"
 
 logger = logging.getLogger(__name__)
 
@@ -154,26 +153,6 @@ class PrintUtil:
             print(msg)
 
 
-def python3_gte():
-    """
-    Check if running on a Python 3.x interpreter.
-
-    :return: ``True`` if Python 3.
-    :rtype: bool
-    """
-    return sys.version_info >= (3, 0)
-
-
-def python36_gte():
-    """
-    Check if running on a Python 3.6 or higher interpreter.
-
-    :return: ``True`` if Python 3.6 or higher.
-    :rtype: bool
-    """
-    return sys.version_info >= (3, 6)
-
-
 def get_functions(mod):
     """
     Get a list of functions for the given module.
@@ -195,10 +174,7 @@ def get_args(func):
     :return: The list of args.
     :rtype: list[str]
     """
-    if python3_gte():
-        return inspect.getfullargspec(func)[0]
-    else:
-        return inspect.getargspec(func)[0]
+    return inspect.getfullargspec(func)[0]
 
 
 def get_module_name(module):

@@ -2,7 +2,7 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.5"
+__version__ = "2.0.0"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -12,7 +12,7 @@ setup(
     version=__version__,
     packages=["hookee",
               "hookee.plugins"],
-    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
+    python_requires=">=3.5",
     install_requires=[
         "future",
         "pluginbase",
@@ -20,7 +20,7 @@ setup(
         "python-dotenv",
         "flask",
         "click",
-        "pyngrok>=4.1,<4.2",
+        "pyngrok>=5.0.0",
     ],
     entry_points="""
         [console_scripts]
@@ -55,8 +55,6 @@ setup(
         "Operating System :: POSIX :: BSD :: FreeBSD",
         "Operating System :: POSIX :: Linux",
         "Operating System :: Unix",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",

@@ -1,21 +1,15 @@
+import importlib.util
 import os
 
 from flask import current_app
-
-from hookee import util
-
 from pluginbase import PluginBase
 
+from hookee import util
 from hookee.exception import HookeePluginValidationError
-
-if util.python3_gte():
-    import importlib.util
-else:
-    import imp
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "2.0.0"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -134,12 +128,9 @@ class Plugin:
         """
         module_name = os.path.splitext(os.path.basename(path))[0]
 
-        if util.python3_gte():
-            spec = importlib.util.spec_from_file_location(module_name, path)
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-        else:
-            module = imp.load_source(module_name, path)
+        spec = importlib.util.spec_from_file_location(module_name, path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
 
         return Plugin.build_from_module(module)
 

@@ -2,7 +2,6 @@ os: linux
 dist: xenial
 language: python
 python:
-  - "2.7"
   - "3.5"
   - "3.8"
 install:
@@ -34,9 +33,7 @@ jobs:
       language: shell
       osx_image: "xcode11.2"
       install:
-        - python3 -m pip install virtualenv
-        - python3 -m virtualenv venv
-        - make install
+        - export PYTHON_BIN=python3
     - name: "Windows, Python: 3.7"
       os: windows
       language: shell

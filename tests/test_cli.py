@@ -1,13 +1,12 @@
 import os
-
-import mock
+from unittest import mock
 
 from hookee.cli import hookee
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.4"
+__version__ = "2.0.0"
 
 
 class TestCli(HookeeTestCase):

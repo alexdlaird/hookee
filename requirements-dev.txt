@@ -1,6 +1,5 @@
 coverage
 codecov
 nose
-mock
 twine
 requests
