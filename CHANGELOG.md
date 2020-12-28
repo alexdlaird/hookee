@@ -3,28 +3,33 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.0...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.1...HEAD)
 
-## [2.0.0](https://github.com/alexdlaird/hookee/compare/1.2.5...2.0.0) - 2019-10-25
+## [2.0.1](https://github.com/alexdlaird/hookee/compare/2.0.0...2.0.1) - 2020-10-25
+### Fixed
+- Build improvements.
+- Changelog improvements.
+
+## [2.0.0](https://github.com/alexdlaird/hookee/compare/1.2.5...2.0.0) - 2020-10-25
 ### Removed
 - Support for Python 2.7. To use `hookee` with Python 2.7, pin `hookee>=1.2,<2`.
 
-## [1.2.5](https://github.com/alexdlaird/hookee/compare/1.2.4...1.2.5) - 2019-10-15
+## [1.2.5](https://github.com/alexdlaird/hookee/compare/1.2.4...1.2.5) - 2020-10-15
 ### Added
 - Build improvements.
 - Documentation improvements.
 
-## [1.2.4](https://github.com/alexdlaird/hookee/compare/1.2.3...1.2.4) - 2019-10-11
+## [1.2.4](https://github.com/alexdlaird/hookee/compare/1.2.3...1.2.4) - 2020-10-11
 ### Fixed
 - Build improvements.
 - Logging improvements.
 
-## [1.2.3](https://github.com/alexdlaird/hookee/compare/1.2.2...1.2.3) - 2019-10-03
+## [1.2.3](https://github.com/alexdlaird/hookee/compare/1.2.2...1.2.3) - 2020-10-03
 ### Fixed
 - Logging improvements.
 - Documentation improvements.
 
-## [1.2.2](https://github.com/alexdlaird/hookee/compare/1.2.1...1.2.2) - 2019-09-20
+## [1.2.2](https://github.com/alexdlaird/hookee/compare/1.2.1...1.2.2) - 2020-09-20
 ### Added
 - Console output colors are now configurable.
 - Improved formatting for enabled/available plugin listing from CLI.
@@ -36,7 +41,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Removed "Beta" label in PyPI classifiers.
 - Default console output for request data is now white, but configurable.
 
-## [1.2.1](https://github.com/alexdlaird/hookee/compare/1.2.0...1.2.1) - 2019-09-17
+## [1.2.1](https://github.com/alexdlaird/hookee/compare/1.2.0...1.2.1) - 2020-09-17
 ### Added
 - Documentation improvements.
 
@@ -46,7 +51,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - Formatting in console output.
 
-## [1.2.0](https://github.com/alexdlaird/hookee/compare/1.1.0...1.2.0) - 2019-09-16
+## [1.2.0](https://github.com/alexdlaird/hookee/compare/1.1.0...1.2.0) - 2020-09-16
 ### Added
 - Output of enabled plugins on startup
 - `HookeeManager` class is now available with a simple `from hookee import HookeeManager` import.
@@ -64,7 +69,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `conf.Context` in favor of using `click.Context`.
 - Access to the `click.Context` except in `HookeeManager`, which now has its own abstraction around such actions.
 
-## [1.1.0](https://github.com/alexdlaird/hookee/compare/1.0.1...1.1.0) - 2019-09-15
+## [1.1.0](https://github.com/alexdlaird/hookee/compare/1.0.1...1.1.0) - 2020-09-15
 ### Added
 - Documentation improvements.
 - Default `Context` object in `conf`, which is used as the default when `None` is given to `HookeeManager`.
@@ -77,7 +82,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - Build improvements.
 
-## [1.0.1](https://github.com/alexdlaird/hookee/compare/1.0.0...1.0.1) - 2019-09-11
+## [1.0.1](https://github.com/alexdlaird/hookee/compare/1.0.0...1.0.1) - 2020-09-11
 ### Added
 - `--version` arg.
 - Documentation improvements.
@@ -89,7 +94,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Validation to fail when no `response` plugin (or arg override) is given.
 - Edge cases to properly populate response when it would otherwise be `None`.
 
-## [1.0.0](https://github.com/alexdlaird/hookee/compare/0.0.12...1.0.0) - 2019-09-10
+## [1.0.0](https://github.com/alexdlaird/hookee/compare/0.0.12...1.0.0) - 2020-09-10
 ### Added
 - Additional `ngrok` passthrough args: `hostname` and `host_header`.
 - Documentation improvements.
@@ -98,7 +103,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - When calling `update-config`, dashes `-` are converted to underscores `_` to match the config.
 - Stability improvements.
 
-## [0.0.12](https://github.com/alexdlaird/hookee/compare/0.0.8...0.0.12) - 2019-09-07
+## [0.0.12](https://github.com/alexdlaird/hookee/compare/0.0.8...0.0.12) - 2020-09-07
 ### Added
 - Stable test suite.
 
@@ -110,7 +115,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Stability improvements.
 - Documentation improvements.
 
-## [0.0.8](https://github.com/alexdlaird/hookee/compare/0.0.7...0.0.8) - 2019-09-05
+## [0.0.8](https://github.com/alexdlaird/hookee/compare/0.0.7...0.0.8) - 2020-09-05
 ### Added
 - Usage examples to documentation.
 - Plugin development documentation.
@@ -126,7 +131,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - Documentation improvements.
 
-## [0.0.7](https://github.com/alexdlaird/hookee/compare/0.0.6...0.0.7) - 2019-09-03
+## [0.0.7](https://github.com/alexdlaird/hookee/compare/0.0.6...0.0.7) - 2020-09-03
 ### Added
 - Additional `ngrok` passthrough args: `region`, `subdomain`, and `auth`.
 - `list-plugins` and `enabled-plugins` to the CLI.
@@ -141,7 +146,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - Stability improvements.
 
-## [0.0.6](https://github.com/alexdlaird/hookee/compare/0.0.5...0.0.6) - 2019-09-02
+## [0.0.6](https://github.com/alexdlaird/hookee/compare/0.0.5...0.0.6) - 2020-09-02
 ### Added
 - Made Blueprints, request, and response pluggable, support for built-in and custom plugins (in `~/.config/hookee/plugins` by default).
 - Plugin management system to enable/disable plugins.
@@ -154,17 +159,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Default config file was not being included in previous packages.
 - Build improvements.
 
-## [0.0.3](https://github.com/alexdlaird/hookee/compare/0.0.2...0.0.3) - 2019-08-14
+## [0.0.3](https://github.com/alexdlaird/hookee/compare/0.0.2...0.0.3) - 2020-08-14
 ### Added
 - Console output during server/tunnel startup.
 - POC implementation of colorful, more organized output.
 
-## [0.0.2](https://github.com/alexdlaird/hookee/compare/0.0.1...0.0.2) - 2019-08-12
+## [0.0.2](https://github.com/alexdlaird/hookee/compare/0.0.1...0.0.2) - 2020-08-12
 ### Added
 - `Manager` to handle state of the Flask server, `pyngrok`, tunnel, etc.
 - POC implementation to dynamically pull in blueprints, request/response processing, etc.
 - README improvements for basic usage.
 
-## [0.0.1](https://github.com/alexdlaird/hookee/releases/tag/0.0.1) - 2019-07-31
+## [0.0.1](https://github.com/alexdlaird/hookee/releases/tag/0.0.1) - 2020-07-31
 ### Added
 - POC implementation that opens a [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/index.html) tunnel to a [Flask](https://flask.palletsprojects.com/en/1.1.x/) server. Requests sent to `/webhook` are dumped to the logs for inspection.
