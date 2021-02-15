@@ -1,0 +1,42 @@
+name: "CI/CD"
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    name: Deploy
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Install dependencies
+        run: |
+          make install
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel twine
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      - name: Validate version
+        run: |
+          make validate-release VERSION=${{ steps.get_version.outputs.VERSION }}
+      - name: Run tests
+        run: |
+          make test
+      - name: Build
+        run: |
+          make docs
+          make local
+      - name: Publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*
