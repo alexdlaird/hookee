@@ -1,0 +1,9 @@
+version: 2
+
+formats:
+  - pdf
+
+python:
+  install:
+    - requirements: docs/requirements.txt
+    - requirements: requirements.txt
