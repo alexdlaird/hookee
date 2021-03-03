@@ -10,8 +10,8 @@ from hookee.tunnel import Tunnel
 from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "2.0.2"
+__copyright__ = "Copyright 2021, Alex Laird"
+__version__ = "2.0.3"
 
 
 class HookeeManager:

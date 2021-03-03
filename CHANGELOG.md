@@ -3,9 +3,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.2...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.3...HEAD)
+
+## [2.0.3](https://github.com/alexdlaird/hookee/compare/2.0.2...2.0.3) - 2021-03-02
 ### Changed
 - Migrated build from Travis CI to GitHub Actions.
+
+### Fixed
+- Build improvements.
 
 ## [2.0.2](https://github.com/alexdlaird/hookee/compare/2.0.0...2.0.2) - 2020-12-28
 ### Fixed
