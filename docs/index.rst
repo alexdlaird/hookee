@@ -196,7 +196,7 @@ Request and response plugins are nearly identical to each other, they only diffe
 must implement ``run(request)`` (and return the ``request``), and a response plugin must implement
 ``run(request, response)`` (and return the ``response``).
 
-The `built-in plugins that come with hookee <https://github.com/alexdlaird/hookee/tree/master/hookee/plugins>`_ may
+The `built-in plugins that come with hookee <https://github.com/alexdlaird/hookee/tree/main/hookee/plugins>`_ may
 be a useful reference when developing new plugins for ``hookee``.
 
 Integrating with ``hookee``
