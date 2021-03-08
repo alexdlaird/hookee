@@ -16,7 +16,6 @@ setup(
     install_requires=[
         "pluginbase",
         "confuse",
-        "python-dotenv",
         "flask",
         "click",
         "pyngrok>=5.0.0",
