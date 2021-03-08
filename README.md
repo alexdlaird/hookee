@@ -62,5 +62,5 @@ API integrations, and more, see its official documentation is available at [http
 
 If you would like to get involved, be sure to review the [Contribution Guide](https://github.com/alexdlaird/hookee/blob/main/CONTRIBUTING.rst).
 
-Want to contribute financially? If you've found `hookee` useful, [a donation](https://www.paypal.me/alexdlaird>) would
+Want to contribute financially? If you've found `hookee` useful, [a donation](https://www.paypal.me/alexdlaird) would
 also be greatly appreciated!
