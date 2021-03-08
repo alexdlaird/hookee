@@ -14,7 +14,6 @@ setup(
               "hookee.plugins"],
     python_requires=">=3.5",
     install_requires=[
-        "future",
         "pluginbase",
         "confuse",
         "python-dotenv",
