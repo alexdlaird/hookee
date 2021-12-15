@@ -4,6 +4,7 @@
 [![CI/CD](https://github.com/alexdlaird/hookee/workflows/CI/CD/badge.svg)](https://github.com/alexdlaird/hookee/actions?query=workflow%3ACI%2FCD)
 [![Codecov](https://codecov.io/gh/alexdlaird/hookee/branch/main/graph/badge.svg)](https://codecov.io/gh/alexdlaird/hookee)
 [![Docs](https://readthedocs.org/projects/hookee/badge/?version=latest)](https://hookee.readthedocs.io/en/latest/?badge=latest)
+[![Python Versions](https://img.shields.io/pypi/pyversions/pyngrok.svg)](https://pypi.org/project/pyngrok/)
 [![PyPI License](https://img.shields.io/pypi/l/hookee.svg)](https://pypi.org/project/hookee/)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check+out+%23hookee%2C+a+utility+that+provides+command+line+%23webhooks%2C+on+demand.%0D%0A%0D%0A&url=https://github.com/alexdlaird/hookee&via=alexdlaird&hashtags=python,flask,ngrok,pyngrok)
 
