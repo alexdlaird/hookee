@@ -27,7 +27,7 @@ clean: nopyc
 test: install
 	@( \
 		source venv/bin/activate; \
-		python `which nosetests` --with-coverage --cover-erase --cover-package=. --cover-xml --cover-xml-file=_build/coverage/coverage.xml --cover-html --cover-html-dir=_build/coverage; \
+		python -m coverage run -m unittest discover -b && python -m coverage xml && python -m coverage html && python -m coverage report; \
 	)
 
 docs: install
@@ -54,6 +54,7 @@ upload:
 	@rm -rf *.egg-info dist
 	@( \
 		source venv/bin/activate; \
+		python -m pip install twine; \
 		python setup.py sdist; \
 		python -m twine upload dist/*; \
 	)
