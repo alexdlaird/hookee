@@ -49,6 +49,7 @@ def status():
 
 @blueprint.route("/shutdown", methods=["POST"])
 def shutdown():
-    request.environ.get("werkzeug.server.shutdown")()
+    if "werkzeug.server.shutdown" in request.environ:
+        request.environ.get("werkzeug.server.shutdown")()
 
     return "", 204
