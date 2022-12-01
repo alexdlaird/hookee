@@ -87,7 +87,6 @@ class Config:
             self.response_callback = kwargs.pop("response_callback", None)
 
             config = confuse.Configuration("hookee", __name__)
-            print(config.sources)
             config.set_args(kwargs)
 
             self.config_obj = config
