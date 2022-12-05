@@ -7,7 +7,7 @@ from hookee.exception import HookeeConfigError
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2022, Alex Laird"
-__version__ = "2.1.0"
+__version__ = "2.0.7"
 
 template = {
     "port": int,
