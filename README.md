@@ -37,7 +37,7 @@ That's it! `hookee` is now available as a Python package is available from the c
 hookee start
 ```
 
-With its default configuration, this will start a server on port 5000, open a [`ngrok`](https://ngrok.com/) tunnel
+With its default configuration, this will start a server on port 8000, open a [`ngrok`](https://ngrok.com/) tunnel
 using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
 the `/webhook` endpoint will dump the request and response data to the console.
 

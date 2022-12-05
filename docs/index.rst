@@ -52,7 +52,7 @@ Basic Usage
 
     hookee start
 
-With its default configuration, this will start a server on port 5000, open a `ngrok <https://ngrok.com/>`_ tunnel
+With its default configuration, this will start a server on port 8000, open a `ngrok <https://ngrok.com/>`_ tunnel
 using `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_, and mount a URL at ``/webhook``. Sending any
 request to the ``/webhook`` endpoint will dump request and response data to the console.
 

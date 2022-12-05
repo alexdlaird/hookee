@@ -6,8 +6,8 @@ import confuse
 from hookee.exception import HookeeConfigError
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "2.0.0"
+__copyright__ = "Copyright 2022, Alex Laird"
+__version__ = "2.1.0"
 
 template = {
     "port": int,

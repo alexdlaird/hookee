@@ -1,4 +1,4 @@
-port: 5000
+port: 8000
 plugins_dir: "~/.config/hookee/plugins"
 plugins:
   - "blueprint_default"

@@ -8,12 +8,12 @@ from hookee.conf import Config
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "2.0.0"
+__copyright__ = "Copyright 2022, Alex Laird"
+__version__ = "2.1.0"
 
 
 class ManagedTestCase(HookeeTestCase):
-    port = 5000
+    port = 8000
     hookee_manager = None
     webhook_url = None
 
