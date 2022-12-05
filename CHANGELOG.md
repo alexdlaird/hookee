@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.6...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.7...HEAD)
 
 ## [2.0.7](https://github.com/alexdlaird/hookee/compare/2.0.6...2.0.7) - 2022-12-05
 ### Changed
