@@ -1,11 +1,15 @@
-from flask import Blueprint, request
+from signal import SIGTERM
 
+from flask import Blueprint, request
+from psutil import process_iter
+
+from hookee.hookeemanager import HookeeManager
 from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager
 from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2022, Alex Laird"
-__version__ = "2.0.7"
+__version__ = "2.0.8"
 
 blueprint = Blueprint("default", __name__)
 plugin_type = BLUEPRINT_PLUGIN
@@ -49,6 +53,13 @@ def status():
 
 @blueprint.route("/shutdown", methods=["POST"])
 def shutdown():
-    request.environ.get("werkzeug.server.shutdown")()
+    if "werkzeug.server.shutdown" in request.environ:
+        request.environ.get("werkzeug.server.shutdown")()
+    else:
+        for proc in process_iter():
+            for conns in proc.connections(kind='inet'):
+                if conns.laddr.port == 8000:
+                    proc.send_signal(SIGTERM)  # or SIGKILL
+        # raise RuntimeError('Not running werkzeug <=2.0')
 
     return "", 204

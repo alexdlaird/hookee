@@ -2,7 +2,7 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2022, Alex Laird"
-__version__ = "2.0.7"
+__version__ = "2.0.8"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -16,10 +16,10 @@ setup(
     install_requires=[
         "pluginbase",
         "confuse",
-        "flask>=1.1.0,<2.0.0",
-        "MarkupSafe>=0.23,<2.1.0",
+        "flask>=1.1.0",
         "click",
         "pyngrok>=5.2.1",
+        "psutil",
     ],
     entry_points="""
         [console_scripts]
