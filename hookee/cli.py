@@ -192,5 +192,19 @@ def enabled_plugins(ctx):
     hookee_manager.print_util.print_basic()
 
 
+@hookee.command()
+@click.pass_context
+@click.argument("token")
+def authtoken(ctx, token):
+    """
+    Save the auth token to the config.
+    """
+    hookee_manager = ctx.obj["hookee_manager"]
+
+    hookee_manager.config.set("auth_token", token)
+
+    hookee_manager.print_util.print_config_update("The auth token has been set in the config.")
+
+
 if __name__ == "__main__":
     hookee(obj={})
