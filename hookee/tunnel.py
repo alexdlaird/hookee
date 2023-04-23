@@ -6,7 +6,7 @@ from pyngrok.conf import PyngrokConfig
 from pyngrok.exception import PyngrokError
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
+__copyright__ = "Copyright 2023, Alex Laird"
 __version__ = "2.0.0"
 
 

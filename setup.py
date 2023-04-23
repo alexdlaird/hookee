@@ -1,8 +1,8 @@
 from setuptools import setup
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2022, Alex Laird"
-__version__ = "2.0.7"
+__copyright__ = "Copyright 2023, Alex Laird"
+__version__ = "2.0.8"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -19,7 +19,8 @@ setup(
         "flask>=1.1.0,<2.0.0",
         "MarkupSafe>=0.23,<2.1.0",
         "click",
-        "pyngrok>=5.2.1",
+        "pyngrok>=5.2.3",
+        "defusedxml",
     ],
     entry_points="""
         [console_scripts]

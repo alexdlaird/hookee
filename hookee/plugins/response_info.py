@@ -2,7 +2,7 @@ from hookee.pluginmanager import RESPONSE_PLUGIN
 from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
+__copyright__ = "Copyright 2023, Alex Laird"
 __version__ = "1.2.2"
 
 plugin_type = RESPONSE_PLUGIN

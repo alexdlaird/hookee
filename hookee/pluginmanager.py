@@ -8,7 +8,7 @@ from hookee import util
 from hookee.exception import HookeePluginValidationError
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
+__copyright__ = "Copyright 2023, Alex Laird"
 __version__ = "2.0.0"
 
 BLUEPRINT_PLUGIN = "blueprint"

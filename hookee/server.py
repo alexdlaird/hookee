@@ -10,7 +10,7 @@ from flask import Flask
 from hookee import pluginmanager
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
+__copyright__ = "Copyright 2023, Alex Laird"
 __version__ = "2.0.0"
 
 werkzeug_logger = logging.getLogger("werkzeug")
