@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [2.0.8](https://github.com/alexdlaird/hookee/compare/2.0.7...2.0.8) - 2023-04-22
 ### Changed
-- Use `parseString` from [`defusedxml`](https://pypi.org/project/defusedxml/) instead of `xml.dom.minidom` for improved security
+- Use `parseString` from [`defusedxml`](https://pypi.org/project/defusedxml/) instead of `xml.dom.minidom` for improved security.
 
 ## [2.0.7](https://github.com/alexdlaird/hookee/compare/2.0.6...2.0.7) - 2022-12-05
 ### Changed
