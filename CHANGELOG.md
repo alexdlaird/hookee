@@ -4,13 +4,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.8...HEAD)
-
-## [2.0.8](https://github.com/alexdlaird/hookee/compare/2.0.7...2.0.8) - TBD
 ### Added
 - Support for Flask 2.2.x.
 
 ### Fixed
 - Documentation improvements.
+
+## [2.0.8](https://github.com/alexdlaird/hookee/compare/2.0.7...2.0.8) - 2023-04-22
+### Changed
+- Use `parseString` from [`defusedxml`](https://pypi.org/project/defusedxml/) instead of `xml.dom.minidom` for improved security.
 
 ## [2.0.7](https://github.com/alexdlaird/hookee/compare/2.0.6...2.0.7) - 2022-12-05
 ### Changed

@@ -3,13 +3,14 @@ import json
 import logging
 import os
 import sys
-import xml.dom.minidom
 
 import click
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "2.0.0"
+__copyright__ = "Copyright 2023, Alex Laird"
+__version__ = "2.0.8"
+
+from defusedxml.minidom import parseString
 
 logger = logging.getLogger(__name__)
 
@@ -126,7 +127,7 @@ class PrintUtil:
         if color is None:
             color = self.default_color
 
-        self.print_basic("{}: {}".format(title, xml.dom.minidom.parseString(data).toprettyxml()), color=color)
+        self.print_basic("{}: {}".format(title, parseString(data).toprettyxml()), color=color)
 
     def print_basic(self, msg="", color=None, bold=False, print_when_logging=False):
         """
