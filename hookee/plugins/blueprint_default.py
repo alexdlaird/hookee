@@ -3,13 +3,12 @@ from signal import SIGTERM
 from flask import Blueprint, request
 from psutil import process_iter
 
-from hookee.hookeemanager import HookeeManager
 from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager
 from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.0.8"
+__version__ = "2.1.0"
 
 blueprint = Blueprint("default", __name__)
 plugin_type = BLUEPRINT_PLUGIN

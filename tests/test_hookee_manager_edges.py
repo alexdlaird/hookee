@@ -1,9 +1,9 @@
 import time
 
 import requests
-from hookee.conf import Config
 
 from hookee import HookeeManager
+from hookee.conf import Config
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
