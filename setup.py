@@ -16,7 +16,7 @@ setup(
     install_requires=[
         "pluginbase",
         "confuse",
-        "flask>=1.1.0,<2.0.0",
+        "flask>=1.1.0,<4.0.0",
         "MarkupSafe>=0.23,<2.1.0",
         "click",
         "pyngrok>=5.2.3",
