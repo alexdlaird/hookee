@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+Consider [supporting the project](https://github.com/sponsors/alexdlaird) to have your request prioritized.
+
 **Describe the Feature**
 A clear and concise description of the how and why of the feature you'd like to see. If possible, include possible code
 snippets of interfaces you'd like to see and how you might interact with them.
