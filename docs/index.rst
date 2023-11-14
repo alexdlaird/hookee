@@ -12,7 +12,7 @@ hookee - command line webhooks, on demand
    :target: https://badge.fury.io/py/hookee
 .. image:: https://github.com/alexdlaird/hookee/workflows/CI/CD/badge.svg
    :target: https://github.com/alexdlaird/hookee/actions?query=workflow%3ACI%2FCD
-.. image:: https://codecov.io/gh/alexdlaird/hookee/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/alexdlaird/hookee/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/alexdlaird/hookee
 .. image:: https://readthedocs.org/projects/hookee/badge/?version=latest
    :target: https://hookee.readthedocs.io/en/latest/?badge=latest
