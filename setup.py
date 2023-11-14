@@ -36,7 +36,7 @@ setup(
     download_url="https://github.com/alexdlaird/hookee/archive/{}.tar.gz".format(__version__),
     project_urls={
         "Changelog": "https://github.com/alexdlaird/hookee/blob/main/CHANGELOG.md",
-        "Sponsor": "https://www.paypal.me/alexdlaird"
+        "Sponsor": "https://github.com/sponsors/alexdlaird"
     },
     keywords=["python", "webhook", "ngrok", "flask"],
     license="MIT",
