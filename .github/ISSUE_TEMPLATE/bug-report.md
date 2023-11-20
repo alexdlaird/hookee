@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+Consider [supporting the project](https://github.com/sponsors/alexdlaird) to have your request prioritized.
+
 **Describe the Bug**
 A clear and concise description of what the bug is, including exceptions thrown.
 
