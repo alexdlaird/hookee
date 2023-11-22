@@ -1,4 +1,6 @@
-name: "CI/CD"
+name: "CD"
+
+run-name: "Release ${{ github.ref_name }}"
 
 on:
   release:
