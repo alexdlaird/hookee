@@ -10,8 +10,8 @@ hookee - command line webhooks, on demand
 
 .. image:: https://badge.fury.io/py/hookee.svg
    :target: https://badge.fury.io/py/hookee
-.. image:: https://github.com/alexdlaird/hookee/workflows/CI/CD/badge.svg
-   :target: https://github.com/alexdlaird/hookee/actions?query=workflow%3ACI%2FCD
+.. image:: https://github.com/alexdlaird/hookee/workflows/build.yml/badge.svg
+   :target: https://github.com/alexdlaird/hookee/actions/workflows/build.yml
 .. image:: https://codecov.io/gh/alexdlaird/hookee/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/alexdlaird/hookee
 .. image:: https://readthedocs.org/projects/hookee/badge/?version=latest
