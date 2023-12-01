@@ -1,7 +1,7 @@
 <p align="center"><img alt="hookee - command line webhooks, on demand" src="https://hookee.readthedocs.io/en/latest/_images/logo.png" /></p>
 
 [![PyPI Version](https://badge.fury.io/py/hookee.svg)](https://badge.fury.io/py/hookee)
-[![Build](https://github.com/alexdlaird/hookee/workflows/build.yml/badge.svg)](https://github.com/alexdlaird/hookee/actions/workflows/build.yml)
+[![Build](https://github.com/alexdlaird/hookee/actions/workflows/build.yml/badge.svg)](https://github.com/alexdlaird/hookee/actions/workflows/build.yml)
 [![Codecov](https://codecov.io/gh/alexdlaird/hookee/branch/main/graph/badge.svg)](https://codecov.io/gh/alexdlaird/hookee)
 [![Docs](https://readthedocs.org/projects/hookee/badge/?version=latest)](https://hookee.readthedocs.io/en/latest/?badge=latest)
 [![Python Versions](https://img.shields.io/pypi/pyversions/hookee.svg)](https://pypi.org/project/hookee/)
