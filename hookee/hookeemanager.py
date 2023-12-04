@@ -11,7 +11,7 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.0.8"
+__version__ = "2.1.0"
 
 
 class HookeeManager:

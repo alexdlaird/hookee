@@ -3,7 +3,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.8...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.0.9...HEAD)
+
+## [2.1.0](https://github.com/alexdlaird/hookee/compare/2.0.7...2.0.8) - 2023-12-04
+### Fixed
+- Build improvements.
+
+### Changed
+- Bumped `pyngrok` version required to >7.0.0.
+
+### Removed
+- Support for Python 3.5.
 
 ## [2.0.8](https://github.com/alexdlaird/hookee/compare/2.0.7...2.0.8) - 2023-04-22
 ### Changed
