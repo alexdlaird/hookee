@@ -6,8 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.1.0...HEAD)
 
 ## [2.1.0](https://github.com/alexdlaird/hookee/compare/2.0.8...2.1.0) - 2023-12-04
-### Fixed
-- Build improvements.
+### Added
+- Build improvements, including `wheel` support.
 
 ### Changed
 - Bumped `pyngrok` version required to >7.0.0.
