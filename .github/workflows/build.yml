@@ -16,6 +16,9 @@ jobs:
   build:
     name: Build
 
+    env:
+      NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTHTOKEN }}
+
     strategy:
       fail-fast: false
       matrix:
