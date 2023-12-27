@@ -20,7 +20,7 @@ template = {
     "content_type": confuse.String(default=None),
     "request_script": confuse.Filename(default=None),
     "response_script": confuse.Filename(default=None),
-    "auth_token": confuse.String(default=None),
+    "auth_token": confuse.String(default=os.environ.get("NGROK_AUTHTOKEN")),
     "plugins_dir": confuse.Filename(),
     "plugins": list,
     "console_width": confuse.Integer(default=80),
