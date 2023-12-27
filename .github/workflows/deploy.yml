@@ -10,6 +10,9 @@ jobs:
   deploy:
     name: Deploy
 
+    env:
+      NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTHTOKEN }}
+
     runs-on: ubuntu-latest
 
     steps:
