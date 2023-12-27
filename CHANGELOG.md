@@ -3,7 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.1.0...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.1.1...HEAD)
+
+## [2.1.1](https://github.com/alexdlaird/hookee/compare/2.1.0...2.1.1) - 2023-12-27
+### Added
+- If a value for `auth_token` is not set in `Config`, it will attempt to use the environment variable `NGROK_AUTHTOKEN` if it is set.
+- Build improvements.
 
 ## [2.1.0](https://github.com/alexdlaird/hookee/compare/2.0.8...2.1.0) - 2023-12-04
 ### Added
