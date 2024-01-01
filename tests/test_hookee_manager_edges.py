@@ -17,7 +17,7 @@ class TestHookeeManagerEdges(HookeeTestCase):
     def test_not_click_logging(self):
         self.assertFalse(self.config.click_logging)
 
-    @unittest.skipIf("NGROK_AUTHTOKEN" not in os.environ, "NGROK_AUTHTOKEN environment variable not set")
+    @unittest.skipIf(not os.environ.get("NGROK_AUTHTOKEN"), "NGROK_AUTHTOKEN environment variable not set")
     def test_hookee_manager(self):
         # GIVEN
         hookee_manager = HookeeManager()
@@ -36,7 +36,7 @@ class TestHookeeManagerEdges(HookeeTestCase):
         self.assertIsNone(hookee_manager.server._thread)
         self.assertIsNone(hookee_manager.tunnel._thread)
 
-    @unittest.skipIf("NGROK_AUTHTOKEN" not in os.environ, "NGROK_AUTHTOKEN environment variable not set")
+    @unittest.skipIf(not os.environ.get("NGROK_AUTHTOKEN"), "NGROK_AUTHTOKEN environment variable not set")
     def test_custom_response(self):
         # GIVEN
         response_body = "<Response>Ok</Response>"
