@@ -1,3 +1,6 @@
+import os
+import unittest
+
 import requests
 
 from hookee import util
@@ -8,6 +11,7 @@ __copyright__ = "Copyright 2020, Alex Laird"
 __version__ = "2.0.0"
 
 
+@unittest.skipIf(not os.environ.get("NGROK_AUTHTOKEN"), "NGROK_AUTHTOKEN environment variable not set")
 class TestHookeeManager(ManagedTestCase):
     def test_http_get_query_params(self):
         # GIVEN
