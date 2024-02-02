@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.2.0...HEAD)
 
-## [2.2.0](https://github.com/alexdlaird/hookee/compare/2.1.1...2.2.0) - 2023-2-2
+## [2.2.0](https://github.com/alexdlaird/hookee/compare/2.1.1...2.2.0) - 2023-02-02
 ### Remove
 - Support for Python 3.7 and below.
 
