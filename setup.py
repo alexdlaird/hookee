@@ -1,8 +1,8 @@
 from setuptools import setup
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.1.1"
+__copyright__ = "Copyright 2024, Alex Laird"
+__version__ = "2.2.0"
 
 with open("README.md", "r") as f:
     long_description = f.read()
