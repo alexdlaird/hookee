@@ -155,16 +155,6 @@ class PrintUtil:
             print(msg)
 
 
-def python36_gte():
-    """
-    Check if running on a Python 3.6 or higher interpreter.
-
-    :return: ``True`` if Python 3.6 or higher.
-    :rtype: bool
-    """
-    return sys.version_info >= (3, 6)
-
-
 def get_functions(mod):
     """
     Get a list of functions for the given module.
