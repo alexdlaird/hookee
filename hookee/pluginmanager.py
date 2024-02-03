@@ -150,7 +150,7 @@ class PluginManager:
     :var response_script: A response plugin loaded from the script at ``--response_script``, run last.
     :vartype response_script: Plugin
     :var response_callback: The response body loaded from either ``--response``, or the lambda defined in the config's
-        ``response_calback``. Overrides any body data from response plugins.
+        ``response_callback``. Overrides any body data from response plugins.
     :vartype response_body: str
     :var builtin_plugins_dir: The directory where built-in plugins reside.
     :vartype builtin_plugins_dir: str

@@ -122,7 +122,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - Renamed `CliManager` class to `HookeeManager`.
 - Renamed `HookeeManager.start()` to `HookeeManager.run()`.
-- `PluginMananger.enabled_plugins()` no longer sorts the returned list, as plugins should be executed (and listed) in preferred order.
+- `PluginManager.enabled_plugins()` no longer sorts the returned list, as plugins should be executed (and listed) in preferred order.
 
 ### Fixed
 - Build improvements.
