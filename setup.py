@@ -17,10 +17,14 @@ setup(
         "pluginbase",
         "confuse",
         "flask>=1.1.0,<2.0.0",
-        "MarkupSafe>=0.23,<2.1.0",
         "click",
         "pyngrok>=7.0.0",
         "defusedxml",
+        # Remove these pinned deps once hookee is updated to work with Flask 2.x
+        "MarkupSafe>=0.23,<2.1.0",
+        "Jinja2<3.0,>=2.10.1",
+        "itsdangerous==2.0.1",
+        "werkzeug==2.0.3"
     ],
     entry_points="""
         [console_scripts]
