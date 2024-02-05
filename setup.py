@@ -24,7 +24,7 @@ setup(
         "MarkupSafe>=0.23,<2.1.0",
         "Jinja2<3.0,>=2.10.1",
         "itsdangerous==2.0.1",
-        "werkzeug==2.0.3"
+        "werkzeug==3.0.1"
     ],
     entry_points="""
         [console_scripts]
