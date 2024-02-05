@@ -1,4 +1,4 @@
 Sphinx
 sphinx_rtd_theme
 sphinx-notfound-page
-Jinja2<3.0,>=2.10.1
+Jinja2>=2.10.1,<4.0
