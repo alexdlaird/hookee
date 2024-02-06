@@ -2,7 +2,7 @@ from setuptools import setup
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.2.1"
+__version__ = "2.2.2"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -18,7 +18,7 @@ setup(
         "confuse",
         "flask>=1.1.0,<2.0.0",
         "click",
-        "pyngrok>=7.0.0",
+        "pyngrok>=7.1.0",
         "defusedxml",
         # Remove these pinned deps once hookee is updated to work with Flask 2.x
         "MarkupSafe>=0.23,<2.1.0",
