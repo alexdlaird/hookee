@@ -4,8 +4,5 @@ include LICENSE README.md CHANGELOG.md
 # Include default config file
 include hookee/config_default.yaml
 
-# Exclude junk
-global-exclude .DS_Store
-
 # Exclude build
-graft _build
+prune _build

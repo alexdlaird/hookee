@@ -35,10 +35,11 @@ setup(
     long_description_content_type="text/markdown",
     author="Alex Laird",
     author_email="contact@alexlaird.com",
-    url="https://github.com/alexdlaird/hookee",
     project_urls={
         "Changelog": "https://github.com/alexdlaird/hookee/blob/main/CHANGELOG.md",
-        "Sponsor": "https://github.com/sponsors/alexdlaird"
+        "Documentation": "https://hookee.readthedocs.io",
+        "Sponsor": "https://github.com/sponsors/alexdlaird",
+        "Source Code": "https://github.com/alexdlaird/hookee"
     },
     license="MIT",
     classifiers=[
