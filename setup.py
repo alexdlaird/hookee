@@ -1,8 +1,8 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.2.2"
+__version__ = "2.2.3"
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -10,8 +10,7 @@ with open("README.md", "r") as f:
 setup(
     name="hookee",
     version=__version__,
-    packages=["hookee",
-              "hookee.plugins"],
+    packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
         "pluginbase",
@@ -37,7 +36,6 @@ setup(
     author="Alex Laird",
     author_email="contact@alexlaird.com",
     url="https://github.com/alexdlaird/hookee",
-    download_url="https://github.com/alexdlaird/hookee/archive/{}.tar.gz".format(__version__),
     project_urls={
         "Changelog": "https://github.com/alexdlaird/hookee/blob/main/CHANGELOG.md",
         "Sponsor": "https://github.com/sponsors/alexdlaird"
