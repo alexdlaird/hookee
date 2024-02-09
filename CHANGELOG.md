@@ -5,13 +5,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.2.5...HEAD)
 
-## [2.3.0](https://github.com/alexdlaird/hookee/compare/2.2.5...2.3.0) - TBD
+## [2.3.0](https://github.com/alexdlaird/hookee/compare/2.2.5...2.3.0) - 2024-02-09
 ### Added
 - Support for Flask > 1.x.
 - `authtoken` command to set token value in config from CLI.
 
 ### Fixed
 - Documentation improvements.
+
+### Removed
+- Pinned dependencies of `MarkupSafe`, `Jinja2`, `itsdangerous`, `werkzeug`, now that Flask 2.x and 3.x are supported.
 
 ## [2.2.5](https://github.com/alexdlaird/hookee/compare/2.2.4...2.2.5) - 2024-02-09
 ### Fixed
