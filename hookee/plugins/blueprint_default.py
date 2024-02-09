@@ -59,6 +59,5 @@ def shutdown():
             for conns in proc.connections(kind='inet'):
                 if conns.laddr.port == 8000:
                     proc.send_signal(SIGTERM)  # or SIGKILL
-        # raise RuntimeError('Not running werkzeug <=2.0')
 
     return "", 204

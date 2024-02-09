@@ -1,6 +1,6 @@
 [project]
 name = "hookee"
-version = "2.2.5"
+version = "2.3.0"
 description = "Command line webhooks, on demand."
 readme = "README.md"
 license = { file = "LICENSE" }

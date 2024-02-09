@@ -1,7 +1,5 @@
-import os
 import sys
 import time
-import unittest
 from contextlib import contextmanager
 from io import StringIO
 
@@ -10,12 +8,11 @@ from hookee.conf import Config
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2022, Alex Laird"
-__version__ = "2.0.7"
+__copyright__ = "Copyright 2024, Alex Laird"
+__version__ = "2.3.0"
 
 
 class ManagedTestCase(HookeeTestCase):
-    port = 8000
     hookee_manager = None
     webhook_url = None
 
