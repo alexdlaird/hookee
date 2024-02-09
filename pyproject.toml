@@ -1,0 +1,76 @@
+[project]
+name = "hookee"
+version = "2.2.4"
+description = "Command line webhooks, on demand."
+readme = "README.md"
+license = { file = "LICENSE" }
+maintainers = [{ name = "Alex Laird", email = "contact@alexlaird.com" }]
+requires-python = ">=3.8"
+dependencies = [
+    "pluginbase",
+    "confuse",
+    "flask>=1.1.0,<2.0.0",
+    "click",
+    "pyngrok>=7.1.0",
+    "defusedxml",
+    # Remove these pinned deps once hookee is updated to work with Flask 2.x
+    "MarkupSafe>=0.23,<2.1.0",
+    "Jinja2<3.0,>=2.10.1",
+    "itsdangerous==2.0.1",
+    "werkzeug==2.0.3"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Environment :: Web Environment",
+    "Framework :: Flask",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: Proxy Servers",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Software Development :: Testing",
+]
+
+[project.scripts]
+hookee = "hookee.cli:hookee"
+
+[project.urls]
+Changelog = "https://github.com/alexdlaird/hookee/blob/main/CHANGELOG.md",
+Documentation = "https://hookee.readthedocs.io",
+Sponsor = "https://github.com/sponsors/alexdlaird",
+"Source Code" = "https://github.com/alexdlaird/hookee"
+
+[tool.coverage.run]
+omit = [
+    "venv/**",
+    "*/tests/**"
+]
+
+[tool.coverage.report]
+precision = 2
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.xml]
+output = "_build/coverage/coverage.xml"
+
+[tool.coverage.html]
+title = "Coverage Report"
+directory = "_build/coverage"
