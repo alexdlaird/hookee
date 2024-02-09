@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [2.2.4](https://github.com/alexdlaird/hookee/compare/2.2.3...2.2.4) - 2024-02-08
 ### Added
-- Build improvements.
+- Migrated to `pyproject.toml`.
 
 ## [2.2.3](https://github.com/alexdlaird/hookee/compare/2.2.2...2.2.3) - 2024-02-08
 ### Added
