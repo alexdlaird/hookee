@@ -4,3 +4,4 @@ flask>=1.1.0
 click>=7.1.0
 pyngrok>=7.1.0
 defusedxml>=0.7.1
+psutil

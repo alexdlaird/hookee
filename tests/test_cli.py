@@ -5,11 +5,19 @@ from hookee.cli import hookee
 from tests.testcase import HookeeTestCase
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "2.0.0"
+__copyright__ = "Copyright 2024, Alex Laird"
+__version__ = "2.3.0"
 
 
 class TestCli(HookeeTestCase):
+    def test_authtoken(self):
+        # WHEN
+        result = self.runner.invoke(hookee, ["authtoken", "some-token"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("auth token has been set", result.output)
+
     def test_update_config(self):
         # WHEN
         result = self.runner.invoke(hookee, ["update-config", "port", "1000"])
