@@ -10,8 +10,8 @@ from flask import Flask
 from hookee import pluginmanager
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.0.0"
+__copyright__ = "Copyright 2024, Alex Laird"
+__version__ = "2.3.0"
 
 werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.ERROR)
@@ -85,7 +85,7 @@ class Server:
         if self._thread is None:
             self.print_util.print_open_header("Starting Server")
 
-            self._thread = threading.Thread(target=self._loop)
+            self._thread = threading.Thread(target=self._loop, daemon=True)
             self._thread.start()
 
             while self._server_status() != HTTPStatus.OK:

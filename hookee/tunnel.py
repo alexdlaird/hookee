@@ -6,8 +6,8 @@ from pyngrok.conf import PyngrokConfig
 from pyngrok.exception import PyngrokError
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.0.0"
+__copyright__ = "Copyright 2024, Alex Laird"
+__version__ = "2.3.0"
 
 
 class Tunnel:
@@ -71,8 +71,7 @@ class Tunnel:
         if self._thread is None:
             self.print_util.print_open_header("Opening Tunnel")
 
-            self._thread = threading.Thread(target=self._loop)
-            self._thread.daemon = True
+            self._thread = threading.Thread(target=self._loop, daemon=True)
             self._thread.start()
 
             while self.public_url is None:
