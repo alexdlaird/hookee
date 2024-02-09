@@ -1,5 +1,4 @@
 import sys
-import time
 from contextlib import contextmanager
 from io import StringIO
 
@@ -23,17 +22,10 @@ class ManagedTestCase(HookeeTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.config = Config(click_logging=True)
+        cls.config = Config(click_logging=True, port=8000)
         cls.hookee_manager = HookeeManager(config=cls.config)
 
         cls.hookee_manager._init_server_and_tunnel()
-
-    @classmethod
-    def tearDownClass(cls):
-        if cls.hookee_manager:
-            cls.hookee_manager.stop()
-
-            time.sleep(2)
 
     @contextmanager
     def captured_output(self):

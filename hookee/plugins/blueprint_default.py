@@ -55,7 +55,8 @@ def shutdown():
     if "werkzeug.server.shutdown" in request.environ:
         request.environ.get("werkzeug.server.shutdown")()
     else:
-        # TODO: This works, but need to find a way to make it not kill the tests too
-        os.kill(os.getpid(), signal.SIGTERM)
+        # Windows does not provide SIGKILL, go with SIGTERM then
+        sig = getattr(signal, "SIGKILL", signal.SIGTERM)
+        os.kill(os.getpid(), sig)
 
     return "", 204
