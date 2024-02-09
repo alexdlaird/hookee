@@ -44,9 +44,9 @@ classifiers = [
 hookee = "hookee.cli:hookee"
 
 [project.urls]
-Changelog = "https://github.com/alexdlaird/hookee/blob/main/CHANGELOG.md",
-Documentation = "https://hookee.readthedocs.io",
-Sponsor = "https://github.com/sponsors/alexdlaird",
+Changelog = "https://github.com/alexdlaird/hookee/blob/main/CHANGELOG.md"
+Documentation = "https://hookee.readthedocs.io"
+Sponsor = "https://github.com/sponsors/alexdlaird"
 "Source Code" = "https://github.com/alexdlaird/hookee"
 
 [tool.coverage.run]
