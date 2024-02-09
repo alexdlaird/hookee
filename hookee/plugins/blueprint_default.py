@@ -1,14 +1,14 @@
-from signal import SIGTERM
+import os
+import signal
 
 from flask import Blueprint, request
-from psutil import process_iter
 
 from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager
 from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.1.0"
+__copyright__ = "Copyright 2024, Alex Laird"
+__version__ = "2.3.0"
 
 blueprint = Blueprint("default", __name__)
 plugin_type = BLUEPRINT_PLUGIN
@@ -55,9 +55,7 @@ def shutdown():
     if "werkzeug.server.shutdown" in request.environ:
         request.environ.get("werkzeug.server.shutdown")()
     else:
-        for proc in process_iter():
-            for conns in proc.connections(kind='inet'):
-                if conns.laddr.port == 8000:
-                    proc.send_signal(SIGTERM)  # or SIGKILL
+        # TODO: This works, but need to find a way to make it not kill the tests too
+        os.kill(os.getpid(), signal.SIGTERM)
 
     return "", 204
