@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.2.5...HEAD)
+
+## [2.3.0](https://github.com/alexdlaird/hookee/compare/2.2.5...2.3.0) - TBD
 ### Added
 - Support for Flask 2.2.x.
 
@@ -49,7 +51,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Removed
 - Support for Python 3.5.
->>>>>>> develop
 
 ## [2.0.8](https://github.com/alexdlaird/hookee/compare/2.0.7...2.0.8) - 2023-04-22
 ### Changed
