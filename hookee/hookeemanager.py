@@ -2,7 +2,7 @@ import time
 
 import click
 
-from hookee.conf import Config
+from hookee.conf import Config, VERSION
 from hookee.exception import HookeeError, HookeeConfigError
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
@@ -10,8 +10,8 @@ from hookee.tunnel import Tunnel
 from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.1.0"
+__copyright__ = "Copyright 2024, Alex Laird"
+__version__ = "2.3.0"
 
 
 class HookeeManager:
@@ -126,7 +126,7 @@ class HookeeManager:
                 |   Y  (  <_> |  <_> )    <\  ___/\  ___/ 
                 |___|  /\____/ \____/|__|_ \\___  >\___  >
                      \/                   \/    \/     \/ 
-                                                   v{}""".format(__version__), color="green", bold=True)
+                                                   v{}""".format(VERSION), color="green", bold=True)
         self.print_util.print_basic()
         self.print_util.print_close_header("=", blank_line=False)
 

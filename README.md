@@ -1,12 +1,11 @@
 <p align="center"><img alt="hookee - command line webhooks, on demand" src="https://hookee.readthedocs.io/en/latest/_images/logo.png" /></p>
 
 [![PyPI Version](https://badge.fury.io/py/hookee.svg)](https://badge.fury.io/py/hookee)
-[![CI/CD](https://github.com/alexdlaird/hookee/workflows/CI/CD/badge.svg)](https://github.com/alexdlaird/hookee/actions?query=workflow%3ACI%2FCD)
+[![Build](https://github.com/alexdlaird/hookee/actions/workflows/build.yml/badge.svg)](https://github.com/alexdlaird/hookee/actions/workflows/build.yml)
 [![Codecov](https://codecov.io/gh/alexdlaird/hookee/branch/main/graph/badge.svg)](https://codecov.io/gh/alexdlaird/hookee)
 [![Docs](https://readthedocs.org/projects/hookee/badge/?version=latest)](https://hookee.readthedocs.io/en/latest/?badge=latest)
 [![Python Versions](https://img.shields.io/pypi/pyversions/hookee.svg)](https://pypi.org/project/hookee/)
 [![PyPI License](https://img.shields.io/pypi/l/hookee.svg)](https://pypi.org/project/hookee/)
-[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check+out+%23hookee%2C+a+utility+that+provides+command+line+%23webhooks%2C+on+demand.%0D%0A%0D%0A&url=https://github.com/alexdlaird/hookee&via=alexdlaird&hashtags=python,flask,ngrok,pyngrok)
 
 `hookee` is a utility that provides command line webhooks, on demand! Dump useful request data to the
 console, process requests and responses, customize response data, and configure `hookee` and its routes

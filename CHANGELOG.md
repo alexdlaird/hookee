@@ -3,14 +3,53 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.1.0...HEAD)
-
-## [2.1.0](https://github.com/alexdlaird/hookee/compare/2.0.8...2.1.0) - TBD
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.2.5...HEAD)
 ### Added
 - Support for Flask 2.2.x.
 
 ### Fixed
 - Documentation improvements.
+
+## [2.2.5](https://github.com/alexdlaird/hookee/compare/2.2.4...2.2.5) - 2024-02-09
+### Fixed
+- Broken version string on CLI.
+- Inconsistent version pinning.
+
+## [2.2.4](https://github.com/alexdlaird/hookee/compare/2.2.3...2.2.4) - 2024-02-08
+### Added
+- Migrated to `pyproject.toml`.
+
+## [2.2.3](https://github.com/alexdlaird/hookee/compare/2.2.2...2.2.3) - 2024-02-08
+### Added
+- Build improvements.
+
+## [2.2.2](https://github.com/alexdlaird/hookee/compare/2.2.1...2.2.2) - 2024-02-06
+### Added
+- Build improvements.
+
+## [2.2.1](https://github.com/alexdlaird/hookee/compare/2.2.0...2.2.1) - 2024-02-03
+### Added
+- Build improvements.
+
+## [2.2.0](https://github.com/alexdlaird/hookee/compare/2.1.1...2.2.0) - 2024-02-02
+### Remove
+- Support for Python 3.7 and below.
+
+## [2.1.1](https://github.com/alexdlaird/hookee/compare/2.1.0...2.1.1) - 2023-12-27
+### Added
+- If a value for `auth_token` is not set in `Config`, it will attempt to use the environment variable `NGROK_AUTHTOKEN` if it is set.
+- Build improvements.
+
+## [2.1.0](https://github.com/alexdlaird/hookee/compare/2.0.8...2.1.0) - 2023-12-04
+### Added
+- Build improvements, including `wheel` support.
+
+### Changed
+- Bumped `pyngrok` version required to >7.0.0.
+
+### Removed
+- Support for Python 3.5.
+>>>>>>> develop
 
 ## [2.0.8](https://github.com/alexdlaird/hookee/compare/2.0.7...2.0.8) - 2023-04-22
 ### Changed
@@ -110,7 +149,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - Renamed `CliManager` class to `HookeeManager`.
 - Renamed `HookeeManager.start()` to `HookeeManager.run()`.
-- `PluginMananger.enabled_plugins()` no longer sorts the returned list, as plugins should be executed (and listed) in preferred order.
+- `PluginManager.enabled_plugins()` no longer sorts the returned list, as plugins should be executed (and listed) in preferred order.
 
 ### Fixed
 - Build improvements.

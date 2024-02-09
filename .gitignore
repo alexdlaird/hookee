@@ -3,6 +3,7 @@
 *.pyc
 .coverage
 *.log
+*.pytest_cache
 venv
 dist/
 MANIFEST

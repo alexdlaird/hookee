@@ -40,21 +40,21 @@ docs: install
 local:
 	@rm -rf *.egg-info dist
 	@( \
-		$(PYTHON_BIN) setup.py sdist; \
+		$(PYTHON_BIN) -m pip install --upgrade pip; \
+        $(PYTHON_BIN) -m pip install --upgrade build; \
+		$(PYTHON_BIN) -m build; \
 		$(PYTHON_BIN) -m pip install dist/*.tar.gz; \
 	)
 
 validate-release:
 	@if [[ "${VERSION}" == "" ]]; then echo "VERSION is not set" & exit 1 ; fi
 
-	@if [[ $$(grep "__version__ = \"${VERSION}\"" setup.py) == "" ]] ; then echo "Version not bumped in setup.py" & exit 1 ; fi
-	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/hookeemanager.py) == "" ]] ; then echo "Version not bumped in hookee/hookeemanager.py" & exit 1 ; fi
+	@if [[ $$(grep "version = \"${VERSION}\"" pyproject.toml) == "" ]] ; then echo "Version not bumped in pyproject.toml" & exit 1 ; fi
+	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/conf.py) == "" ]] ; then echo "Version not bumped in hookee/conf.py" & exit 1 ; fi
 
-upload:
-	@rm -rf *.egg-info dist
+upload: local
 	@( \
-		source venv/bin/activate; \
-		python -m pip install twine; \
-		python setup.py sdist; \
-		python -m twine upload dist/*; \
+        $(PYTHON_BIN) -m pip install --upgrade twine; \
+		$(PYTHON_BIN) -m build; \
+		$(PYTHON_BIN) -m twine upload dist/*; \
 	)
