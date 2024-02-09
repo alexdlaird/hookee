@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [2.3.0](https://github.com/alexdlaird/hookee/compare/2.2.5...2.3.0) - TBD
 ### Added
-- Support for Flask 2.2.x.
+- Support for Flask > 1.x.
+- `authtoken` command to set token value in config from CLI.
 
 ### Fixed
 - Documentation improvements.
