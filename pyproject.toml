@@ -59,7 +59,7 @@ omit = [
 precision = 2
 exclude_lines = [
     "pragma: no cover",
-    "def __repr__",œ
+    "def __repr__",
     "if self.debug",
     "if settings.DEBUG",
     "raise AssertionError",
