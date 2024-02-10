@@ -14,7 +14,7 @@ virtualenv:
 install: virtualenv
 	@( \
 		source venv/bin/activate; \
-		$(PYTHON_BIN) -m pip install .; \
+		python -m pip install .; \
 	)
 
 nopyc:
@@ -27,14 +27,14 @@ clean: nopyc
 test: virtualenv
 	@( \
 		source venv/bin/activate; \
-		$(PYTHON_BIN) -m pip install ".[dev]"; \
+		python -m pip install ".[dev]"; \
 		python -m coverage run -m unittest discover -b && python -m coverage xml && python -m coverage html && python -m coverage report; \
 	)
 
 docs: virtualenv
 	@( \
 		source venv/bin/activate; \
-		$(PYTHON_BIN) -m pip install ".[docs]"; \
+		python -m pip install ".[docs]"; \
 		sphinx-build -M html docs build/docs; \
 	)
 
