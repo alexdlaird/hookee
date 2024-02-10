@@ -42,7 +42,6 @@ dev = [
 ]
 docs = [
     "Sphinx",
-    "sphinx_rtd_theme",
     "sphinx-notfound-page"
 ]
 
