@@ -14,7 +14,7 @@ virtualenv:
 install: virtualenv
 	@( \
 		source venv/bin/activate; \
-		python -m pip install -r requirements.txt -r requirements-dev.txt; \
+		$(PYTHON_BIN) -m pip install .; \
 	)
 
 nopyc:
@@ -22,19 +22,20 @@ nopyc:
 	find . -name __pycache__ | xargs rm -rf || true
 
 clean: nopyc
-	rm -rf _build dist *.egg-info venv
+	rm -rf build dist *.egg-info venv
 
-test: install
+test: virtualenv
 	@( \
 		source venv/bin/activate; \
+		$(PYTHON_BIN) -m pip install ".[dev]"; \
 		python -m coverage run -m unittest discover -b && python -m coverage xml && python -m coverage html && python -m coverage report; \
 	)
 
-docs: install
+docs: virtualenv
 	@( \
 		source venv/bin/activate; \
-		python -m pip install -r docs/requirements.txt; \
-		sphinx-build -M html docs _build/docs; \
+		$(PYTHON_BIN) -m pip install ".[docs]"; \
+		sphinx-build -M html docs build/docs; \
 	)
 
 local:

@@ -5,4 +5,4 @@ include LICENSE README.md CHANGELOG.md
 include hookee/config_default.yaml
 
 # Exclude build
-prune _build
+prune build

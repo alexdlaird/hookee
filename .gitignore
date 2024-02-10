@@ -8,6 +8,6 @@ venv
 dist/
 MANIFEST
 *.egg-info
-_build
+build
 
 tests/.config
