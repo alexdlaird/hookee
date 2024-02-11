@@ -87,30 +87,27 @@ class Plugin:
 
         if "plugin_type" not in attributes:
             raise HookeePluginValidationError(
-                "Plugin \"{}\" does not conform to the plugin spec.".format(name))
+                f"Plugin \"{name}\" does not conform to the plugin spec.")
         elif module.plugin_type not in VALID_PLUGIN_TYPES:
             raise HookeePluginValidationError(
-                "Plugin \"{}\" must specify a valid `plugin_type`.".format(name))
+                f"Plugin \"{name}\" must specify a valid `plugin_type`.")
         elif module.plugin_type == REQUEST_PLUGIN:
             if "run" not in functions_list:
                 raise HookeePluginValidationError(
-                    "Plugin \"{}\" must implement `run(request)`.".format(name))
+                    f"Plugin \"{name}\" must implement `run(request)`.")
             elif len(util.get_args(module.run)) < 1:
                 raise HookeePluginValidationError(
-                    "Plugin \"{}\" does not conform to the plugin spec, `run(request)` must be defined.".format(
-                        name))
+                    f"Plugin \"{name}\" does not conform to the plugin spec, `run(request)` must be defined.")
         elif module.plugin_type == RESPONSE_PLUGIN:
             if "run" not in functions_list:
                 raise HookeePluginValidationError(
-                    "Plugin \"{}\" must implement `run(request, response)`.".format(name))
+                    f"Plugin \"{name}\" must implement `run(request, response)`.")
             elif len(util.get_args(module.run)) < 2:
                 raise HookeePluginValidationError(
-                    "Plugin \"{}\" does not conform to the plugin spec, `run(request, response)` must be defined.".format(
-                        name))
+                    f"Plugin \"{name}\" does not conform to the plugin spec, `run(request, response)` must be defined.")
         elif module.plugin_type == BLUEPRINT_PLUGIN and "blueprint" not in attributes:
             raise HookeePluginValidationError(
-                "Plugin \"{}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.".format(
-                    name))
+                "Plugin \"{name}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.")
 
         has_setup = "setup" in functions_list and len(util.get_args(module.setup)) == 1
 
@@ -190,8 +187,7 @@ class PluginManager:
         for plugin_name in REQUIRED_PLUGINS:
             if plugin_name not in enabled_plugins:
                 self.hookee_manager.fail(
-                    "Sorry, the plugin {} is required. Run `hookee enable-plugin {}` before continuing.".format(
-                        plugin_name, plugin_name))
+                    f"Sorry, the plugin {plugin_name} is required. Run `hookee enable-plugin {plugin_name}` before continuing.")
 
         self.source_plugins()
 
@@ -307,7 +303,7 @@ class PluginManager:
             if throw_error:
                 raise e
 
-            self.hookee_manager.fail("Plugin \"{}\" could not be found.".format(plugin_name))
+            self.hookee_manager.fail(f"Plugin \"{plugin_name}\" could not be found.")
         except HookeePluginValidationError as e:
             if throw_error:
                 raise e

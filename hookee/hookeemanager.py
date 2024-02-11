@@ -120,13 +120,13 @@ class HookeeManager:
 
     def print_hookee_banner(self):
         self.print_util.print_open_header("", "=")
-        self.print_util.print_basic("""                .__                   __                  
+        self.print_util.print_basic(f"""                .__                   __                  
                 |  |__   ____   ____ |  | __ ____   ____  
                 |  |  \ /  _ \ /  _ \|  |/ // __ \_/ __ \ 
                 |   Y  (  <_> |  <_> )    <\  ___/\  ___/ 
                 |___|  /\____/ \____/|__|_ \\___  >\___  >
                      \/                   \/    \/     \/ 
-                                                   v{}""".format(VERSION), color="green", bold=True)
+                                                   v{VERSION}""", color="green", bold=True)
         self.print_util.print_basic()
         self.print_util.print_close_header("=", blank_line=False)
 
@@ -134,7 +134,7 @@ class HookeeManager:
         self.print_util.print_open_header("Registered Plugins")
 
         plugins = self.plugin_manager.enabled_plugins()
-        self.print_util.print_basic(" * Enabled Plugins: {}".format(plugins))
+        self.print_util.print_basic(f" * Enabled Plugins: {plugins}")
         if self.plugin_manager.response_callback:
             self.print_util.print_basic("   Response callback: enabled")
 
@@ -145,8 +145,8 @@ class HookeeManager:
         rules = list(filter(lambda r: r.rule not in ["/shutdown", "/static/<path:filename>", "/status"],
                             self.server.app.url_map.iter_rules()))
         for rule in rules:
-            self.print_util.print_basic(" * {}{}".format(self.tunnel.public_url, rule.rule), print_when_logging=True)
-            self.print_util.print_basic("   Methods: {}".format(sorted(list(rule.methods))), print_when_logging=True)
+            self.print_util.print_basic(f" * {self.tunnel.public_url}{rule.rule}", print_when_logging=True)
+            self.print_util.print_basic(f"   Methods: {sorted(list(rule.methods))}", print_when_logging=True)
 
         self.print_util.print_close_header()
 

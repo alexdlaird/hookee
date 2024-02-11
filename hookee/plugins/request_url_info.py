@@ -24,9 +24,12 @@ def run(request):
 
     timestamp = now.strftime("%m-%d-%Y %I:%M:%S %p")
 
-    print_util.print_basic("[{}] \"{} {} {}\"".format(timestamp, request.method, request.base_url,
-                                                      request.environ["SERVER_PROTOCOL"]),
-                           color=print_util.request_color, bold=True)
+    print_util.print_basic(
+        "[{timestamp}] \"{method} {url} {protocol}\"".format(timestamp=timestamp,
+                                                             method=request.method,
+                                                             url=request.base_url,
+                                                             protocol=request.environ["SERVER_PROTOCOL"]),
+        color=print_util.request_color, bold=True)
     print_util.print_basic()
 
     return request

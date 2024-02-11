@@ -19,7 +19,7 @@ def setup(hookee_manager):
 
 def run(request):
     if request.headers and "X-Forwarded-For" in request.headers:
-        print_util.print_basic("Client IP: {}".format(request.headers.get("X-Forwarded-For")),
+        print_util.print_basic(f"Client IP: {request.headers.get('X-Forwarded-For')}",
                                color=print_util.request_color)
     if request.headers:
         print_util.print_dict("Headers", dict(request.headers), color=print_util.request_color)

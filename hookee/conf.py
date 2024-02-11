@@ -108,7 +108,7 @@ class Config:
             if not os.path.exists(plugins_dir):
                 os.makedirs(plugins_dir)
         except confuse.NotFoundError as e:
-            raise HookeeConfigError("The config file is invalid: {}.".format(str(e)))
+            raise HookeeConfigError(f"The config file is invalid: {str(e)}.")
         except (confuse.ConfigReadError, ValueError):
             raise HookeeConfigError("The config file is not valid YAML.")
 

@@ -18,7 +18,7 @@ class ManagedTestCase(HookeeTestCase):
     def setUp(self):
         super(ManagedTestCase, self).setUp()
 
-        self.webhook_url = "{}/webhook".format(self.hookee_manager.tunnel.public_url)
+        self.webhook_url = f"{self.hookee_manager.tunnel.public_url}/webhook"
 
     @classmethod
     def setUpClass(cls):

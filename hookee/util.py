@@ -55,7 +55,7 @@ class PrintUtil:
         return self.config.get("request_color")
 
     def print_config_update(self, msg):
-        self.print_basic("\n--> {}\n".format(msg), color=self.header_color)
+        self.print_basic(f"\n--> {msg}\n", color=self.header_color)
 
     def print_open_header(self, title, delimiter="-", color=None):
         """
@@ -74,7 +74,7 @@ class PrintUtil:
         width = int((self.console_width - len(title)) / 2)
 
         self.print_basic()
-        self.print_basic("{}{}{}".format(delimiter * width, title, delimiter * width), color=color, bold=True)
+        self.print_basic(f"{delimiter * width}{title}{delimiter * width}", color=color, bold=True)
         self.print_basic()
 
     def print_close_header(self, delimiter="-", color=None, blank_line=True):
@@ -109,7 +109,7 @@ class PrintUtil:
         if color is None:
             color = self.default_color
 
-        self.print_basic("{}: {}".format(title, json.dumps(data, indent=4)), color=color)
+        self.print_basic(f"{title}: {json.dumps(data, indent=4)}", color=color)
 
     def print_xml(self, title, data, color=None):
         """
@@ -125,7 +125,7 @@ class PrintUtil:
         if color is None:
             color = self.default_color
 
-        self.print_basic("{}: {}".format(title, parseString(data).toprettyxml()), color=color)
+        self.print_basic(f"{title}: {parseString(data).toprettyxml()}", color=color)
 
     def print_basic(self, msg="", color=None, bold=False, print_when_logging=False):
         """

@@ -98,7 +98,7 @@ class Server:
         If running, kill the server and cleanup its thread.
         """
         if self._thread:
-            req = Request("http://127.0.0.1:{}/shutdown".format(self.port), method="POST")
+            req = Request(f"http://127.0.0.1:{self.port}/shutdown", method="POST")
             urlopen(req)
 
             self._thread = None
@@ -111,11 +111,11 @@ class Server:
         :rtype: http.HTTPStatus
         """
         try:
-            return urlopen("http://127.0.0.1:{}/status".format(self.port)).getcode()
+            return urlopen(f"http://127.0.0.1:{self.port}/status").getcode()
         except URLError:
             return HTTPStatus.INTERNAL_SERVER_ERROR
 
     def print_close_header(self):
-        self.print_util.print_basic(" * Port: {}".format(self.port))
+        self.print_util.print_basic(f" * Port: {self.port}")
         self.print_util.print_basic(" * Blueprints: registered")
         self.print_util.print_close_header()

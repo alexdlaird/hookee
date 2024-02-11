@@ -48,7 +48,7 @@ def hookee(ctx, **kwargs):
     hookee documentation can be found at https://hookee.readthedocs.io.
     """
     if kwargs["version"]:
-        ctx.exit("hookee/{} Python/{}".format(VERSION, platform.python_version()))
+        ctx.exit(f"hookee/{VERSION} Python/{platform.python_version()}")
 
     ctx.ensure_object(dict)
     for key, value in kwargs.items():
@@ -105,9 +105,9 @@ def update_config(ctx, key, value):
         hookee_manager.config.set(key, value)
 
         hookee_manager.print_util.print_config_update(
-            "The default value for \"{}\" has been updated in the config.".format(key))
+            f"The default value for \"{key}\" has been updated in the config.")
     except KeyError:
-        ctx.fail("No such key exists in the config: {}".format(key))
+        ctx.fail(f"No such key exists in the config: {key}")
 
 
 @hookee.command()
@@ -123,7 +123,7 @@ def enable_plugin(ctx, plugin):
 
     hookee_manager.config.append("plugins", plugin)
 
-    hookee_manager.print_util.print_config_update("Plugin \"{}\" has been enabled.".format(plugin))
+    hookee_manager.print_util.print_config_update(f"Plugin \"{plugin}\" has been enabled.")
 
 
 @hookee.command()
@@ -136,11 +136,11 @@ def disable_plugin(ctx, plugin):
     hookee_manager = ctx.obj["hookee_manager"]
 
     if plugin in pluginmanager.REQUIRED_PLUGINS:
-        ctx.fail("Can't disable the plugin \"{}\".".format(plugin))
+        ctx.fail(f"Can't disable the plugin \"{plugin}\".")
 
     hookee_manager.config.remove("plugins", plugin)
 
-    hookee_manager.print_util.print_config_update("Plugin \"{}\" is disabled.".format(plugin))
+    hookee_manager.print_util.print_config_update(f"Plugin \"{plugin}\" is disabled.")
 
 
 @hookee.command()
@@ -156,14 +156,14 @@ def available_plugins(ctx):
     hookee_manager.print_util.print_open_header("Available Plugins")
 
     for plugin_name in plugins:
-        hookee_manager.print_util.print_basic(" * {}".format(plugin_name))
+        hookee_manager.print_util.print_basic(f" * {plugin_name}")
 
         try:
             plugin = hookee_manager.plugin_manager.get_plugin(plugin_name)
             if plugin.description:
-                hookee_manager.print_util.print_basic("   Description: {}".format(plugin.description))
+                hookee_manager.print_util.print_basic(f"   Description: {plugin.description}")
         except Exception as e:
-            hookee_manager.print_util.print_basic("   Error: {}".format(e))
+            hookee_manager.print_util.print_basic(f"   Error: {e}")
 
     hookee_manager.print_util.print_close_header()
     hookee_manager.print_util.print_basic()
@@ -182,14 +182,14 @@ def enabled_plugins(ctx):
     hookee_manager.print_util.print_open_header("Enabled Plugins (Order of Execution)")
 
     for plugin_name in plugins:
-        hookee_manager.print_util.print_basic(" * {}".format(plugin_name))
+        hookee_manager.print_util.print_basic(f" * {plugin_name}")
 
         try:
             plugin = hookee_manager.plugin_manager.get_plugin(plugin_name)
             if plugin.description:
-                hookee_manager.print_util.print_basic("   Description: {}".format(plugin.description))
+                hookee_manager.print_util.print_basic(f"   Description: {plugin.description}")
         except Exception as e:
-            hookee_manager.print_util.print_basic("   Error: {}".format(e))
+            hookee_manager.print_util.print_basic(f"   Error: {e}")
 
     hookee_manager.print_util.print_close_header()
     hookee_manager.print_util.print_basic()

@@ -41,7 +41,7 @@ class TestHookeeManagerEdges(HookeeTestCase):
         hookee_manager = HookeeManager(config=config)
         hookee_manager._init_server_and_tunnel()
 
-        webhook_url = "{}/webhook".format(hookee_manager.tunnel.public_url)
+        webhook_url = f"{hookee_manager.tunnel.public_url}/webhook"
 
         # WHEN
         response = requests.get(webhook_url)

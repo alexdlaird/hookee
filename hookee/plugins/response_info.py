@@ -18,13 +18,13 @@ def setup(hookee_manager):
 
 
 def run(request, response):
-    print_util.print_basic("Status Code: {}".format(response.status_code), color=print_util.request_color)
+    print_util.print_basic(f"Status Code: {response.status_code}", color=print_util.request_color)
     if response.headers:
         print_util.print_dict("Headers", dict(response.headers), color=print_util.request_color)
     if response.data:
         if response.is_json:
             print_util.print_dict("Body", response.get_json(), color=print_util.request_color)
         else:
-            print_util.print_basic("Body: {}".format(response.data.decode("utf-8")), color=print_util.request_color)
+            print_util.print_basic(f"Body: {response.data.decode('utf-8')}", color=print_util.request_color)
 
     return response

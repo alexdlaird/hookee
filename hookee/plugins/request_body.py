@@ -25,6 +25,6 @@ def run(request):
         print_util.print_basic("Body Type: FORM")
         print_util.print_dict("Body", dict(request.form), color=print_util.request_color)
     elif request.data:
-        print_util.print_basic("Body: {}".format(request.data.decode("utf-8")), color=print_util.request_color)
+        print_util.print_basic(f"Body: {request.data.decode('utf-8')}", color=print_util.request_color)
 
     return request
