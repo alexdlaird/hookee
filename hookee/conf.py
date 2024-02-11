@@ -7,7 +7,7 @@ from hookee.exception import HookeeConfigError
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
+__version__ = "2.3.1"
 
 VERSION = __version__
 
