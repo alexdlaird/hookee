@@ -100,7 +100,7 @@ class TestPluginManager(HookeeTestCase):
     def test_load_plugins(self):
         # GIVEN
         self.assertEqual(0, len(self.plugin_manager.loaded_plugins))
-        custom_plugin_path = os.path.join(self.plugins_dir, "custom_plugin.py")
+        os.path.join(self.plugins_dir, "custom_plugin.py")
         custom_request_plugin_path = os.path.join(self.plugins_dir, "custom_request_plugin.py")
         custom_response_plugin_path = os.path.join(self.plugins_dir, "custom_response_plugin.py")
 
