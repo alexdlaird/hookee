@@ -3,17 +3,17 @@ import signal
 
 from flask import Blueprint, request
 
-from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager
-from hookee.util import PrintUtil
+from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager  # noqa: F401
+from hookee.util import PrintUtil  # noqa: F401
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
+__version__ = "2.3.2"
 
 blueprint = Blueprint("default", __name__)
 plugin_type = BLUEPRINT_PLUGIN
-description = "Mount required management endpoints along with the default `/webhook` endpoint that processes incoming " \
-              "requests with enabled plugins."
+description = ("Mount required management endpoints along with the default `/webhook` endpoint that processes "
+               "incoming requests with enabled plugins.")
 
 plugin_manager = None  # type: PluginManager
 print_util = None  # type: PrintUtil

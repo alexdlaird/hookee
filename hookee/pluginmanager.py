@@ -9,7 +9,7 @@ from hookee.exception import HookeePluginValidationError
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.0.0"
+__version__ = "2.3.2"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"
@@ -104,7 +104,8 @@ class Plugin:
                     f"Plugin \"{name}\" must implement `run(request, response)`.")
             elif len(util.get_args(module.run)) < 2:
                 raise HookeePluginValidationError(
-                    f"Plugin \"{name}\" does not conform to the plugin spec, `run(request, response)` must be defined.")
+                    f"Plugin \"{name}\" does not conform to the plugin spec, `run(request, response)` "
+                    f"must be defined.")
         elif module.plugin_type == BLUEPRINT_PLUGIN and "blueprint" not in attributes:
             raise HookeePluginValidationError(
                 "Plugin \"{name}\" must define `blueprint = Blueprint(\"plugin_name\", __name__)`.")
@@ -162,7 +163,8 @@ class PluginManager:
         self.source = None
         self.response_callback = None
 
-        self.builtin_plugins_dir = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "plugins"))
+        self.builtin_plugins_dir = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                                                                 "plugins"))
 
         self.loaded_plugins = []
 
@@ -187,7 +189,8 @@ class PluginManager:
         for plugin_name in REQUIRED_PLUGINS:
             if plugin_name not in enabled_plugins:
                 self.hookee_manager.fail(
-                    f"Sorry, the plugin {plugin_name} is required. Run `hookee enable-plugin {plugin_name}` before continuing.")
+                    f"Sorry, the plugin {plugin_name} is required. Run `hookee enable-plugin {plugin_name}` "
+                    f"before continuing.")
 
         self.source_plugins()
 

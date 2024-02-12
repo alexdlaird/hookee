@@ -9,7 +9,7 @@ from hookee.conf import VERSION
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
+__version__ = "2.3.2"
 
 
 @click.group(invoke_without_command=True)
@@ -48,7 +48,8 @@ def hookee(ctx, **kwargs):
     hookee documentation can be found at https://hookee.readthedocs.io.
     """
     if kwargs["version"]:
-        ctx.exit(f"hookee/{VERSION} Python/{platform.python_version()}")
+        click.echo(f"hookee/{VERSION} Python/{platform.python_version()}")
+        ctx.exit(0)
 
     ctx.ensure_object(dict)
     for key, value in kwargs.items():

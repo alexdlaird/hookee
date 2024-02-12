@@ -3,11 +3,11 @@ import json
 from flask import current_app
 
 from hookee.pluginmanager import RESPONSE_PLUGIN
-from hookee.util import PrintUtil
+from hookee.util import PrintUtil  # noqa: F401
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.4"
+__version__ = "2.3.2"
 
 plugin_type = RESPONSE_PLUGIN
 description = "If the `response` object has not been initialized, create a response that echo's back the request data."

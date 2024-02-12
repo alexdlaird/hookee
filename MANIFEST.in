@@ -1,8 +1,9 @@
 # Including text resources
 include LICENSE README.md CHANGELOG.md
 
-# Include default config file
+# Include files
 include hookee/config_default.yaml
+include hookee/banner.txt
 
 # Exclude build
 prune build

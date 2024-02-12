@@ -1,9 +1,9 @@
 from hookee.pluginmanager import REQUEST_PLUGIN
-from hookee.util import PrintUtil
+from hookee.util import PrintUtil  # noqa: F401
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "1.2.2"
+__version__ = "2.3.2"
 
 plugin_type = REQUEST_PLUGIN
 description = "Print the `request`'s files, if defined."

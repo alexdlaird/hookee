@@ -1,3 +1,4 @@
+import os
 import time
 
 import click
@@ -11,7 +12,11 @@ from hookee.util import PrintUtil
 
 __author__ = "Alex Laird"
 __copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
+__version__ = "2.3.2"
+
+banner_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "banner.txt")
+with open(banner_path) as f:
+    banner = f.read()
 
 
 class HookeeManager:
@@ -120,13 +125,7 @@ class HookeeManager:
 
     def print_hookee_banner(self):
         self.print_util.print_open_header("", "=")
-        self.print_util.print_basic(f"""                .__                   __                  
-                |  |__   ____   ____ |  | __ ____   ____  
-                |  |  \ /  _ \ /  _ \|  |/ // __ \_/ __ \ 
-                |   Y  (  <_> |  <_> )    <\  ___/\  ___/ 
-                |___|  /\____/ \____/|__|_ \\___  >\___  >
-                     \/                   \/    \/     \/ 
-                                                   v{VERSION}""", color="green", bold=True)
+        self.print_util.print_basic(banner.format(version=VERSION), color="green", bold=True)
         self.print_util.print_basic()
         self.print_util.print_close_header("=", blank_line=False)
 
