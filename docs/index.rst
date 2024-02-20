@@ -8,16 +8,18 @@ hookee - command line webhooks, on demand
    :alt: hookee - command line webhooks, on demand
    :align: center
 
-.. image:: https://badge.fury.io/py/hookee.svg
-   :target: https://badge.fury.io/py/hookee
-.. image:: https://github.com/alexdlaird/hookee/actions/workflows/build.yml/badge.svg
-   :target: https://github.com/alexdlaird/hookee/actions/workflows/build.yml
-.. image:: https://codecov.io/gh/alexdlaird/hookee/branch/main/graph/badge.svg
+.. image:: https://img.shields.io/pypi/v/hookee
+   :target: https://pypi.org/project/hookee
+.. image:: https://img.shields.io/pypi/pyversions/hookee.svg
+   :target: https://pypi.org/project/hookee
+.. image:: https://img.shields.io/codecov/c/github/alexdlaird/hookee
    :target: https://codecov.io/gh/alexdlaird/hookee
-.. image:: https://readthedocs.org/projects/hookee/badge/?version=latest
-   :target: https://hookee.readthedocs.io/en/latest/?badge=latest
-.. image:: https://img.shields.io/pypi/l/hookee.svg
-   :target: https://pypi.org/project/hookee/
+.. image:: https://img.shields.io/github/actions/workflow/status/alexdlaird/hookee/build.yml
+   :target: https://github.com/alexdlaird/hookee/actions/workflows/build.yml
+.. image:: https://img.shields.io/readthedocs/hookee
+   :target: https://hookee.readthedocs.io/en/latest
+.. image:: https://img.shields.io/github/license/alexdlaird/hookee
+   :target: https://github.com/alexdlaird/hookee
 
 ``hookee`` is a utility that provides command line webhooks, on demand! Dump useful request data to the
 console, process requests and responses, customize response data, and configure ``hookee`` and its routes

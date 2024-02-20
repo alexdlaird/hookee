@@ -1,11 +1,11 @@
 <p align="center"><img alt="hookee - command line webhooks, on demand" src="https://hookee.readthedocs.io/en/latest/_images/logo.png" /></p>
 
-[![PyPI Version](https://badge.fury.io/py/hookee.svg)](https://badge.fury.io/py/hookee)
-[![Build](https://github.com/alexdlaird/hookee/actions/workflows/build.yml/badge.svg)](https://github.com/alexdlaird/hookee/actions/workflows/build.yml)
-[![Codecov](https://codecov.io/gh/alexdlaird/hookee/branch/main/graph/badge.svg)](https://codecov.io/gh/alexdlaird/hookee)
-[![Docs](https://readthedocs.org/projects/hookee/badge/?version=latest)](https://hookee.readthedocs.io/en/latest/?badge=latest)
+[![Version](https://img.shields.io/pypi/v/hookee)](https://pypi.org/project/hookee)
 [![Python Versions](https://img.shields.io/pypi/pyversions/hookee.svg)](https://pypi.org/project/hookee/)
-[![PyPI License](https://img.shields.io/pypi/l/hookee.svg)](https://pypi.org/project/hookee/)
+[![Coverage](https://img.shields.io/codecov/c/github/alexdlaird/hookee)](https://codecov.io/gh/alexdlaird/hookee)
+[![Build](https://img.shields.io/github/actions/workflow/status/alexdlaird/hookee/build.yml)](https://github.com/alexdlaird/hookee/actions/workflows/build.yml)
+[![Docs](https://img.shields.io/readthedocs/hookee)](https://hookee.readthedocs.io/en/latest)
+[![GitHub License](https://img.shields.io/github/license/alexdlaird/hookee)](https://github.com/alexdlaird/hookee/blob/main/LICENSE)
 
 `hookee` is a utility that provides command line webhooks, on demand! Dump useful request data to the
 console, process requests and responses, customize response data, and configure `hookee` and its routes
@@ -37,7 +37,7 @@ hookee start
 ```
 
 With its default configuration, this will start a server on port 8000, open a [`ngrok`](https://ngrok.com/) tunnel
-using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
+using [`hookee`](https://hookee.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
 the `/webhook` endpoint will dump the request and response data to the console.
 
 `hookee` can be configured in a number of ways to quickly and easily tweak request and response data. For example,
