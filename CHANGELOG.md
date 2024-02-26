@@ -3,9 +3,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.1...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.2...HEAD)
 
-## [2.3.1](https://github.com/alexdlaird/hookee/compare/2.3.0...2.3.1) - 2024-02-1
+## [2.3.2](https://github.com/alexdlaird/hookee/compare/2.3.1...2.3.2) - 2024-02-26
+### Added
+- Build improvements.
+
+## [2.3.1](https://github.com/alexdlaird/hookee/compare/2.3.0...2.3.1) - 2024-02-01
 ### Added
 - Relative dependency pinning in `pyproject.toml`.
 - Style and stability improvements (check `flake8` with `make check-style`).
