@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - Build improvements.
 
+### Changed
+- Renamed `make check-style` to `make check`.
+
 ## [2.3.1](https://github.com/alexdlaird/hookee/compare/2.3.0...2.3.1) - 2024-02-01
 ### Added
 - Relative dependency pinning in `pyproject.toml`.
