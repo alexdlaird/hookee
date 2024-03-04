@@ -6,7 +6,8 @@ import time
 
 import click
 
-from hookee.conf import Config, VERSION
+from hookee import __version__
+from hookee.conf import Config
 from hookee.exception import HookeeError, HookeeConfigError
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
@@ -124,7 +125,7 @@ class HookeeManager:
 
     def print_hookee_banner(self):
         self.print_util.print_open_header("", "=")
-        self.print_util.print_basic(banner.format(version=VERSION), color="green", bold=True)
+        self.print_util.print_basic(banner.format(version=__version__), color="green", bold=True)
         self.print_util.print_basic()
         self.print_util.print_close_header("=", blank_line=False)
 
