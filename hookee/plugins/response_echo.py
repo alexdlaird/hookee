@@ -1,13 +1,12 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import json
 
 from flask import current_app
 
 from hookee.pluginmanager import RESPONSE_PLUGIN
 from hookee.util import PrintUtil  # noqa: F401
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.3.2"
 
 plugin_type = RESPONSE_PLUGIN
 description = "If the `response` object has not been initialized, create a response that echo's back the request data."

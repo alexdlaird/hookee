@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import os
 import time
 
@@ -9,10 +12,6 @@ from hookee.pluginmanager import PluginManager
 from hookee.server import Server
 from hookee.tunnel import Tunnel
 from hookee.util import PrintUtil
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.2"
 
 banner_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "banner.txt")
 with open(banner_path) as f:

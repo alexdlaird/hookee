@@ -1,10 +1,9 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 from unittest import mock
 
 from tests.testcase import HookeeTestCase
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "2.0.0"
 
 
 class TestConfig(HookeeTestCase):

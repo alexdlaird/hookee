@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import os
 import signal
 
@@ -5,10 +8,6 @@ from flask import Blueprint, request
 
 from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager  # noqa: F401
 from hookee.util import PrintUtil  # noqa: F401
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.2"
 
 blueprint = Blueprint("default", __name__)
 plugin_type = BLUEPRINT_PLUGIN

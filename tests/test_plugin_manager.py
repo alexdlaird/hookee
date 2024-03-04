@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import os
 from types import ModuleType
 
@@ -7,10 +10,6 @@ from hookee import HookeeManager
 from hookee.exception import HookeePluginValidationError
 from hookee.pluginmanager import PluginManager, Plugin, VALID_PLUGIN_TYPES, BLUEPRINT_PLUGIN
 from tests.testcase import HookeeTestCase
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.4"
 
 
 class TestPluginManager(HookeeTestCase):

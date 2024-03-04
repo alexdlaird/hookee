@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import importlib.util
 import os
 
@@ -6,10 +9,6 @@ from pluginbase import PluginBase
 
 from hookee import util
 from hookee.exception import HookeePluginValidationError
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "2.3.2"
 
 BLUEPRINT_PLUGIN = "blueprint"
 REQUEST_PLUGIN = "request"

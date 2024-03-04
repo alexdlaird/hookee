@@ -1,13 +1,12 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import threading
 import time
 
 from pyngrok import ngrok, conf
 from pyngrok.conf import PyngrokConfig
 from pyngrok.exception import PyngrokError
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
 
 
 class Tunnel:

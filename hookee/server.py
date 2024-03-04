@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import logging
 import threading
 import time
@@ -8,10 +11,6 @@ from urllib.request import urlopen, Request
 from flask import Flask
 
 from hookee import pluginmanager
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
 
 werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.ERROR)

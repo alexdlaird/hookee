@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import sys
 from contextlib import contextmanager
 from io import StringIO
@@ -5,10 +8,6 @@ from io import StringIO
 from hookee import HookeeManager
 from hookee.conf import Config
 from tests.testcase import HookeeTestCase
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
 
 
 class ManagedTestCase(HookeeTestCase):

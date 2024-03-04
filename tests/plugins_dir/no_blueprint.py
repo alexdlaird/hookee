@@ -1,8 +1,7 @@
-from hookee.pluginmanager import BLUEPRINT_PLUGIN
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
 
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.4"
+from hookee.pluginmanager import BLUEPRINT_PLUGIN
 
 plugin_type = BLUEPRINT_PLUGIN
 

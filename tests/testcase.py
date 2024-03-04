@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import os
 import shutil
 import unittest
@@ -5,10 +8,6 @@ import unittest
 from click.testing import CliRunner
 
 from hookee.conf import Config
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.4"
 
 
 class HookeeTestCase(unittest.TestCase):

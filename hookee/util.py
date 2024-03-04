@@ -1,3 +1,6 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import inspect
 import json
 import logging
@@ -5,10 +8,6 @@ import os
 
 import click
 from defusedxml.minidom import parseString
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.0"
 
 logger = logging.getLogger(__name__)
 

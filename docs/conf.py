@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-# Configuration file for the Sphinx documentation builder.
-#
-# This file does only contain a selection of the most common options. For a
-# full list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
+import datetime
+import os
+import sys
+
+from hookee import __version__
 
 # -- Path setup --------------------------------------------------------------
 
@@ -12,20 +13,17 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
 # -- Project information -----------------------------------------------------
-from hookee import cli
 
 project = "hookee"
-copyright = "2022, Alex Laird"
+copyright = f"2020-{datetime.date.today().year}, Alex Laird"
 author = "Alex Laird"
 
 # The short X.Y version
-version = cli.__version__
+version = __version__
 # The full version, including alpha/beta/rc tags
 release = version
 

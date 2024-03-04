@@ -1,15 +1,13 @@
 #!/usr/bin/env python
 
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import platform
 
 import click
 
-from hookee import HookeeManager, pluginmanager
-from hookee.conf import VERSION
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.2"
+from hookee import HookeeManager, pluginmanager, __version__
 
 
 @click.group(invoke_without_command=True)
@@ -48,7 +46,7 @@ def hookee(ctx, **kwargs):
     hookee documentation can be found at https://hookee.readthedocs.io.
     """
     if kwargs["version"]:
-        click.echo(f"hookee/{VERSION} Python/{platform.python_version()}")
+        click.echo(f"hookee/{__version__} Python/{platform.python_version()}")
         ctx.exit(0)
 
     ctx.ensure_object(dict)

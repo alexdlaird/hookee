@@ -58,7 +58,7 @@ validate-release:
 	@if [[ "${VERSION}" == "" ]]; then echo "VERSION is not set" & exit 1 ; fi
 
 	@if [[ $$(grep "version = \"${VERSION}\"" pyproject.toml) == "" ]] ; then echo "Version not bumped in pyproject.toml" & exit 1 ; fi
-	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/conf.py) == "" ]] ; then echo "Version not bumped in hookee/conf.py" & exit 1 ; fi
+	@if [[ $$(grep "__version__ = \"${VERSION}\"" hookee/__init__.py) == "" ]] ; then echo "Version not bumped in hookee/__init__.py" & exit 1 ; fi
 
 upload: local
 	@( \

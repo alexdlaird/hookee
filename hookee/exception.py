@@ -1,6 +1,5 @@
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2023, Alex Laird"
-__version__ = "1.2.0"
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
 
 
 class HookeeError(Exception):

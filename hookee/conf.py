@@ -1,15 +1,12 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 import os
 
 import click
 import confuse
 
 from hookee.exception import HookeeConfigError
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2024, Alex Laird"
-__version__ = "2.3.2"
-
-VERSION = __version__
 
 template = {
     "port": int,

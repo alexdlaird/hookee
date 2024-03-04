@@ -1,11 +1,10 @@
+__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__license__ = "MIT"
+
 from hookee import HookeeManager
 from hookee import util
 from hookee.pluginmanager import PluginManager
 from tests.testcase import HookeeTestCase
-
-__author__ = "Alex Laird"
-__copyright__ = "Copyright 2020, Alex Laird"
-__version__ = "1.2.0"
 
 
 class TestUtil(HookeeTestCase):
