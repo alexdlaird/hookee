@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.2...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.3...HEAD)
+
+## [2.3.3](https://github.com/alexdlaird/hookee/compare/2.3.2...2.3.3) - 2024-03-05
+### Added
+- Build and style improvements.
+
+### Removed
+- `conf.VERSION`, moved all version information to `hookee/__init__.py`. Get package version with `from hookee import __version__` instead.
 
 ## [2.3.2](https://github.com/alexdlaird/hookee/compare/2.3.1...2.3.2) - 2024-02-26
 ### Added
