@@ -1,6 +1,6 @@
 [project]
 name = "hookee"
-version = "2.3.3"
+dynamic = ["version"]
 description = "Command line webhooks, on demand."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -56,6 +56,9 @@ Changelog = "https://github.com/alexdlaird/hookee/blob/main/CHANGELOG.md"
 Documentation = "https://hookee.readthedocs.io"
 Sponsor = "https://github.com/sponsors/alexdlaird"
 "Source Code" = "https://github.com/alexdlaird/hookee"
+
+[tool.setuptools.dynamic]
+version = { attr = "hookee.__version__" }
 
 [tool.coverage.run]
 omit = [
