@@ -5,8 +5,6 @@ import datetime
 import os
 import sys
 
-from hookee import __version__
-
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -15,6 +13,9 @@ from hookee import __version__
 #
 
 sys.path.insert(0, os.path.abspath(".."))
+
+# This import must happen after adding to sys.path so docs build is consistent across environments
+from hookee import __version__
 
 # -- Project information -----------------------------------------------------
 
