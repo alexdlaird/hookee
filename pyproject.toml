@@ -57,6 +57,9 @@ Documentation = "https://hookee.readthedocs.io"
 Sponsor = "https://github.com/sponsors/alexdlaird"
 "Source Code" = "https://github.com/alexdlaird/hookee"
 
+[tool.setuptools]
+package-dir = {"" = "hookee"}
+
 [tool.setuptools.dynamic]
 version = { attr = "hookee.__version__" }
 
