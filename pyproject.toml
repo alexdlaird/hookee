@@ -58,7 +58,7 @@ Sponsor = "https://github.com/sponsors/alexdlaird"
 "Source Code" = "https://github.com/alexdlaird/hookee"
 
 [tool.setuptools]
-package-dir = {"" = "hookee"}
+package-dir = { hookee = "hookee" }
 
 [tool.setuptools.dynamic]
 version = { attr = "hookee.__version__" }
