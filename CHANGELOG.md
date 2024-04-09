@@ -3,7 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.4...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.5...HEAD)
+
+## [2.3.5](https://github.com/alexdlaird/hookee/compare/2.3.3...2.3.4) - 2024-04-09
+### Added
+- Added support for `ngrok` v3 parameters `domain` and `basic_auth`. Backwards compatible with legacy parameters `hostname` and `auth`. 
+- Build improvements.
 
 ## [2.3.4](https://github.com/alexdlaird/hookee/compare/2.3.3...2.3.4) - 2024-03-24
 ### Added

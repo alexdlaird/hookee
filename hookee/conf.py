@@ -11,8 +11,12 @@ from hookee.exception import HookeeConfigError
 template = {
     "port": int,
     "subdomain": confuse.String(default=None),
-    "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"], default=None),
+    "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in", "us-cal-1"], default=None),
+    "domain": confuse.String(default=None),
+    # Deprecated, use "domain" instead
     "hostname": confuse.String(default=None),
+    "basic_auth": confuse.String(default=None),
+    # Deprecated, use "basic_auth" instead
     "auth": confuse.String(default=None),
     "host_header": confuse.String(default=None),
     "response": confuse.String(default=None),
@@ -109,16 +113,18 @@ class Config:
         except (confuse.ConfigReadError, ValueError):
             raise HookeeConfigError("The config file is not valid YAML.")
 
-    def get(self, key):
+    def get(self, key, default=None):
         """
         Get the config value for the given key of persisted data.
 
         :param key: The key.
         :type key: str
+        :param default: The default, if config not set.
+        :type key: str
         :return: The config value.
         :rtype: object
         """
-        return self.config_data[key]
+        return self.config_data.get(key, default)
 
     def set(self, key, value):
         """

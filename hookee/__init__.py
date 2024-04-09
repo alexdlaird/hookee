@@ -1,5 +1,5 @@
 __copyright__ = "Copyright (c) 2020-2024 Alex Laird"
 __license__ = "MIT"
-__version__ = "2.3.4"
+__version__ = "2.3.5"
 
 from hookee.hookeemanager import HookeeManager  # noqa: F401

@@ -94,7 +94,8 @@ class Server:
 
     def stop(self):
         """
-        If running, kill the server and cleanup its thread.
+        This method is only useful when the Flask version has been overriden to use asn older version (<2). With recent
+        versions of Flask, the underlying server daemon will terminate when ``hookee` terminates.
         """
         if self._thread:
             req = Request(f"http://127.0.0.1:{self.port}/shutdown", method="POST")

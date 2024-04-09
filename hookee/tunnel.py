@@ -79,19 +79,22 @@ class Tunnel:
             self.print_close_header()
 
     def _start_tunnel(self):
-        options = {"bind_tls": True}
+        options = {"schemes": ["https"]}
         subdomain = self.config.get("subdomain")
-        hostname = self.config.get("hostname")
+        domain = self.config.get("domain", self.config.get("hostname"))
         host_header = self.config.get("host_header")
-        auth = self.config.get("auth")
+        basic_auth = self.config.get("basic_auth", self.config.get("auth"))
         if subdomain:
             options["subdomain"] = subdomain
-        if hostname:
-            options["hostname"] = hostname
+        if domain:
+            options["domain"] = domain
         if host_header:
             options["host_header"] = host_header
-        if auth:
-            options["auth"] = auth
+        if basic_auth:
+            if isinstance(basic_auth, list):
+                options["basic_auth"] = basic_auth
+            else:
+                options["basic_auth"] = [basic_auth]
 
         self.public_url = ngrok.connect(self.port,
                                         **options).public_url
