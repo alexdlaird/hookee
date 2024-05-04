@@ -6,7 +6,7 @@ import threading
 import time
 from http import HTTPStatus
 from urllib.error import URLError
-from urllib.request import urlopen, Request
+from urllib.request import Request, urlopen
 
 from flask import Flask
 

@@ -8,7 +8,7 @@ from flask import Response
 
 from hookee import HookeeManager
 from hookee.exception import HookeePluginValidationError
-from hookee.pluginmanager import PluginManager, Plugin, VALID_PLUGIN_TYPES, BLUEPRINT_PLUGIN
+from hookee.pluginmanager import BLUEPRINT_PLUGIN, Plugin, PluginManager, VALID_PLUGIN_TYPES
 from tests.testcase import HookeeTestCase
 
 

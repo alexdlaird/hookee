@@ -8,7 +8,7 @@ import click
 
 from hookee import __version__
 from hookee.conf import Config
-from hookee.exception import HookeeError, HookeeConfigError
+from hookee.exception import HookeeConfigError, HookeeError
 from hookee.pluginmanager import PluginManager
 from hookee.server import Server
 from hookee.tunnel import Tunnel

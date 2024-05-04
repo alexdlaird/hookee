@@ -7,7 +7,7 @@ import platform
 
 import click
 
-from hookee import HookeeManager, pluginmanager, __version__
+from hookee import HookeeManager, __version__, pluginmanager
 
 
 @click.group(invoke_without_command=True)

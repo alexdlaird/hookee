@@ -1,8 +1,7 @@
 __copyright__ = "Copyright (c) 2020-2024 Alex Laird"
 __license__ = "MIT"
 
-from hookee import HookeeManager
-from hookee import util
+from hookee import HookeeManager, util
 from hookee.pluginmanager import PluginManager
 from tests.testcase import HookeeTestCase
 

@@ -56,11 +56,14 @@ hookee --help
 ## Documentation
 
 For more advanced usage, including how `hookee`'s default configuration can be changed, extended through plugins,
-API integrations, and more, see its official documentation is available at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
+API integrations, and more, see its official documentation is available
+at [http://hookee.readthedocs.io](http://hookee.readthedocs.io).
 
 ## Contributing
 
-If you would like to get involved, be sure to review the [Contribution Guide](https://github.com/alexdlaird/hookee/blob/main/CONTRIBUTING.rst).
+If you would like to get involved, be sure to review
+the [Contribution Guide](https://github.com/alexdlaird/hookee/blob/main/CONTRIBUTING.rst).
 
-Want to contribute financially? If you've found `hookee` useful, [sponsorship](https://github.com/sponsors/alexdlaird) would
+Want to contribute financially? If you've found `hookee` useful, [sponsorship](https://github.com/sponsors/alexdlaird)
+would
 also be greatly appreciated!

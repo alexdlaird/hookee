@@ -4,7 +4,7 @@ __license__ = "MIT"
 import threading
 import time
 
-from pyngrok import ngrok, conf
+from pyngrok import conf, ngrok
 from pyngrok.conf import PyngrokConfig
 from pyngrok.exception import PyngrokError
 
