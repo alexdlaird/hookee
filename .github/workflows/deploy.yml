@@ -11,6 +11,7 @@ jobs:
     name: Deploy
 
     env:
+      FORCE_COLOR: 1
       NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTHTOKEN }}
 
     runs-on: ubuntu-latest
