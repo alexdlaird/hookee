@@ -100,14 +100,15 @@ updated the config's defaults. For example, if we always want to reuse the same 
 
 .. code-block:: sh
 
-    hookee --subdomain my_domain --region eu
+    hookee --subdomain my_domain --auth "username:password" --default_route /my/path
 
 We can update these defaults like this:
 
 .. code-block:: sh
 
     hookee update-config subdomain my_domain
-    hookee update-config region eu
+    hookee update-config auth "username:password"
+    hookee update-config default_route /my/path
 
 From now on, these args are no longer necessary when starting ``hookee``:
 
