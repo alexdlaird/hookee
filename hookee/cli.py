@@ -13,13 +13,14 @@ from hookee import HookeeManager, __version__, pluginmanager
 @click.group(invoke_without_command=True)
 @click.pass_context
 @click.option("--port", type=int, help="The local port for the webserver and ngrok tunnel.")
-@click.option('--default_route', type=str, help="The URI regex to map to the default webhook.")
+@click.option('--default-route', type=str, help="The URI regex to map to the default webhook.")
+@click.option('--no-tunnel', is_flag=True, default=False, help="Do not open an ngrok tunnel.")
 @click.option("--subdomain", help="The subdomain to use for ngrok endpoints.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
               help="The region to use for ngrok endpoints.")
 @click.option("--hostname", help="The hostname to use for ngrok endpoints.")
 @click.option("--auth", help="The basic auth to use for ngrok endpoints.")
-@click.option("--host_header", help="The \"Host\" header value to use for ngrok endpoints.")
+@click.option("--host-header", help="The \"Host\" header value to use for ngrok endpoints.")
 @click.option("--response", type=str,
               help="Data to set for the response, overriding all body data from plugins and `--response-script`.")
 @click.option("--content-type", type=str,

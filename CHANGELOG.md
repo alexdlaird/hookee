@@ -10,13 +10,18 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
-- `default_route` and `default_route_methods` can be regex patterns, allowing for more flexible route matching.
+- `--default-route` can be regex pattern, allowing for more flexible route matching.
+- `ngrok` tunnel can now be disabled by passing `--no-tunnel` to CLI. 
+
+### Fixed
+
+- CLI arg `--host_header` is now `--host-header`, matching other args.
 
 ## [2.3.6](https://github.com/alexdlaird/hookee/compare/2.3.5...2.3.6) - 2024-11-20
 
 ### Added
 
-- Let the default route (`/webhook`) be set in the config or passed via the CLI with `default_route`.
+- Let the default route (`/webhook`) be set in the config with `default_route` or passed via the CLI with `--default-route`.
 
 ## [2.3.5](https://github.com/alexdlaird/hookee/compare/2.3.4...2.3.5) - 2024-04-09
 

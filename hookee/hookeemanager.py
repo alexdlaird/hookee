@@ -141,15 +141,20 @@ class HookeeManager:
 
         self.print_util.print_open_header("Registered Endpoints")
 
+        if self.tunnel.public_url:
+            host = self.tunnel.public_url
+        else:
+            host = f"http://localhost:{self.server.port}"
+
         default_route = self.config.get("default_route")
         default_route_methods = self.config.get("default_route_methods").split(",")
-        self.print_util.print_basic(f" * {self.tunnel.public_url}{default_route}", print_when_logging=True)
+        self.print_util.print_basic(f" * {host}{default_route}", print_when_logging=True)
         self.print_util.print_basic(f"   Methods: {sorted(list(default_route_methods))}", print_when_logging=True)
 
         rules = list(filter(lambda r: r.rule not in ["/<path:uri>", "/shutdown", "/status", "/static/<path:filename>"],
                             self.server.app.url_map.iter_rules()))
         for rule in rules:
-            self.print_util.print_basic(f" * {self.tunnel.public_url}{rule.rule}", print_when_logging=True)
+            self.print_util.print_basic(f" * {host}{rule.rule}", print_when_logging=True)
             self.print_util.print_basic(f"   Methods: {sorted(list(rule.methods))}", print_when_logging=True)
 
         self.print_util.print_close_header()
@@ -178,6 +183,7 @@ class HookeeManager:
     def _init_server_and_tunnel(self):
         self.alive = True
         self.server.start()
-        self.tunnel.start()
+        if not self.config.get("no_tunnel"):
+            self.tunnel.start()
 
         self.print_ready()
