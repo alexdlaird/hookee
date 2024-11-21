@@ -6,7 +6,7 @@ import signal
 
 from flask import Blueprint, abort, request
 
-from hookee.conf import Config
+from hookee.conf import Config  # noqa: F401
 from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager  # noqa: F401
 from hookee.util import PrintUtil  # noqa: F401
 
