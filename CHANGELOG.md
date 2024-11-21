@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.6...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.7...HEAD)
+
+## [2.3.7](https://github.com/alexdlaird/hookee/compare/2.3.6...2.3.7) - 2024-11-21
+
+### Added
+
+- `default_route` and `default_route_methods` can be regex patterns, allowing for more flexible route matching.
 
 ## [2.3.6](https://github.com/alexdlaird/hookee/compare/2.3.5...2.3.6) - 2024-11-20
 

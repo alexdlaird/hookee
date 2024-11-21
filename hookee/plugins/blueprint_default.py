@@ -2,6 +2,7 @@ __copyright__ = "Copyright (c) 2020-2024 Alex Laird"
 __license__ = "MIT"
 
 import os
+import re
 import signal
 
 from flask import Blueprint, abort, request
@@ -32,8 +33,8 @@ def setup(hookee_manager):
                  methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "TRACE", "CONNECT"])
 def webhook(uri=None):
     uri = uri.rstrip("/")
-    if (request.method not in config.get("default_route_methods").split(",") or
-            f"/{uri}" != config.get("default_route")):
+    if (not re.compile(config.get("default_route_methods")).match(request.method) or
+            not re.compile(config.get("default_route")).match(f"/{uri}")):
         abort(404)
 
     print_util.print_close_header(delimiter="=", color=print_util.request_color)

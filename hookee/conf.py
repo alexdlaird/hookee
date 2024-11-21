@@ -9,8 +9,8 @@ import confuse
 from hookee.exception import HookeeConfigError
 
 template = {
-    "default_route": confuse.String(default="/webhook"),
-    "default_route_methods": confuse.String(default="GET,HEAD,POST,PUT,DELETE,PATCH,OPTIONS,TRACE,CONNECT"),
+    "default_route": confuse.String(default="/webhook$"),
+    "default_route_methods": confuse.String(default="^(GET|HEAD|POST|PUT|DELETE|PATCH|OPTIONS|TRACE|CONNECT)$"),
     "port": int,
     "subdomain": confuse.String(default=None),
     "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in", "us-cal-1"], default=None),

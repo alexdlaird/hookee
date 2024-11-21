@@ -13,7 +13,7 @@ from hookee import HookeeManager, __version__, pluginmanager
 @click.group(invoke_without_command=True)
 @click.pass_context
 @click.option("--port", type=int, help="The local port for the webserver and ngrok tunnel.")
-@click.option('--default_route', type=str, help="The URI to map to the default webhook.")
+@click.option('--default_route', type=str, help="The URI regex to map to the default webhook.")
 @click.option("--subdomain", help="The subdomain to use for ngrok endpoints.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
               help="The region to use for ngrok endpoints.")
