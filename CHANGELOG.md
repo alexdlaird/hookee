@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.5...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.6...HEAD)
 
-## [2.3.5](https://github.com/alexdlaird/hookee/compare/2.3.3...2.3.4) - 2024-04-09
+## [2.3.6](https://github.com/alexdlaird/hookee/compare/2.3.5...2.3.6) - 2024-11-20
+
+### Added
+
+- Let the default route (`/webhook`) be set in the config or passed via the CLI with `default_route`.
+
+## [2.3.5](https://github.com/alexdlaird/hookee/compare/2.3.4...2.3.5) - 2024-04-09
 
 ### Added
 

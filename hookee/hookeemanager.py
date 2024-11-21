@@ -141,7 +141,12 @@ class HookeeManager:
 
         self.print_util.print_open_header("Registered Endpoints")
 
-        rules = list(filter(lambda r: r.rule not in ["/shutdown", "/static/<path:filename>", "/status"],
+        default_route = self.config.get("default_route")
+        default_route_methods = self.config.get("default_route_methods").split(",")
+        self.print_util.print_basic(f" * {self.tunnel.public_url}{default_route}", print_when_logging=True)
+        self.print_util.print_basic(f"   Methods: {sorted(list(default_route_methods))}", print_when_logging=True)
+
+        rules = list(filter(lambda r: r.rule not in ["/<path:uri>", "/shutdown", "/status", "/static/<path:filename>"],
                             self.server.app.url_map.iter_rules()))
         for rule in rules:
             self.print_util.print_basic(f" * {self.tunnel.public_url}{rule.rule}", print_when_logging=True)

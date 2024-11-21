@@ -4,8 +4,9 @@ __license__ = "MIT"
 import os
 import signal
 
-from flask import Blueprint, request
+from flask import Blueprint, abort, request
 
+from hookee.conf import Config
 from hookee.pluginmanager import BLUEPRINT_PLUGIN, PluginManager  # noqa: F401
 from hookee.util import PrintUtil  # noqa: F401
 
@@ -16,18 +17,25 @@ description = ("Mount required management endpoints along with the default `/web
 
 plugin_manager = None  # type: PluginManager
 print_util = None  # type: PrintUtil
+config = None  # type: Config
 
 
 def setup(hookee_manager):
-    global plugin_manager, print_util
+    global plugin_manager, print_util, config
 
     plugin_manager = hookee_manager.plugin_manager
     print_util = hookee_manager.print_util
+    config = hookee_manager.config
 
 
-@blueprint.route("/webhook",
+@blueprint.route('/<path:uri>',
                  methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "TRACE", "CONNECT"])
-def webhook():
+def webhook(uri=None):
+    uri = uri.rstrip("/")
+    if (request.method not in config.get("default_route_methods").split(",") or
+            f"/{uri}" != config.get("default_route")):
+        abort(404)
+
     print_util.print_close_header(delimiter="=", color=print_util.request_color)
 
     print_util.print_open_header("Request", delimiter="-", color=print_util.request_color)
