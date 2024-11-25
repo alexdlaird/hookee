@@ -130,7 +130,7 @@ From now on, these args are no longer necessary when starting ``hookee``:
 Customizing the Response
 ========================
 
-If we don't want to bother with building our own plugins, the response from ``/webhook`` and be customized right from
+If we don't want to bother with building our own plugins, the response from ``/webhook`` can be customized right from
 the command line with the ``--response`` arg.
 
 .. code-block:: sh
