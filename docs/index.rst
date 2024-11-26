@@ -63,6 +63,17 @@ here we are customizing the response body from ``/webhook`` using the ``--respon
 
     hookee --response "<Response>Ok</Response>" --content-type application/xml
 
+``hookee`` can also be started without a tunnel (removing the dependency on an Internet connection). Using the
+``--no-tunnel`` flag only starts ``hookee``'s server, allowing responses to be mocked locally. This can be particularly
+useful when service discovery is done through a proxy service (ex. `HAProxy <https://www.haproxy.org/>`_,
+`Envoy <https://www.envoyproxy.io/>`_, etc.), meaning we can tell ``hookee`` to start on the port of an expected
+downstream, thus intercepting requests to that service to provide our own responses in an isolated environment,
+very useful for rapid local development, cluster testing, and more.
+
+.. code-block:: sh
+
+    hookee --no-tunnel --response "<Response>Ok</Response>" --content-type application/xml --default-route /some/route --port 19780
+
 To see the ways ``hookee`` can be tweaked right from the console, view its documented args and commands like this:
 
 .. code-block:: sh
@@ -119,7 +130,7 @@ From now on, these args are no longer necessary when starting ``hookee``:
 Customizing the Response
 ========================
 
-If we don't want to bother with building our own plugins, the response from ``/webhook`` and be customized right from
+If we don't want to bother with building our own plugins, the response from ``/webhook`` can be customized right from
 the command line with the ``--response`` arg.
 
 .. code-block:: sh

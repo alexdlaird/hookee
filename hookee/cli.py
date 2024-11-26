@@ -3,43 +3,43 @@
 __copyright__ = "Copyright (c) 2020-2024 Alex Laird"
 __license__ = "MIT"
 
-import platform
-
 import click
+import platform
 
 from hookee import HookeeManager, __version__, pluginmanager
 
 
 @click.group(invoke_without_command=True)
 @click.pass_context
-@click.option("--port", type=int, help="The local port for the webserver and ngrok tunnel.")
-@click.option('--default-route', type=str, help="The URI regex to map to the default webhook.")
+@click.option("--port", type=int, help="[server] The local port for the webserver and ngrok tunnel.")
+@click.option('--default-route', type=str, help="[server] The URI regex to map to the default webhook.")
 @click.option('--no-tunnel', is_flag=True, default=False, help="Do not open an ngrok tunnel.")
-@click.option("--subdomain", help="The subdomain to use for ngrok endpoints.")
+@click.option("--response", type=str,
+              help="[server] Data to set for the response, overriding all body data from plugins and "
+                   "`--response-script`.")
+@click.option("--content-type", type=str,
+              help="[server] The \"Content-Type\" header to set when response body data is given with `--response`")
+@click.option("--request-script", type=click.Path(exists=True),
+              help="[server] A Python script whose `run(request)` method will be called by the default `/webhook` "
+                   "after all request plugins have run.")
+@click.option("--response-script", type=click.Path(exists=True),
+              help="[server] A Python script whose `run(request, response)` method will be called by the default "
+                   "`/webhook` after all response plugins have run.")
+@click.option("--subdomain", help="[tunnel] The subdomain to use for ngrok endpoints.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
               help="The region to use for ngrok endpoints.")
-@click.option("--hostname", help="The hostname to use for ngrok endpoints.")
-@click.option("--auth", help="The basic auth to use for ngrok endpoints.")
-@click.option("--host-header", help="The \"Host\" header value to use for ngrok endpoints.")
-@click.option("--response", type=str,
-              help="Data to set for the response, overriding all body data from plugins and `--response-script`.")
-@click.option("--content-type", type=str,
-              help="The \"Content-Type\" header to set when response body data is given with `--response`")
-@click.option("--request-script", type=click.Path(exists=True),
-              help="A Python script whose `run(request)` method will be called by the default `/webhook` after all "
-                   "request plugins have run.")
-@click.option("--response-script", type=click.Path(exists=True),
-              help="A Python script whose `run(request, response)` method will be called by the default `/webhook` "
-                   "after all response plugins have run.")
-@click.option("--auth-token", help="A valid ngrok auth token.")
+@click.option("--hostname", help="[tunnel] The hostname to use for ngrok endpoints.")
+@click.option("--auth", help="[tunnel] The basic auth to use for ngrok endpoints.")
+@click.option("--host-header", help="[tunnel] The \"Host\" header value to use for ngrok endpoints.")
+@click.option("--auth-token", help="[tunnel] A valid ngrok auth token.")
 @click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom hookee plugins.")
 @click.option("--plugins", multiple=True, help="A list of hookee plugins to use.")
 @click.option('--version', is_flag=True, default=False, help="Display version information.")
 def hookee(ctx, **kwargs):
     """
-    hookee is a utility that provides command line webhooks, on demand! Dump useful request data to the
-    console, process requests and responses, customize response data, and configure hookee and its routes
-    further in any number of ways through custom plugins.
+    hookee is a utility that provides command line webhooks, on demand! Bind port to intercept requests,
+    dump request data to the console, process requests and responses, customize response data, and configure hookee and
+    its routes further in any number of ways through custom plugins.
 
     hookee can be started by using `hookee start` or simply hookee.
 
