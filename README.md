@@ -26,7 +26,7 @@ or `conda`:
 conda install -c conda-forge hookee
 ```
 
-That's it! `hookee` is now available as a Python package is available from the command line.
+That's it! `hookee` is now available as a Python package and is available from the command line.
 
 ## Basic Usage
 
