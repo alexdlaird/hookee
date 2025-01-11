@@ -1,4 +1,4 @@
-__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__copyright__ = "Copyright (c) 2020-2025 Alex Laird"
 __license__ = "MIT"
 
 import os
@@ -13,6 +13,7 @@ template = {
     "default_route_methods": confuse.String(default="^(GET|HEAD|POST|PUT|DELETE|PATCH|OPTIONS|TRACE|CONNECT)$"),
     "port": int,
     "no_tunnel": confuse.OneOf([True, False], default=False),
+    "tunnel_name": confuse.String(default=None),
     "subdomain": confuse.String(default=None),
     "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in", "us-cal-1"], default=None),
     "domain": confuse.String(default=None),
@@ -27,6 +28,7 @@ template = {
     "request_script": confuse.Filename(default=None),
     "response_script": confuse.Filename(default=None),
     "auth_token": confuse.String(default=os.environ.get("NGROK_AUTHTOKEN")),
+    "api_key": confuse.String(default=os.environ.get("NGROK_API_KEY")),
     "plugins_dir": confuse.Filename(),
     "plugins": list,
     "console_width": confuse.Integer(default=80),

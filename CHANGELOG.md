@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.7...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.8...HEAD)
+
+## [2.3.8](https://github.com/alexdlaird/hookee/compare/2.3.7...2.3.8) - 2025-01-11
 
 ### Added
 
+- Added `tunnel_name` parameter to the `Config`, which can be used to tell `ngrok` to use a definition from its config file when starting a tunnel.
+- Added `ngrok`'s `api_key` to the `Config`. If not set in `Config`, it will attempt to use the environment variable `NGROK_API_KEY` if it is set.
 - Documentation improvements.
 
 ## [2.3.7](https://github.com/alexdlaird/hookee/compare/2.3.6...2.3.7) - 2024-11-21

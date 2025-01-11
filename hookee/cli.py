@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__copyright__ = "Copyright (c) 2020-2025 Alex Laird"
 __license__ = "MIT"
 
 import click
@@ -25,13 +25,15 @@ from hookee import HookeeManager, __version__, pluginmanager
 @click.option("--response-script", type=click.Path(exists=True),
               help="[server] A Python script whose `run(request, response)` method will be called by the default "
                    "`/webhook` after all response plugins have run.")
+@click.option("--tunnel-name", help="[tunnel] The name to use for the ngrok tunnel.")
 @click.option("--subdomain", help="[tunnel] The subdomain to use for ngrok endpoints.")
 @click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
               help="The region to use for ngrok endpoints.")
-@click.option("--hostname", help="[tunnel] The hostname to use for ngrok endpoints.")
+@click.option("--hostname", help="[tunnel] The domain to use for ngrok endpoints.")
 @click.option("--auth", help="[tunnel] The basic auth to use for ngrok endpoints.")
 @click.option("--host-header", help="[tunnel] The \"Host\" header value to use for ngrok endpoints.")
 @click.option("--auth-token", help="[tunnel] A valid ngrok auth token.")
+@click.option("--api-key", help="[tunnel] A valid ngrok API key.")
 @click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom hookee plugins.")
 @click.option("--plugins", multiple=True, help="A list of hookee plugins to use.")
 @click.option('--version', is_flag=True, default=False, help="Display version information.")
@@ -208,6 +210,20 @@ def authtoken(ctx, token):
     hookee_manager.config.set("auth_token", token)
 
     hookee_manager.print_util.print_config_update("The auth token has been set in the config.")
+
+
+@hookee.command()
+@click.pass_context
+@click.argument("key")
+def apikey(ctx, key):
+    """
+    Save the API key to the config.
+    """
+    hookee_manager = ctx.obj["hookee_manager"]
+
+    hookee_manager.config.set("api_key", key)
+
+    hookee_manager.print_util.print_config_update("The API key has been set in the config.")
 
 
 if __name__ == "__main__":

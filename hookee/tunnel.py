@@ -1,4 +1,4 @@
-__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__copyright__ = "Copyright (c) 2020-2025 Alex Laird"
 __license__ = "MIT"
 
 import threading
@@ -37,6 +37,7 @@ class Tunnel:
         self.port = self.config.get("port")
 
         self.pyngrok_config = PyngrokConfig(auth_token=self.config.get("auth_token"),
+                                            api_key=self.config.get("api_key"),
                                             region=self.config.get("region"))
         conf.set_default(self.pyngrok_config)
 
@@ -80,10 +81,13 @@ class Tunnel:
 
     def _start_tunnel(self):
         options = {"schemes": ["https"]}
+        name = self.config.get("tunnel_name")
         subdomain = self.config.get("subdomain")
         domain = self.config.get("domain", self.config.get("hostname"))
         host_header = self.config.get("host_header")
         basic_auth = self.config.get("basic_auth", self.config.get("auth"))
+        if name:
+            options["name"] = name
         if subdomain:
             options["subdomain"] = subdomain
         if domain:
