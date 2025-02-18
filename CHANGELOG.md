@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.8...HEAD)
 
+### Added
+
+- Dependency and documentation improvements.
+
 ## [2.3.8](https://github.com/alexdlaird/hookee/compare/2.3.7...2.3.8) - 2025-01-11
 
 ### Added

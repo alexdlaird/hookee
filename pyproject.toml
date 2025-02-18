@@ -1,7 +1,7 @@
 [project]
 name = "hookee"
 dynamic = ["version"]
-description = "Command line webhooks, on demand."
+description = "Command line webhooks, on demand"
 readme = "README.md"
 license = { file = "LICENSE" }
 maintainers = [{ name = "Alex Laird", email = "contact@alexlaird.com" }]

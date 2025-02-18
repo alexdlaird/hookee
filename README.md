@@ -1,4 +1,4 @@
-<p align="center"><img alt="hookee - command line webhooks, on demand" src="https://hookee.readthedocs.io/en/latest/_images/logo.png" /></p>
+<p align="center"><img alt="hookee - Command line webhooks, on demand" src="https://hookee.readthedocs.io/en/latest/_images/logo.png" /></p>
 
 [![Version](https://img.shields.io/pypi/v/hookee)](https://pypi.org/project/hookee)
 [![Python Versions](https://img.shields.io/pypi/pyversions/hookee.svg)](https://pypi.org/project/hookee/)

@@ -1,4 +1,4 @@
-__copyright__ = "Copyright (c) 2020-2024 Alex Laird"
+__copyright__ = "Copyright (c) 2020-2025 Alex Laird"
 __license__ = "MIT"
 
 import datetime
@@ -158,7 +158,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, "hookee.tex", "hookee Documentation",
-     "Alex Laird", "manual"),
+     author, "manual"),
 ]
 
 # -- Options for manual page output ------------------------------------------
@@ -177,7 +177,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, "hookee", "hookee Documentation",
-     author, "hookee", "Command line webhooks, on demand.",
+     author, "hookee", "Command line webhooks, on demand",
      "Miscellaneous"),
 ]
 

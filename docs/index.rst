@@ -1,11 +1,11 @@
 .. rst-class:: hide-header
 
 *****************************************
-hookee - command line webhooks, on demand
+hookee - Command line webhooks, on demand
 *****************************************
 
 .. image:: _html/logo.png
-   :alt: hookee - command line webhooks, on demand
+   :alt: hookee - Command line webhooks, on demand
    :align: center
 
 .. image:: https://img.shields.io/pypi/v/hookee
