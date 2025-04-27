@@ -64,6 +64,15 @@ package-dir = { hookee = "hookee" }
 [tool.setuptools.dynamic]
 version = { attr = "hookee.__version__" }
 
+[tool.pytest.ini_options]
+junit_family = "legacy"
+addopts = [
+    "--ignore=venv",
+    "--durations=0",
+    "--durations-min=2",
+    "--junitxml=build/test-results/junit.xml"
+]
+
 [tool.coverage.run]
 omit = [
     "venv/**",
