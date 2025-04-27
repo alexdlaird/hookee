@@ -1,6 +1,6 @@
-name: "Build"
+name: Build
 
-run-name: "Build ${{ github.ref_name }}"
+run-name: Build ${{ github.ref_name }}
 
 on:
   push:
@@ -9,7 +9,8 @@ on:
     branches: [ main, develop ]
   schedule:
     - cron: "0 9 * * *"
-
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
@@ -44,15 +45,8 @@ jobs:
         run: make install
       - name: Test
         run: make test
-      - name: Build docs
-        run: make docs
-      - name: Check code
-        run: make check
-      - name: Validate package
-        run: make local
-      - name: Upload coverage
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./build/coverage
+
+  validate:
+    name: Validate
+    uses: ./.github/workflows/validate.yml
+    secrets: inherit

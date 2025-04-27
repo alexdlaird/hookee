@@ -7,12 +7,11 @@ on:
     types: [ created ]
 
 jobs:
-  release:
-    name: Release
+  validate-version:
+    name: Validate Version
 
     env:
       FORCE_COLOR: 1
-      NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTHTOKEN }}
 
     runs-on: ubuntu-latest
 
@@ -22,21 +21,28 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
-      - name: Install dependencies
-        run: make install
       - name: Get version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
       - name: Validate version
         run: make validate-release VERSION=${{ steps.get_version.outputs.VERSION }}
-      - name: Test
-        run: make test
-      - name: Build docs
-        run: make docs
-      - name: Check code
-        run: make check
-      - name: Validate package
-        run: make local
+
+  build:
+    name: Build
+    uses: alexdlaird/amazon-orders/.github/workflows/build.yml@main
+    secrets: inherit
+
+  release:
+    name: Release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
       - name: Publish
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
