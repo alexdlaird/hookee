@@ -1,6 +1,6 @@
-name: "Release"
+name: Release
 
-run-name: "Release ${{ github.ref_name }}"
+run-name: Release ${{ github.ref_name }}
 
 on:
   release:
@@ -29,11 +29,12 @@ jobs:
 
   build:
     name: Build
-    uses: alexdlaird/amazon-orders/.github/workflows/build.yml@main
+    uses: alexdlaird/hookee/.github/workflows/build.yml@main
     secrets: inherit
 
   release:
     name: Release
+    needs: [build, validate-version]
 
     runs-on: ubuntu-latest
 
