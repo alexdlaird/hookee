@@ -1,4 +1,4 @@
-name: "Deploy"
+name: "Release"
 
 run-name: "Release ${{ github.ref_name }}"
 
@@ -7,8 +7,8 @@ on:
     types: [ created ]
 
 jobs:
-  deploy:
-    name: Deploy
+  release:
+    name: Release
 
     env:
       FORCE_COLOR: 1
