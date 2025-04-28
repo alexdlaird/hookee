@@ -2,6 +2,7 @@ __copyright__ = "Copyright (c) 2020-2025 Alex Laird"
 __license__ = "MIT"
 
 import os
+import threading
 
 import click
 import confuse
@@ -36,6 +37,8 @@ template = {
     "default_color": confuse.Integer(default="white"),
     "request_color": confuse.Integer(default="white"),
 }
+
+config_file_lock = threading.Lock()
 
 
 class Config:
@@ -181,5 +184,6 @@ class Config:
         self._write_config_objects_to_file()
 
     def _write_config_objects_to_file(self):
-        with open(self.config_path, "w") as f:
-            f.write(self.config_obj.dump())
+        with config_file_lock:
+            with open(self.config_path, "w") as f:
+                f.write(self.config_obj.dump())
