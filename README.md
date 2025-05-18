@@ -41,7 +41,7 @@ using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at
 the `/webhook` endpoint will dump the request and response data to the console.
 
 `hookee` can be configured in a number of ways to quickly and easily tweak request and response data. For example,
-here we are customizing the response body from `/webhook` using the `--response` arg.
+here is how you can customize the response body from `/webhook` using the `--response` arg.
 
 ```sh
 hookee --response "<Response>Ok</Response>" --content-type application/xml
@@ -50,8 +50,8 @@ hookee --response "<Response>Ok</Response>" --content-type application/xml
 `hookee` can also be started without a tunnel (removing the dependency on an Internet connection). Using the
 `--no-tunnel` flag only starts `hookee`'s server, allowing responses to be mocked locally. This can be particularly
 useful when service discovery is done through a proxy service (ex. [HAProxy](https://www.haproxy.org/),
-[Envoy](https://www.envoyproxy.io/), etc.), meaning we can tell `hookee` to start on the port of an expected downstream,
-thus intercepting requests to that service to provide our own responses in an isolated environment, very useful for
+[Envoy](https://www.envoyproxy.io/), etc.), meaning you can tell `hookee` to start on the port of an expected downstream,
+thus intercepting requests to that service to provide your own responses in an isolated environment, very useful for
 rapid local development, cluster testing, and more.
 
 ```sh

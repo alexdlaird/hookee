@@ -131,7 +131,7 @@ class TestPluginManager(HookeeTestCase):
                 response_script_found = True
         self.assertTrue(request_script_found)
         self.assertTrue(response_script_found)
-        # The last plugin should always be the response_script that we added
+        # The last plugin should always be the response_script that was added
         self.assertEqual(self.plugin_manager.loaded_plugins[-1].name, "custom_response_plugin")
         self.assertIsNotNone(self.plugin_manager.response_callback)
         response = self.plugin_manager.response_callback(None, Response())

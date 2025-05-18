@@ -57,7 +57,7 @@ using `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_, and mount a URL at
 request to the ``/webhook`` endpoint will dump request and response data to the console.
 
 ``hookee`` can be configured in a number of ways to quickly and easily tweak request and response data. For example,
-here we are customizing the response body from ``/webhook`` using the ``--response`` arg.
+here is how you can customize the response body from ``/webhook`` using the ``--response`` arg.
 
 .. code-block:: sh
 
@@ -66,8 +66,8 @@ here we are customizing the response body from ``/webhook`` using the ``--respon
 ``hookee`` can also be started without a tunnel (removing the dependency on an Internet connection). Using the
 ``--no-tunnel`` flag only starts ``hookee``'s server, allowing responses to be mocked locally. This can be particularly
 useful when service discovery is done through a proxy service (ex. `HAProxy <https://www.haproxy.org/>`_,
-`Envoy <https://www.envoyproxy.io/>`_, etc.), meaning we can tell ``hookee`` to start on the port of an expected
-downstream, thus intercepting requests to that service to provide our own responses in an isolated environment,
+`Envoy <https://www.envoyproxy.io/>`_, etc.), meaning you can tell ``hookee`` to start on the port of an expected
+downstream, thus intercepting requests to that service to provide your own responses in an isolated environment,
 very useful for rapid local development, cluster testing, and more.
 
 .. code-block:: sh
@@ -90,8 +90,8 @@ Out of the box, a `Flask Blueprint <https://flask.palletsprojects.com/en/1.1.x/b
 mount a URL at ``/webhook``, and default plugins for dumping request data to the console and echoing back the request
 body as the response will be enabled.
 
-Plugins can be enabled and disabled easily from the command line. Here we are disabling the default response plugin
-in favor of our own JSON response plugin:
+Plugins can be enabled and disabled easily from the command line. Here is how you disable the default response plugin
+in favor of your own JSON response plugin:
 
 .. code-block:: sh
 
@@ -100,20 +100,20 @@ in favor of our own JSON response plugin:
     hookee start
 
 Custom request or response plugins can be built and, when enabled, the default ``/webhook`` endpoint will utilize
-them. Or we can add additional Blueprint plugins to register endpoints of our own—see `the Plugins section <#plugins>`_
+them. Or you can add additional Blueprint plugins to register endpoints of your own—see `the Plugins section <#plugins>`_
 below for documentation on plugin development.
 
 Changing the Defaults
 ---------------------
 
-If we find ourselves continually reusing the same args to configure ``hookee`` when starting it, we can instead just
-updated the config's defaults. For example, if we always want to reuse the same ``ngrok`` endpoint:
+If you find ourselves continually reusing the same args to configure ``hookee`` when starting it, you can instead just
+updated the config's defaults. For example, if you always want to reuse the same ``ngrok`` endpoint:
 
 .. code-block:: sh
 
     hookee --subdomain my_domain --auth "username:password" --default_route /my/path
 
-We can update these defaults like this:
+You can update these defaults like this:
 
 .. code-block:: sh
 
@@ -130,27 +130,27 @@ From now on, these args are no longer necessary when starting ``hookee``:
 Customizing the Response
 ========================
 
-If we don't want to bother with building our own plugins, the response from ``/webhook`` can be customized right from
+If you don't want to bother with building your own plugins, the response from ``/webhook`` can be customized right from
 the command line with the ``--response`` arg.
 
 .. code-block:: sh
 
     hookee --response "<Response>Ok</Response>" --content-type application/xml
 
-This approach can be particularly useful in tutorials where we want to quickly allow a developer to see and interact
-with webhooks from our service before they've done any actual integration with our service themselves—all they would
+This approach can be particularly useful in tutorials where you want to quickly allow a developer to see and interact
+with webhooks from your service before they've done any actual integration with your service themselves—all they would
 have to do is copy and paste a simple ``hookee`` command like the one shown above.
 
-As with any config, if we find ourselves continually passing this response to ``hookee`` every time we run it, we can
-make it the default:
+As with any config, if you find ourselves continually passing this response to ``hookee`` every time you run it, you
+can make it the default:
 
 .. code-block:: sh
 
     hookee update-config response "<Response>Ok</Response>"
     hookee update-config content-type application/xml
 
-If we want a bit more flexibility, we can use ``--response-script`` to inject any script that implements
-``run(request, response)``. So, for example, if we have ``my_response_script.py`` that builds a simple
+If you want a bit more flexibility, you can use ``--response-script`` to inject any script that implements
+``run(request, response)``. So, for example, if you have ``my_response_script.py`` that builds a simple
 Flask XML response:
 
 .. code-block:: python
@@ -163,19 +163,19 @@ Flask XML response:
             mimetype="application/xml",
         )
 
-We can utilize it with:
+You can utilize it with:
 
 .. code-block:: sh
 
     hookee --response-script my_response_script.py
 
-We can do the same with the ``--request-script`` arg.
+You can do the same with the ``--request-script`` arg.
 
 Plugins
 =======
 
 ``hookee`` comes with several built-in plugins that dump request and response data to the console and return a response
-from ``/webhook``. We can also build our own plugins and store them in the config's ``plugins_dir`` (which defaults to
+from ``/webhook``. You can also build your own plugins and store them in the config's ``plugins_dir`` (which defaults to
 ``~/.config/hookee/plugins``).
 
 Plugins have a simple structure. Every plugin must define a ``plugin_type``, and valid values are:
@@ -198,7 +198,7 @@ A Blueprint plugin must define ``blueprint = Blueprint("<plugin_name>", __name__
 in this Blueprint, when the plugin is enabled, will be added to ``hookee``.
 
 For a Blueprint plugin to leverage enabled request and response plugins the same way the default ``/webhook`` route
-does, we can call :func:`hookee.pluginmanager.PluginManager.run_request_plugins` and
+does, you can call :func:`hookee.pluginmanager.PluginManager.run_request_plugins` and
 :func:`hookee.pluginmanager.PluginManager.run_response_plugins`
 
 Request and Response Plugins
@@ -217,10 +217,10 @@ Integrating with ``hookee``
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
    :target: https://colab.research.google.com/drive/1DO1yOw8sCkybSFP_Ci8sDmsSbOgB8r54?usp=sharing
 
-We can also integrate with ``hookee`` instead of using its command line interface.
-:class:`~hookee.hookeemanager.HookeeManager` is a good starting point for custom integrations. If we still want
+You can also integrate with ``hookee`` instead of using its command line interface.
+:class:`~hookee.hookeemanager.HookeeManager` is a good starting point for custom integrations. If you still want
 access to the output that would otherwise have gone to the console (for instance, request data dumped from plugins),
-we can `setup the  logger <https://docs.python.org/3/howto/logging.html>`_. For example, this would add a handler
+you can `setup the  logger <https://docs.python.org/3/howto/logging.html>`_. For example, this would add a handler
 to the ``hookee`` logger that logs output back to the console:
 
 .. code-block:: python
