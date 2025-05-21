@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.10...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.11...HEAD)
+
+## [2.3.11](https://github.com/alexdlaird/hookee/compare/2.3.10...2.3.11) - 2025-05-21
+
+### Removed
+
+- Official support for Python 3.8. No breaking changes, but backwards compatibility will not continue to be validated in future release. 
 
 ## [2.3.10](https://github.com/alexdlaird/hookee/compare/2.3.9...2.3.10) - 2025-05-07
 
