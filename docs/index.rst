@@ -61,7 +61,8 @@ here is how you can customize the response body from ``/webhook`` using the ``--
 
 .. code-block:: sh
 
-    hookee --response "<Response>Ok</Response>" --content-type application/xml
+    hookee --response "<Response>Ok</Response>" \
+        --content-type application/xml
 
 ``hookee`` can also be started without a tunnel (removing the dependency on an Internet connection). Using the
 ``--no-tunnel`` flag only starts ``hookee``'s server, allowing responses to be mocked locally. This can be particularly
@@ -72,7 +73,10 @@ very useful for rapid local development, cluster testing, and more.
 
 .. code-block:: sh
 
-    hookee --no-tunnel --response "<Response>Ok</Response>" --content-type application/xml --default-route /some/route --port 19780
+    hookee --no-tunnel --response "<Response>Ok</Response>" \
+        --content-type application/xml \
+        --default-route /some/route \
+        --port 19780
 
 To see the ways ``hookee`` can be tweaked right from the console, view its documented args and commands like this:
 
@@ -111,7 +115,8 @@ updated the config's defaults. For example, if you always want to reuse the same
 
 .. code-block:: sh
 
-    hookee --subdomain my_domain --auth "username:password" --default_route /my/path
+    hookee --subdomain my_domain --auth "username:password" \
+        --default_route /my/path
 
 You can update these defaults like this:
 
@@ -135,7 +140,8 @@ the command line with the ``--response`` arg.
 
 .. code-block:: sh
 
-    hookee --response "<Response>Ok</Response>" --content-type application/xml
+    hookee --response "<Response>Ok</Response>" \
+        --content-type application/xml
 
 This approach can be particularly useful in tutorials where you want to quickly allow a developer to see and interact
 with webhooks from your service before they've done any actual integration with your service themselves—all they would
@@ -159,7 +165,8 @@ Flask XML response:
 
     def run(request, response):
         return current_app.response_class(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response>Ok</Response>",
+            """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+            <Response>Ok</Response>""",
             mimetype="application/xml",
         )
 

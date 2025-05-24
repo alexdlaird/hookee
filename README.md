@@ -44,7 +44,8 @@ the `/webhook` endpoint will dump the request and response data to the console.
 here is how you can customize the response body from `/webhook` using the `--response` arg.
 
 ```sh
-hookee --response "<Response>Ok</Response>" --content-type application/xml
+hookee --response "<Response>Ok</Response>" \
+    --content-type application/xml
 ```
 
 `hookee` can also be started without a tunnel (removing the dependency on an Internet connection). Using the
@@ -55,7 +56,10 @@ thus intercepting requests to that service to provide your own responses in an i
 rapid local development, cluster testing, and more.
 
 ```sh
-hookee --no-tunnel --response "<Response>Ok</Response>" --content-type application/xml --default-route /some/route --port 19780
+hookee --no-tunnel --response "<Response>Ok</Response>" \
+    --content-type application/xml \
+    --default-route /some/route \
+    --port 19780
 ```
 
 To see the ways `hookee` can be tweaked right from the console, view its documented args and commands like this:
