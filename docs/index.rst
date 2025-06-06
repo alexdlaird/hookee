@@ -43,6 +43,16 @@ or ``conda``:
 
 That's it! ``hookee`` is now available as a Python package is available from the command line.
 
+Configure ``authtoken``
+-----------------------
+
+To get the most out of ``hookee``, you'll want to obtain an `authtoken from ngrok <https://dashboard.ngrok.com/>`_
+(it's free!) and install it in to ``hookee``'s config file:
+
+.. code-block:: sh
+
+    hookee authtoken $NGROK_AUTHTOKEN
+
 Basic Usage
 ===========
 
@@ -64,9 +74,9 @@ here is how you can customize the response body from ``/webhook`` using the ``--
     hookee --response "<Response>Ok</Response>" \
         --content-type application/xml
 
-``hookee`` can also be started without a tunnel (removing the dependency on an Internet connection). Using the
-``--no-tunnel`` flag only starts ``hookee``'s server, allowing responses to be mocked locally. This can be particularly
-useful when service discovery is done through a proxy service (ex. `HAProxy <https://www.haproxy.org/>`_,
+``hookee`` can also be started without a tunnel (removing the dependency on ``ngrok`` and an Internet connection).
+Using the ``--no-tunnel`` flag only starts ``hookee``'s server, allowing responses to be mocked locally. This can be
+particularly useful when service discovery is done through a proxy service (ex. `HAProxy <https://www.haproxy.org/>`_,
 `Envoy <https://www.envoyproxy.io/>`_, etc.), meaning you can tell ``hookee`` to start on the port of an expected
 downstream, thus intercepting requests to that service to provide your own responses in an isolated environment,
 very useful for rapid local development, cluster testing, and more.

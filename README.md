@@ -28,6 +28,15 @@ conda install -c conda-forge hookee
 
 That's it! `hookee` is now available as a Python package and is available from the command line.
 
+### Configure `authtoken`
+
+To get the most out of `hookee`, you'll want to obtain an [authtoken from `ngrok`](https://dashboard.ngrok.com/) (it's
+free!) and install it in to `hookee`'s config file:
+
+```sh
+hookee authtoken $NGROK_AUTHTOKEN
+```
+
 ## Basic Usage
 
 `hookee` makes it easy to get webhooks on the fly right from the console. Simply start it with:
@@ -48,8 +57,8 @@ hookee --response "<Response>Ok</Response>" \
     --content-type application/xml
 ```
 
-`hookee` can also be started without a tunnel (removing the dependency on an Internet connection). Using the
-`--no-tunnel` flag only starts `hookee`'s server, allowing responses to be mocked locally. This can be particularly
+`hookee` can also be started without a tunnel (removing the dependency on `ngrok` and an Internet connection). Using
+the `--no-tunnel` flag only starts `hookee`'s server, allowing responses to be mocked locally. This can be particularly
 useful when service discovery is done through a proxy service (ex. [HAProxy](https://www.haproxy.org/),
 [Envoy](https://www.envoyproxy.io/), etc.), meaning you can tell `hookee` to start on the port of an expected downstream,
 thus intercepting requests to that service to provide your own responses in an isolated environment, very useful for
