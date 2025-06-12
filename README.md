@@ -81,7 +81,7 @@ hookee --help
 
 For more advanced usage, including how `hookee`'s default configuration can be changed, extended through plugins,
 API integrations, and more, see its official documentation is available
-at [ReadTheDocs](http://hookee.readthedocs.io).
+at [Read the Docs](http://hookee.readthedocs.io).
 
 ## Contributing
 
