@@ -4,6 +4,7 @@ dynamic = ["version"]
 description = "Command line webhooks, on demand"
 readme = "README.md"
 license = "MIT"
+authors = [{ name = "Alex Laird", email = "contact@alexlaird.com" }]
 maintainers = [{ name = "Alex Laird", email = "contact@alexlaird.com" }]
 requires-python = ">=3.9"
 dependencies = [
