@@ -16,7 +16,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Removed
 
-- Official support for Python 3.8. No breaking changes, but backwards compatibility will not continue to be validated in future releases. 
+- Support for Python 3.8. 
 
 ## [2.3.10](https://github.com/alexdlaird/hookee/compare/2.3.9...2.3.10) - 2025-05-07
 
@@ -151,7 +151,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Remove
 
-- Support for Python 3.7 and below.
+- Support for Python 3.6 and 3.7.
 
 ## [2.1.1](https://github.com/alexdlaird/hookee/compare/2.1.0...2.1.1) - 2023-12-27
 
@@ -225,7 +225,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Removed
 
-- Support for Python 2.7. To use `hookee` with Python 2.7, pin `hookee>=1.2,<2`.
+- Support for Python 2.7.
 
 ## [1.2.5](https://github.com/alexdlaird/hookee/compare/1.2.4...1.2.5) - 2020-10-15
 
