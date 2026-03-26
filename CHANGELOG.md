@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.12...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.13...HEAD)
+
+## [2.3.13](https://github.com/alexdlaird/hookee/compare/2.3.12...2.3.13) - 2026-03-26
+
+### Fixed
+
+- Added missing `typing_extensions` dependency (required by `confuse`).
 
 ## [2.3.12](https://github.com/alexdlaird/hookee/compare/2.3.11...2.3.12) - 2025-07-10
 
