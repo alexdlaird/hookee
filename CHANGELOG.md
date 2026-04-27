@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.3.13...HEAD)
 
+### Changed
+
+- Bumped `pyngrok` version required to >8.0.0.
+
 ## [2.3.13](https://github.com/alexdlaird/hookee/compare/2.3.12...2.3.13) - 2026-03-26
 
 ### Fixed
