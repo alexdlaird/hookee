@@ -49,7 +49,8 @@ dev = [
 docs = [
     "Sphinx",
     "sphinx-notfound-page",
-    "sphinx-sitemap"
+    "sphinx-sitemap",
+    "sphinxext-opengraph"
 ]
 
 [project.scripts]

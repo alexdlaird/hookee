@@ -45,6 +45,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "notfound.extension",
     "sphinx_sitemap",
+    "sphinxext.opengraph",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -75,6 +76,12 @@ pygments_style = "sphinx"
 
 html_baseurl = "https://hookee.readthedocs.io/en/stable/"
 sitemap_url_scheme = "{link}"
+
+ogp_site_url = html_baseurl
+ogp_image = f"{html_baseurl}logo.png"
+ogp_image_alt = "hookee - command line webhooks, on demand"
+ogp_type = "website"
+ogp_social_cards = {"enable": False}
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
