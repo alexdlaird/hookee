@@ -44,6 +44,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "notfound.extension",
+    "sphinx_sitemap",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -71,6 +72,9 @@ add_function_parentheses = False
 pygments_style = "sphinx"
 
 # -- Options for HTML output -------------------------------------------------
+
+html_baseurl = "https://hookee.readthedocs.io/en/stable/"
+sitemap_url_scheme = "{link}"
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.

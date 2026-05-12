@@ -48,7 +48,8 @@ dev = [
 ]
 docs = [
     "Sphinx",
-    "sphinx-notfound-page"
+    "sphinx-notfound-page",
+    "sphinx-sitemap"
 ]
 
 [project.scripts]
