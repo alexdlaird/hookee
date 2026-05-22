@@ -79,7 +79,7 @@ sitemap_url_scheme = "{link}"
 
 ogp_site_url = html_baseurl
 ogp_image = f"{html_baseurl}logo.png"
-ogp_image_alt = "hookee - command line webhooks, on demand"
+ogp_image_alt = "hookee - Command line webhooks, on demand; receive and react to webhooks locally"
 ogp_type = "website"
 ogp_social_cards = {"enable": False}
 
@@ -188,7 +188,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, "hookee", "hookee Documentation",
-     author, "hookee", "Command line webhooks, on demand",
+     author, "hookee", "Command line webhooks, on demand; receive and react to webhooks locally",
      "Miscellaneous"),
 ]
 
