@@ -1,11 +1,11 @@
 .. rst-class:: hide-header
 
 ********************************************************************************
-hookee - Command line webhooks, on demand; receive and react to webhooks locally
+hookee - Command line webhooks, on demand; tunnel, capture, and script responses
 ********************************************************************************
 
 .. image:: _html/logo.png
-   :alt: hookee - Command line webhooks, on demand; receive and react to webhooks locally
+   :alt: hookee - Command line webhooks, on demand; tunnel, capture, and script responses
    :align: center
 
 .. image:: https://img.shields.io/pypi/v/hookee
