@@ -14,7 +14,7 @@ dependencies = [
     "flask>=1.1",
     "click>=7.1",
     "pyngrok>=8.0",
-    "defusedxml>=0.6"
+    "defusedxml>=0.7.1"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
