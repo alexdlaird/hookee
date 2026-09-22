@@ -48,6 +48,8 @@ dev = [
 ]
 docs = [
     "Sphinx",
+    "furo",
+    "sphinxcontrib-googleanalytics",
     "sphinx-notfound-page",
     "sphinx-sitemap",
     "sphinxext-opengraph"

@@ -4,9 +4,25 @@
 hookee - Command line webhooks, on demand; tunnel, capture, and script responses
 ********************************************************************************
 
-.. image:: _html/logo.png
-   :alt: hookee - Command line webhooks, on demand; tunnel, capture, and script responses
-   :align: center
+.. only:: html
+
+   .. image:: _static/logo-light.png
+      :alt: hookee - Command line webhooks, on demand; tunnel, capture, and script responses
+      :align: center
+      :width: 280px
+      :class: hero-logo only-light
+
+   .. image:: _static/logo-dark.png
+      :alt: hookee - Command line webhooks, on demand; tunnel, capture, and script responses
+      :align: center
+      :width: 280px
+      :class: hero-logo only-dark
+
+.. only:: not html
+
+   .. image:: _html/_images/logo.png
+      :alt: hookee - Command line webhooks, on demand; tunnel, capture, and script responses
+      :align: center
 
 .. image:: https://img.shields.io/pypi/v/hookee
    :target: https://pypi.org/project/hookee
