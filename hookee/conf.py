@@ -3,6 +3,7 @@ __license__ = "MIT"
 
 import os
 import threading
+from typing import Any, Callable, Optional
 
 import click
 import confuse
@@ -15,17 +16,23 @@ template = {
     "port": int,
     "no_tunnel": confuse.OneOf([True, False], default=False),
     "tunnel_name": confuse.String(default=None),
-    "subdomain": confuse.String(default=None),
-    "region": confuse.Choice(["us", "eu", "ap", "au", "sa", "jp", "in", "us-cal-1"], default=None),
-    "domain": confuse.String(default=None),
-    # Deprecated, use "domain" instead
-    "hostname": confuse.String(default=None),
+    "url": confuse.String(default=None),
+    "region": confuse.String(default=None),
     "basic_auth": confuse.String(default=None),
-    # Deprecated, use "basic_auth" instead
-    "auth": confuse.String(default=None),
     "host_header": confuse.String(default=None),
+    "traffic_policy_file": confuse.Filename(default=None),
+    "pooling_enabled": confuse.OneOf([True, False], default=False),
+    "verify_webhook": confuse.String(default=None),
     "response": confuse.String(default=None),
+    "response_file": confuse.Filename(default=None),
     "content_type": confuse.String(default=None),
+    "status_code": confuse.Integer(default=None),
+    "response_headers": confuse.StrSeq(default=[]),
+    "delay": confuse.Number(default=0),
+    "response_route": confuse.String(default=None),
+    "forward_to": confuse.String(default=None),
+    "save_dir": confuse.Filename(default=None),
+    "show_sensitive_headers": confuse.OneOf([True, False], default=False),
     "request_script": confuse.Filename(default=None),
     "response_script": confuse.Filename(default=None),
     "auth_token": confuse.String(default=os.environ.get("NGROK_AUTHTOKEN")),
@@ -36,6 +43,13 @@ template = {
     "header_color": confuse.Integer(default="green"),
     "default_color": confuse.Integer(default="white"),
     "request_color": confuse.Integer(default="white"),
+}
+
+removed_keys = {
+    "subdomain": "url",
+    "domain": "url",
+    "hostname": "url",
+    "auth": "basic_auth",
 }
 
 config_file_lock = threading.Lock()
@@ -56,8 +70,7 @@ class Config:
 
         from hookee.conf import Config
 
-        config = Config(subdomain="my_domain",
-                        region="eu")
+        config = Config(url="https://my-hooks.ngrok.io")
 
     A callback function can also be passed instead of ``response`` and ``content-type`` (or needing to use
     plugins) when integrating with ``hookee``'s APIs:
@@ -72,41 +85,38 @@ class Config:
             return response
 
         config = Config(response_callback=response_callback)
-
-    :var config_obj: The templated config object.
-    :vartype config_obj: confuse.core.Configuration
-    :var config_dir: The directory of the config being used.
-    :vartype config_dir: str
-    :var config_path: The full path to the config file being used.
-    :vartype config_path: str
-    :var config_data: The parsed and validated config data. Use :func:`get`, :func:`set`, and other accessors
-        to interact with the data.
-    :vartype config_data: confuse.templates.AttrDict
-    :var click_logging: ``True`` if ``click`` should be used for log output, which enables colors and formatting when
-        logging to a console, ``False`` if a logger should be used. If not passed, ``True`` if a :class:`click.Context`
-        is found to be active. Not persisted to the config file.
-    :vartype click_logging: bool
-    :var response_callback: The response callback function, if defined. Not persisted to the config file.
-    :vartype response_callback: types.FunctionType, optional
     """
 
-    def __init__(self, click_logging=None, **kwargs):
+    def __init__(self,
+                 click_logging: Optional[bool] = None,
+                 **kwargs: Any) -> None:
         try:
             if click_logging is None:
                 click_logging = click.get_current_context(silent=True) is not None
 
-            self.response_callback = kwargs.pop("response_callback", None)
+            #: The response callback function, if defined. Not persisted to the config file.
+            self.response_callback: Optional[Callable] = kwargs.pop("response_callback", None)
 
             config = confuse.Configuration("hookee", __name__)
             config.set_args(kwargs)
 
-            self.config_obj = config
-            self.config_dir = self.config_obj.config_dir()
-            self.config_path = os.path.join(self.config_dir, confuse.CONFIG_FILENAME)
+            self._validate_no_removed_keys(config)
 
-            self.config_data = config.get(template)
+            #: The templated config object.
+            self.config_obj: confuse.Configuration = config
+            #: The directory of the config being used.
+            self.config_dir: str = self.config_obj.config_dir()
+            #: The full path to the config file being used.
+            self.config_path: str = os.path.join(self.config_dir, confuse.CONFIG_FILENAME)
 
-            self.click_logging = click_logging
+            #: The parsed and validated config data. Use :func:`get`, :func:`set`, and other accessors to interact
+            #: with the data.
+            self.config_data: confuse.templates.AttrDict = config.get(template)
+
+            #: ``True`` if ``click`` should be used for log output, which enables colors and formatting when logging
+            #: to a console, ``False`` if a logger should be used. If not passed, ``True`` if a
+            #: :class:`click.Context` is found to be active. Not persisted to the config file.
+            self.click_logging: bool = click_logging
 
             if self.config_data.get("response") and self.response_callback:
                 raise HookeeConfigError("Can't define both \"response\" and \"response_callback\".")
@@ -121,39 +131,47 @@ class Config:
         except (confuse.ConfigReadError, ValueError):
             raise HookeeConfigError("The config file is not valid YAML.")
 
-    def get(self, key, default=None):
+    @staticmethod
+    def _validate_no_removed_keys(config: confuse.Configuration) -> None:
+        for key in config.keys():
+            if key in removed_keys:
+                replacement = removed_keys[key]
+                raise HookeeConfigError(f"\"{key}\" is no longer supported as of hookee 3.0.0. Use \"{replacement}\" "
+                                        f"instead, and remove it from your config ({config.user_config_path()}) or "
+                                        f"the arguments passing it.")
+
+    def get(self,
+            key: str,
+            default: Any = None) -> Any:
         """
         Get the config value for the given key of persisted data.
 
         :param key: The key.
-        :type key: str
         :param default: The default, if config not set.
-        :type key: str
         :return: The config value.
-        :rtype: object
         """
         return self.config_data.get(key, default)
 
-    def set(self, key, value):
+    def set(self,
+            key: str,
+            value: Any) -> None:
         """
         Update the config key to the given value, persisting to ``config.yaml``.
 
         :param key: The key.
-        :type key: str
         :param value: The value to set.
-        :type key: object
         """
         if value != self.config_data[key]:
             self._update_config_objects(key, value)
 
-    def append(self, key, value):
+    def append(self,
+               key: str,
+               value: Any) -> None:
         """
         Update the config key by appending to the list the given value, persisting to ``config.yaml``.
 
         :param key: The key.
-        :type key: str
         :param value: The value to append.
-        :type value: object
         """
         list_item = list(self.config_data[key])
 
@@ -161,15 +179,15 @@ class Config:
             list_item.append(value)
             self._update_config_objects(key, list_item)
 
-    def remove(self, key, value):
+    def remove(self,
+               key: str,
+               value: Any) -> None:
         """
         Update the config key by removing from the list the given value from the list for the given key, persisting to
         ``config.yaml``.
 
         :param key: The key.
-        :type key: str
         :param value: The value to remove.
-        :type value: object
         """
         list_item = list(self.config_data[key])
 
@@ -177,13 +195,15 @@ class Config:
             list_item.remove(value)
             self._update_config_objects(key, list_item)
 
-    def _update_config_objects(self, key, value):
+    def _update_config_objects(self,
+                               key: str,
+                               value: Any) -> None:
         self.config_data[key] = value
         self.config_obj[key] = value
 
         self._write_config_objects_to_file()
 
-    def _write_config_objects_to_file(self):
+    def _write_config_objects_to_file(self) -> None:
         with config_file_lock:
             with open(self.config_path, "w") as f:
                 f.write(self.config_obj.dump())

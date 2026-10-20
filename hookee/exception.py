@@ -11,7 +11,7 @@ class HookeeError(Exception):
 
 class HookeeConfigError(HookeeError):
     """
-    Raised when there is an error initializing ``hookee` configuration.
+    Raised when there is an error initializing ``hookee`` configuration.
     """
     pass
 

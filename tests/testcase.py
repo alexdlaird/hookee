@@ -3,7 +3,10 @@ __license__ = "MIT"
 
 import os
 import shutil
+import sys
 import unittest
+from contextlib import contextmanager
+from io import StringIO
 
 from click.testing import CliRunner
 
@@ -29,3 +32,13 @@ class HookeeTestCase(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(self.config_dir):
             shutil.rmtree(self.config_dir)
+
+    @contextmanager
+    def captured_output(self):
+        new_out, new_err = StringIO(), StringIO()
+        old_out, old_err = sys.stdout, sys.stderr
+        try:
+            sys.stdout, sys.stderr = new_out, new_err
+            yield sys.stdout, sys.stderr
+        finally:
+            sys.stdout, sys.stderr = old_out, old_err

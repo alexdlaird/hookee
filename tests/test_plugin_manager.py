@@ -75,7 +75,7 @@ class TestPluginManager(HookeeTestCase):
             Plugin.build_from_module(plugin)
 
         # THEN
-        self.assertIn("must define `blueprint", str(cm.exception))
+        self.assertIn("Plugin \"no_blueprint\" must define `blueprint", str(cm.exception))
 
     def test_response_callback(self):
         # GIVEN
@@ -137,3 +137,32 @@ class TestPluginManager(HookeeTestCase):
         response = self.plugin_manager.response_callback(None, Response())
         self.assertEqual(response.data.decode("utf-8"), "<Response>Ok</Response>")
         self.assertEqual(response.headers["Content-Type"], "application/xml")
+
+    def test_run_response_plugins_without_request_does_not_forward(self):
+        # GIVEN
+        self.hookee_manager.config.set("forward_to", "http://127.0.0.1:1")
+        self.hookee_manager.config.set("plugins", ["blueprint_default"])
+        self.hookee_manager.config.response_callback = lambda request, response: response
+        self.plugin_manager.load_plugins()
+
+        # WHEN
+        with self.hookee_manager.server.app.app_context():
+            response = self.plugin_manager.run_response_plugins()
+
+        # THEN
+        self.assertEqual(response.status_code, 200)
+
+    def test_run_response_plugins_without_request_skips_response_route(self):
+        # GIVEN
+        self.hookee_manager.config.set("response_route", "^GET /api/")
+        self.hookee_manager.config.set("status_code", 503)
+        self.hookee_manager.config.set("plugins", ["blueprint_default"])
+        self.hookee_manager.config.response_callback = lambda request, response: response
+        self.plugin_manager.load_plugins()
+
+        # WHEN
+        with self.hookee_manager.server.app.app_context():
+            response = self.plugin_manager.run_response_plugins()
+
+        # THEN
+        self.assertEqual(response.status_code, 200)

@@ -3,14 +3,17 @@ __license__ = "MIT"
 
 import logging
 import threading
-import time
-from http import HTTPStatus
-from urllib.error import URLError
-from urllib.request import Request, urlopen
+from typing import TYPE_CHECKING, Optional
 
 from flask import Flask
+from werkzeug.serving import BaseWSGIServer, make_server
 
 from hookee import pluginmanager
+from hookee.pluginmanager import PluginManager
+from hookee.util import PrintUtil
+
+if TYPE_CHECKING:
+    from hookee.hookeemanager import HookeeManager
 
 werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.ERROR)
@@ -19,103 +22,62 @@ werkzeug_logger.setLevel(logging.ERROR)
 class Server:
     """
     An object that manages a non-blocking Flask server and thread.
-
-    :var hookee_manager: Reference to the ``hookee`` Manager.
-    :vartype hookee_manager: HookeeManager
-    :var plugin_manager: Reference to the Plugin Manager.
-    :vartype plugin_manager: PluginManager
-    :var print_util: Reference to the PrintUtil.
-    :vartype print_util: PrintUtil
-    :var port: The server's port.
-    :vartype port: int
-    :var app: The Flask app.
-    :vartype app: flask.Flask
     """
 
-    def __init__(self, hookee_manager):
-        self.hookee_manager = hookee_manager
-        self.plugin_manager = self.hookee_manager.plugin_manager
-        self.print_util = self.hookee_manager.print_util
-        self.port = self.hookee_manager.config.get("port")
+    def __init__(self, hookee_manager: "HookeeManager") -> None:
+        #: Reference to the ``hookee`` Manager.
+        self.hookee_manager: "HookeeManager" = hookee_manager
+        #: Reference to the Plugin Manager.
+        self.plugin_manager: PluginManager = self.hookee_manager.plugin_manager
+        #: Reference to the PrintUtil.
+        self.print_util: PrintUtil = self.hookee_manager.print_util
+        #: The server's port.
+        self.port: int = self.hookee_manager.config.get("port")
 
-        self.app = self.create_app()
+        #: The Flask app.
+        self.app: Flask = self.create_app()
 
-        self._thread = None
+        self._server: Optional[BaseWSGIServer] = None
+        self._thread: Optional[threading.Thread] = None
 
-    def create_app(self):
+    def create_app(self) -> Flask:
         """
         Create a Flask app and register all Blueprints found in enabled plugins.
 
         :return: The Flask app.
-        :rtype: flask.Flask
         """
         app = Flask(__name__)
-
-        app.config.from_mapping(
-            ENV="development"
-        )
 
         for plugin in self.plugin_manager.get_plugins_by_type(pluginmanager.BLUEPRINT_PLUGIN):
             app.register_blueprint(plugin.blueprint)
 
         return app
 
-    def _loop(self):
-        thread = None
-
-        try:
-            thread = threading.current_thread()
-            thread.alive = True
-
-            # This will block until stop() is invoked to shutdown the Werkzeug server
-            self.app.run(host="127.0.0.1", port=self.port, debug=True, use_reloader=False)
-        except OSError as e:
-            self.print_util.print_basic(e)
-
-            self.stop()
-
-        if thread:
-            thread.alive = False
-
-    def start(self):
+    def start(self) -> None:
         """
         If one is not already running, start a server in a new thread.
         """
         if self._thread is None:
             self.print_util.print_open_header("Starting Server")
 
-            self._thread = threading.Thread(target=self._loop, daemon=True)
+            self._server = make_server("127.0.0.1", self.port, self.app, threaded=True)
+            self._thread = threading.Thread(target=self._server.serve_forever, daemon=True)
             self._thread.start()
-
-            while self._server_status() != HTTPStatus.OK:
-                time.sleep(1)
 
             self.print_close_header()
 
-    def stop(self):
+    def stop(self) -> None:
         """
-        This method is only useful when the Flask version has been overridden to use an older version (<2). With
-        recent versions of Flask, the underlying server daemon will terminate when ``hookee`` terminates.
+        If running, shutdown the server and its thread.
         """
         if self._thread:
-            req = Request(f"http://127.0.0.1:{self.port}/shutdown", method="POST")
-            urlopen(req)
+            self._server.shutdown()
+            self._server.server_close()
 
+            self._server = None
             self._thread = None
 
-    def _server_status(self):
-        """
-        Get the response code of the server's ``/status`` endpoint.
-
-        :return: The status code.
-        :rtype: http.HTTPStatus
-        """
-        try:
-            return urlopen(f"http://127.0.0.1:{self.port}/status").getcode()
-        except URLError:
-            return HTTPStatus.INTERNAL_SERVER_ERROR
-
-    def print_close_header(self):
+    def print_close_header(self) -> None:
         self.print_util.print_basic(f" * Port: {self.port}")
         self.print_util.print_basic(" * Blueprints: registered")
         self.print_util.print_close_header()

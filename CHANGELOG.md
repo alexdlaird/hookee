@@ -4,7 +4,37 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/alexdlaird/hookee/compare/2.4.1...HEAD)
+## [Unreleased](https://github.com/alexdlaird/hookee/compare/3.0.0...HEAD)
+
+## [3.0.0](https://github.com/alexdlaird/hookee/compare/2.4.1...3.0.0) - 2026-10-20
+
+### Breaking
+
+- Requires `pyngrok` 9, which uses `ngrok`'s [v3 config](https://ngrok.com/docs/agent/config/v3/) and Endpoints by default. `hookee`'s tunnel options now map to Endpoint URLs and [Traffic Policy](https://ngrok.com/docs/traffic-policy/) actions, and `ngrok` requires basic auth passwords to be at least 8 characters.
+- Replaced `--subdomain` and `--hostname` (and the `subdomain`, `domain`, and `hostname` config keys) with `--url` (`url`), which takes a full URL or a domain, like `my-hooks.ngrok.io`.
+- Renamed `--auth` to `--basic-auth`, matching the existing `basic_auth` config key. The deprecated `auth` config key was removed.
+- Starting `hookee` with a config that still has a removed key now fails with a message naming its replacement, rather than ignoring it.
+- Removed the `/shutdown` endpoint, which anyone with the public URL could call to stop `hookee`. Stop it with Ctrl-C, or with `HookeeManager.stop()`, which no longer kills the calling process.
+
+### Added
+
+- `--traffic-policy-file` (`traffic_policy_file`), to apply a `ngrok` Traffic Policy to the endpoint. `--basic-auth` and `--host-header` are applied before its rules.
+- `--pooling-enabled` (`pooling_enabled`), to let multiple `hookee` instances share the same endpoint URL.
+- `--forward-to` (`forward_to`), to forward every request, at any path, to your app and send back its response (streamed responses, like server-sent events, are passed on as they arrive), so `hookee` can sit between a service (or a mobile app or frontend) and the app you're building.
+- `--verify-webhook` (`verify_webhook`), to have `ngrok` verify each request's webhook signature, with the result shown alongside the request.
+- `--save-dir` (`save_dir`), to save each request, and the response sent for it, to a JSON file, like for test fixtures.
+- `--response-file`, `--status-code`, `--response-header`, and `--delay` (`response_file`, `status_code`, `response_headers`, and `delay`), to customize the response further without a script, and `--response-route` (`response_route`) to apply them only to matching requests.
+- XML request and response bodies are formatted in the console.
+- Headers that carry credentials, like `Authorization` and `Cookie`, are masked in the console and saved requests, unless `--show-sensitive-headers` (`show_sensitive_headers`) is given.
+- The default route can match the root path, `/`.
+
+### Fixed
+
+- `hookee` no longer hangs when the tunnel fails to start, and reports the error instead.
+- The server no longer runs in Flask's debug mode, which returned tracebacks to callers of the public URL.
+- Stopping `hookee` with `SIGTERM` now shuts it down cleanly, like Ctrl-C, instead of leaving `ngrok` running.
+- Build and stability improvements.
+- Documentation improvements.
 
 ## [2.4.1](https://github.com/alexdlaird/hookee/compare/2.4.0...2.4.1) - 2026-04-29
 

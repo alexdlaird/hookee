@@ -3,6 +3,7 @@ __license__ = "MIT"
 
 import os
 import time
+from typing import NoReturn, Optional
 
 import click
 
@@ -32,8 +33,7 @@ class HookeeManager:
         from hookee import HookeeManager
         from hookee.conf import Config
 
-        config = Config(subdomain="my_domain",
-                        region="eu")
+        config = Config(url="https://my-hooks.ngrok.io")
         hookee_manager = HookeeManager(config=config)
 
     A ``response_callback`` function can also be passed instead of defining a raw ``response`` and ``content-type``
@@ -51,25 +51,13 @@ class HookeeManager:
 
         config = Config(response_callback=response_callback)
         hookee_manager = HookeeManager(config=config)
-
-    :var ctx: The ``click`` context.
-    :vartype ctx: click.Context
-    :var config: The ``hookee`` configuration.
-    :vartype config: Config
-    :var plugin_manager: Reference to the Plugin Manager.
-    :vartype plugin_manager: PluginManager
-    :var print_util: Reference to the PrintUtil.
-    :vartype print_util: PrintUtil
-    :var tunnel: Reference to the Tunnel.
-    :vartype tunnel: Tunnel
-    :var server: Reference to the Server.
-    :vartype server: Server
-    :var alive: ``True`` when this object is managing an active tunnel and server.
-    :vartype alive: bool
     """
 
-    def __init__(self, config=None, load_plugins=True):
-        self.ctx = click.get_current_context(silent=True)
+    def __init__(self,
+                 config: Optional[Config] = None,
+                 load_plugins: bool = True) -> None:
+        #: The ``click`` context.
+        self.ctx: Optional[click.Context] = click.get_current_context(silent=True)
 
         if config is None:
             try:
@@ -78,21 +66,27 @@ class HookeeManager:
             except HookeeConfigError as e:
                 self.fail(str(e), e)
 
-        self.config = config
-        self.plugin_manager = PluginManager(self)
-        self.print_util = PrintUtil(self.config)
+        #: The ``hookee`` configuration.
+        self.config: Config = config
+        #: Reference to the Plugin Manager.
+        self.plugin_manager: PluginManager = PluginManager(self)
+        #: Reference to the PrintUtil.
+        self.print_util: PrintUtil = PrintUtil(self.config)
 
         if load_plugins:
             self.plugin_manager.load_plugins()
 
-        self.tunnel = Tunnel(self)
-        self.server = Server(self)
+        #: Reference to the Tunnel.
+        self.tunnel: Tunnel = Tunnel(self)
+        #: Reference to the Server.
+        self.server: Server = Server(self)
 
-        self.alive = False
+        #: ``True`` when this object is managing an active tunnel and server.
+        self.alive: bool = False
 
         self.print_hookee_banner()
 
-    def run(self):
+    def run(self) -> None:
         """
         If one is not already running, start a managed server and tunnel and block until an interrupt
         is received (or ``alive`` is set to ``False``).
@@ -108,7 +102,7 @@ class HookeeManager:
 
             self.stop()
 
-    def stop(self):
+    def stop(self) -> None:
         """
         If running, shutdown the managed server and tunnel.
         """
@@ -123,13 +117,13 @@ class HookeeManager:
 
             self.alive = False
 
-    def print_hookee_banner(self):
+    def print_hookee_banner(self) -> None:
         self.print_util.print_open_header("", "=")
         self.print_util.print_basic(banner.format(version=__version__), color="green", bold=True)
         self.print_util.print_basic()
         self.print_util.print_close_header("=", blank_line=False)
 
-    def print_ready(self):
+    def print_ready(self) -> None:
         self.print_util.print_open_header("Registered Plugins")
 
         plugins = self.plugin_manager.enabled_plugins()
@@ -146,12 +140,17 @@ class HookeeManager:
         else:
             host = f"http://localhost:{self.server.port}"
 
-        default_route = self.config.get("default_route")
-        default_route_methods = self.config.get("default_route_methods").split(",")
-        self.print_util.print_basic(f" * {host}{default_route}", print_when_logging=True)
-        self.print_util.print_basic(f"   Methods: {sorted(list(default_route_methods))}", print_when_logging=True)
+        forward_to = self.config.get("forward_to")
+        if forward_to:
+            self.print_util.print_basic(f" * {host}/ -> {forward_to.rstrip('/')}/ (all paths are forwarded)",
+                                        print_when_logging=True)
+        else:
+            default_route = self.config.get("default_route")
+            default_route_methods = self.config.get("default_route_methods").split(",")
+            self.print_util.print_basic(f" * {host}{default_route}", print_when_logging=True)
+            self.print_util.print_basic(f"   Methods: {sorted(list(default_route_methods))}", print_when_logging=True)
 
-        rules = list(filter(lambda r: r.rule not in ["/<path:uri>", "/shutdown", "/status", "/static/<path:filename>"],
+        rules = list(filter(lambda r: r.rule not in ["/<path:uri>", "/status", "/static/<path:filename>"],
                             self.server.app.url_map.iter_rules()))
         for rule in rules:
             self.print_util.print_basic(f" * {host}{rule.rule}", print_when_logging=True)
@@ -163,15 +162,15 @@ class HookeeManager:
         self.print_util.print_basic("--> Ready, send a request to a registered endpoint ...", color="green", bold=True)
         self.print_util.print_basic()
 
-    def fail(self, msg, e=None):
+    def fail(self,
+             msg: str,
+             e: Optional[HookeeError] = None) -> NoReturn:
         """
         Shutdown the current application with a failure. If a CLI Context exists, that will be used to invoke the
         failure, otherwise an exception will be thrown for failures to be caught.
 
         :param msg: The failure message.
-        :type msg: str
         :param e: The error being raised.
-        :type e: HookeeError, optional
         """
         if self.ctx is not None:
             self.ctx.fail(msg)
@@ -180,7 +179,7 @@ class HookeeManager:
         else:
             raise HookeeError(msg)
 
-    def _init_server_and_tunnel(self):
+    def _init_server_and_tunnel(self) -> None:
         self.alive = True
         self.server.start()
         if not self.config.get("no_tunnel"):

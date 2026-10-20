@@ -2,9 +2,15 @@ __copyright__ = "Copyright (c) 2020-2024 Alex Laird"
 __license__ = "MIT"
 
 from datetime import datetime
+from typing import TYPE_CHECKING
+
+from flask import Request
 
 from hookee.pluginmanager import REQUEST_PLUGIN
 from hookee.util import PrintUtil  # noqa: F401
+
+if TYPE_CHECKING:
+    from hookee.hookeemanager import HookeeManager
 
 plugin_type = REQUEST_PLUGIN
 description = "Print the timestamp along with the request URL and method being invoked."
@@ -12,13 +18,13 @@ description = "Print the timestamp along with the request URL and method being i
 print_util = None  # type: PrintUtil
 
 
-def setup(hookee_manager):
+def setup(hookee_manager: "HookeeManager") -> None:
     global print_util
 
     print_util = hookee_manager.print_util
 
 
-def run(request):
+def run(request: Request) -> Request:
     now = datetime.now()
 
     timestamp = now.strftime("%m-%d-%Y %I:%M:%S %p")
