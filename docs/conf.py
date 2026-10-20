@@ -44,9 +44,9 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "notfound.extension",
+    "sphinx_autodoc_typehints",
     "sphinx_sitemap",
     "sphinxext.opengraph",
-    "sphinxcontrib.googleanalytics",
 ]
 
 # The suffix(es) of source filenames.
@@ -75,7 +75,7 @@ sitemap_excludes = ["search.html", "404.html"]
 
 ogp_site_url = html_baseurl
 ogp_image = f"{html_baseurl}_images/logo.png"
-ogp_image_alt = "hookee - Command line webhooks, on demand; tunnel, capture, and script responses"
+ogp_image_alt = "hookee - Command line webhooks, on demand: see, answer, forward, and capture requests from your terminal"
 ogp_type = "website"
 ogp_social_cards = {"enable": False}
 ogp_enable_meta_description = False
@@ -85,7 +85,7 @@ ogp_custom_meta_tags = [
     '<meta name="twitter:card" content="summary_large_image">',
 ]
 
-googleanalytics_id = "G-BYH9PCHNFD"
+google_analytics_id = "G-BYH9PCHNFD"
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -122,6 +122,13 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+html_js_files = [
+    (f"https://www.googletagmanager.com/gtag/js?id={google_analytics_id}", {"async": "async"}),
+    (None, {"body": "window.dataLayer = window.dataLayer || [];"
+                    "function gtag(){dataLayer.push(arguments);}"
+                    "gtag('js', new Date());"
+                    f"gtag('config', '{google_analytics_id}');"}),
+]
 html_extra_path = ["_html"]
 
 html_css_files = [
@@ -197,7 +204,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, "hookee", "hookee Documentation",
-     author, "hookee", "Command line webhooks, on demand; tunnel, capture, and script responses",
+     author, "hookee", "Command line webhooks, on demand: see, answer, forward, and capture requests from your terminal",
      "Miscellaneous"),
 ]
 
@@ -225,5 +232,10 @@ intersphinx_mapping = {
     "confuse": ("https://confuse.readthedocs.io/en/latest", None),
     "flask": ("https://flask.palletsprojects.com/en/latest", None),
     "pyngrok": ("https://pyngrok.readthedocs.io/en/stable", None),
-    "python": ("https://docs.python.org/3", None)
+    "python": ("https://docs.python.org/3", None),
+    "werkzeug": ("https://werkzeug.palletsprojects.com/en/stable", None)
 }
+
+nitpick_ignore = [
+    ("py:class", "pluginbase.PluginSource")
+]

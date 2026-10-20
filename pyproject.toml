@@ -1,9 +1,10 @@
 [project]
 name = "hookee"
 dynamic = ["version"]
-description = "Command line webhooks, on demand; tunnel, capture, and script responses"
+description = "Command line webhooks, on demand: see, answer, forward, and capture requests from your terminal"
 readme = "README.md"
 license = "MIT"
+keywords = ["webhook", "webhook-testing", "ngrok", "tunnel", "tunneling", "localhost", "reverse-proxy", "mock-server", "cli"]
 authors = [{ name = "Alex Laird", email = "contact@alexlaird.com" }]
 maintainers = [{ name = "Alex Laird", email = "contact@alexlaird.com" }]
 requires-python = ">=3.9"
@@ -49,8 +50,8 @@ dev = [
 docs = [
     "Sphinx",
     "furo",
-    "sphinxcontrib-googleanalytics",
     "sphinx-notfound-page",
+    "sphinx_autodoc_typehints",
     "sphinx-sitemap",
     "sphinxext-opengraph"
 ]

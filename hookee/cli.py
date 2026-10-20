@@ -3,8 +3,12 @@
 __copyright__ = "Copyright (c) 2020-2025 Alex Laird"
 __license__ = "MIT"
 
-import click
 import platform
+import signal
+from types import FrameType
+from typing import Any, NoReturn, Optional, Union
+
+import click
 
 from hookee import HookeeManager, __version__, pluginmanager
 
@@ -17,8 +21,28 @@ from hookee import HookeeManager, __version__, pluginmanager
 @click.option("--response", type=str,
               help="[server] Data to set for the response, overriding all body data from plugins and "
                    "`--response-script`.")
+@click.option("--response-file", type=click.Path(exists=True, dir_okay=False),
+              help="[server] A file whose contents to set for the response, overriding all body data from plugins and "
+                   "`--response-script`. Its \"Content-Type\" is guessed from its extension, unless `--content-type` "
+                   "is given.")
 @click.option("--content-type", type=str,
-              help="[server] The \"Content-Type\" header to set when response body data is given with `--response`")
+              help="[server] The \"Content-Type\" header to set when response body data is given with `--response` or "
+                   "`--response-file`.")
+@click.option("--status-code", type=int, help="[server] The status code to set for the response.")
+@click.option("--response-header", "response_headers", multiple=True,
+              help="[server] A \"Name: value\" header to set on the response. Can be given multiple times.")
+@click.option("--delay", type=float, help="[server] Seconds to wait before sending the response.")
+@click.option("--response-route",
+              help="[server] A regex for the \"METHOD /path\" of requests to apply the response options to, like "
+                   "\"^GET /planner/\". If not given, they apply to all requests.")
+@click.option("--forward-to",
+              help="[server] The base URL of your app, like \"http://localhost:8000\", to forward every request to, "
+                   "with its path and query string. Your app's response is sent back to the caller.")
+@click.option("--save-dir", type=click.Path(file_okay=False),
+              help="[server] A directory to save each request, and the response sent for it, to as a JSON file.")
+@click.option("--show-sensitive-headers", is_flag=True, default=False,
+              help="[server] Show and save headers that carry credentials, like \"Authorization\" and "
+                   "\"Cookie\", instead of masking them.")
 @click.option("--request-script", type=click.Path(exists=True),
               help="[server] A Python script whose `run(request)` method will be called by the default `/webhook` "
                    "after all request plugins have run.")
@@ -26,18 +50,25 @@ from hookee import HookeeManager, __version__, pluginmanager
               help="[server] A Python script whose `run(request, response)` method will be called by the default "
                    "`/webhook` after all response plugins have run.")
 @click.option("--tunnel-name", help="[tunnel] The name to use for the ngrok tunnel.")
-@click.option("--subdomain", help="[tunnel] The subdomain to use for ngrok endpoints.")
-@click.option("--region", type=click.Choice(["us", "eu", "ap", "au", "sa", "jp", "in"]),
-              help="The region to use for ngrok endpoints.")
-@click.option("--hostname", help="[tunnel] The domain to use for ngrok endpoints.")
-@click.option("--auth", help="[tunnel] The basic auth to use for ngrok endpoints.")
+@click.option("--url", help="[tunnel] The URL (or domain) to use for the ngrok endpoint.")
+@click.option("--region",
+              help="[tunnel] The region to start the ngrok agent in. If not given, ngrok chooses the lowest latency "
+                   "region.")
+@click.option("--basic-auth", help="[tunnel] The \"username:password\" basic auth to require on the ngrok endpoint.")
 @click.option("--host-header", help="[tunnel] The \"Host\" header value to use for ngrok endpoints.")
+@click.option("--verify-webhook",
+              help="[tunnel] A \"provider:secret\" to verify webhook signatures with ngrok. Requests are never "
+                   "blocked, but each shows whether it was verified.")
+@click.option("--traffic-policy-file", type=click.Path(exists=True),
+              help="[tunnel] A YAML or JSON ngrok Traffic Policy file to apply to the ngrok endpoint.")
+@click.option("--pooling-enabled", is_flag=True, default=False,
+              help="[tunnel] Allow multiple hookee instances to share the same ngrok endpoint URL.")
 @click.option("--auth-token", help="[tunnel] A valid ngrok auth token.")
 @click.option("--api-key", help="[tunnel] A valid ngrok API key.")
 @click.option("--plugins-dir", type=click.Path(exists=True), help="The directory to scan for custom hookee plugins.")
 @click.option("--plugins", multiple=True, help="A list of hookee plugins to use.")
 @click.option('--version', is_flag=True, default=False, help="Display version information.")
-def hookee(ctx, **kwargs):
+def hookee(ctx: click.Context, **kwargs: Any) -> None:
     """
     hookee is a utility that provides command line webhooks, on demand! Bind port to intercept requests,
     dump request data to the console, process requests and responses, customize response data, and configure hookee and
@@ -58,9 +89,6 @@ def hookee(ctx, **kwargs):
         if value:
             ctx.obj[key] = value
 
-    if kwargs.get("subdomain") and kwargs.get("hostname"):
-        ctx.fail("Can't give both --subdomain and --hostname.")
-
     hookee_manager = HookeeManager(load_plugins=ctx.invoked_subcommand not in [enable_plugin.name,
                                                                                disable_plugin.name,
                                                                                available_plugins.name,
@@ -68,18 +96,18 @@ def hookee(ctx, **kwargs):
     ctx.obj["hookee_manager"] = hookee_manager
 
     if ctx.invoked_subcommand is None:
-        hookee_manager.run()
+        _run_until_stopped(hookee_manager)
 
 
 @hookee.command()
 @click.pass_context
-def start(ctx):
+def start(ctx: click.Context) -> None:
     """
     Start hookee.
     """
     hookee_manager = ctx.obj["hookee_manager"]
 
-    hookee_manager.run()
+    _run_until_stopped(hookee_manager)
 
 
 @hookee.command(
@@ -89,7 +117,7 @@ def start(ctx):
 @click.pass_context
 @click.argument("key")
 @click.argument("value")
-def update_config(ctx, key, value):
+def update_config(ctx: click.Context, key: str, value: str) -> None:
     """
     Update the default value for a config. Any passable arg to hookee can also be given here to set its
     default in the config so it doesn't need to be passed to the hookee each time.
@@ -101,11 +129,10 @@ def update_config(ctx, key, value):
     if "-" in key:
         key = key.replace("-", "_")
 
-    if value.isdigit():
-        value = int(value)
+    config_value: Union[str, int] = int(value) if value.isdigit() else value
 
     try:
-        hookee_manager.config.set(key, value)
+        hookee_manager.config.set(key, config_value)
 
         hookee_manager.print_util.print_config_update(
             f"The default value for \"{key}\" has been updated in the config.")
@@ -116,7 +143,7 @@ def update_config(ctx, key, value):
 @hookee.command()
 @click.pass_context
 @click.argument("plugin")
-def enable_plugin(ctx, plugin):
+def enable_plugin(ctx: click.Context, plugin: str) -> None:
     """
     Enable the given plugin by default.
     """
@@ -132,7 +159,7 @@ def enable_plugin(ctx, plugin):
 @hookee.command()
 @click.pass_context
 @click.argument("plugin")
-def disable_plugin(ctx, plugin):
+def disable_plugin(ctx: click.Context, plugin: str) -> None:
     """
     Disable the given plugin by default.
     """
@@ -148,7 +175,7 @@ def disable_plugin(ctx, plugin):
 
 @hookee.command()
 @click.pass_context
-def available_plugins(ctx):
+def available_plugins(ctx: click.Context) -> None:
     """
     List all available plugins.
     """
@@ -174,7 +201,7 @@ def available_plugins(ctx):
 
 @hookee.command()
 @click.pass_context
-def enabled_plugins(ctx):
+def enabled_plugins(ctx: click.Context) -> None:
     """
     List all enabled plugins.
     """
@@ -201,7 +228,7 @@ def enabled_plugins(ctx):
 @hookee.command()
 @click.pass_context
 @click.argument("token")
-def authtoken(ctx, token):
+def authtoken(ctx: click.Context, token: str) -> None:
     """
     Save the auth token to the config.
     """
@@ -215,7 +242,7 @@ def authtoken(ctx, token):
 @hookee.command()
 @click.pass_context
 @click.argument("key")
-def apikey(ctx, key):
+def apikey(ctx: click.Context, key: str) -> None:
     """
     Save the API key to the config.
     """
@@ -224,6 +251,16 @@ def apikey(ctx, key):
     hookee_manager.config.set("api_key", key)
 
     hookee_manager.print_util.print_config_update("The API key has been set in the config.")
+
+
+def _run_until_stopped(hookee_manager: HookeeManager) -> None:
+    signal.signal(signal.SIGTERM, _raise_keyboard_interrupt)
+
+    hookee_manager.run()
+
+
+def _raise_keyboard_interrupt(signum: int, frame: Optional[FrameType]) -> NoReturn:
+    raise KeyboardInterrupt
 
 
 if __name__ == "__main__":

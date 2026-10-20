@@ -51,3 +51,11 @@ Utility
     :members:
     :private-members:
     :show-inheritance:
+
+Exceptions
+----------
+
+.. automodule:: hookee.exception
+    :members:
+    :private-members:
+    :show-inheritance:
