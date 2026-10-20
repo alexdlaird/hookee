@@ -1,10 +1,10 @@
-<p align="center"><img alt="hookee - Command line webhooks, on demand; tunnel, capture, and script responses" src="https://hookee.readthedocs.io/en/latest/_images/logo.png" /></p>
+<p align="center"><img alt="hookee - Command line webhooks, on demand; tunnel, capture, and script responses" src="https://hookee.readthedocs.io/en/stable/_images/logo.png" /></p>
 
 [![Version](https://img.shields.io/pypi/v/hookee)](https://pypi.org/project/hookee)
 [![Python Versions](https://img.shields.io/pypi/pyversions/hookee.svg)](https://pypi.org/project/hookee/)
 [![Coverage](https://img.shields.io/codecov/c/github/alexdlaird/hookee)](https://codecov.io/gh/alexdlaird/hookee)
 [![Build](https://img.shields.io/github/actions/workflow/status/alexdlaird/hookee/build.yml)](https://github.com/alexdlaird/hookee/actions/workflows/build.yml)
-[![Docs](https://img.shields.io/readthedocs/hookee)](https://hookee.readthedocs.io/en/latest)
+[![Docs](https://img.shields.io/readthedocs/hookee)](https://hookee.readthedocs.io/en/stable)
 [![GitHub License](https://img.shields.io/github/license/alexdlaird/hookee)](https://github.com/alexdlaird/hookee/blob/main/LICENSE)
 
 `hookee` is a utility that provides command line webhooks, on demand! Dump useful request data to the
@@ -46,7 +46,7 @@ hookee start
 ```
 
 With its default configuration, this will start a server on port 8000, open a [`ngrok`](https://ngrok.com/) tunnel
-using [`pyngrok`](https://pyngrok.readthedocs.io/en/latest/), and mount a URL at `/webhook`. Sending any request to
+using [`pyngrok`](https://pyngrok.readthedocs.io/en/stable/), and mount a URL at `/webhook`. Sending any request to
 the `/webhook` endpoint will dump the request and response data to the console.
 
 `hookee` can be configured in a number of ways to quickly and easily tweak request and response data. For example,

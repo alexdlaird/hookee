@@ -224,6 +224,6 @@ intersphinx_mapping = {
     "click": ("https://click.palletsprojects.com/en/latest", None),
     "confuse": ("https://confuse.readthedocs.io/en/latest", None),
     "flask": ("https://flask.palletsprojects.com/en/latest", None),
-    "pyngrok": ("https://pyngrok.readthedocs.io/en/latest", None),
+    "pyngrok": ("https://pyngrok.readthedocs.io/en/stable", None),
     "python": ("https://docs.python.org/3", None)
 }

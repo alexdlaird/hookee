@@ -33,7 +33,7 @@ hookee - Command line webhooks, on demand; tunnel, capture, and script responses
 .. image:: https://img.shields.io/github/actions/workflow/status/alexdlaird/hookee/build.yml
    :target: https://github.com/alexdlaird/hookee/actions/workflows/build.yml
 .. image:: https://img.shields.io/readthedocs/hookee
-   :target: https://hookee.readthedocs.io/en/latest
+   :target: https://hookee.readthedocs.io/en/stable
 .. image:: https://img.shields.io/github/license/alexdlaird/hookee
    :target: https://github.com/alexdlaird/hookee
 
@@ -79,7 +79,7 @@ Basic Usage
     hookee start
 
 With its default configuration, this will start a server on port 8000, open a `ngrok <https://ngrok.com/>`_ tunnel
-using `pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_, and mount a URL at ``/webhook``. Sending any
+using `pyngrok <https://pyngrok.readthedocs.io/en/stable/>`_, and mount a URL at ``/webhook``. Sending any
 request to the ``/webhook`` endpoint will dump request and response data to the console.
 
 ``hookee`` can be configured in a number of ways to quickly and easily tweak request and response data. For example,
@@ -268,7 +268,7 @@ Dive Deeper
 ===========
 
 Under the hood, ``hookee`` uses `Flask <https://flask.palletsprojects.com/en/1.1.x/>`_ as its server and
-`pyngrok <https://pyngrok.readthedocs.io/en/latest/>`_ to open and manage its tunnel. Being familiar with these
+`pyngrok <https://pyngrok.readthedocs.io/en/stable/>`_ to open and manage its tunnel. Being familiar with these
 two packages would allow ``hookee`` to be configured and extended further.
 
 For more advanced ``hookee`` usage, its own API documentation is also available.
