@@ -24,18 +24,20 @@ hookee - Command line webhooks, on demand: see, answer, forward, and capture req
       :alt: hookee - Command line webhooks, on demand: see, answer, forward, and capture requests from your terminal
       :align: center
 
-.. image:: https://img.shields.io/pypi/v/hookee
-   :target: https://pypi.org/project/hookee
-.. image:: https://img.shields.io/pypi/pyversions/hookee.svg
-   :target: https://pypi.org/project/hookee
-.. image:: https://img.shields.io/codecov/c/github/alexdlaird/hookee
-   :target: https://codecov.io/gh/alexdlaird/hookee
-.. image:: https://img.shields.io/github/actions/workflow/status/alexdlaird/hookee/build.yml
-   :target: https://github.com/alexdlaird/hookee/actions/workflows/build.yml
-.. image:: https://img.shields.io/readthedocs/hookee
-   :target: https://hookee.readthedocs.io/en/stable
-.. image:: https://img.shields.io/github/license/alexdlaird/hookee
-   :target: https://github.com/alexdlaird/hookee
+.. only:: builder_html
+
+   .. image:: https://img.shields.io/pypi/v/hookee
+      :target: https://pypi.org/project/hookee
+   .. image:: https://img.shields.io/pypi/pyversions/hookee.svg
+      :target: https://pypi.org/project/hookee
+   .. image:: https://img.shields.io/codecov/c/github/alexdlaird/hookee
+      :target: https://codecov.io/gh/alexdlaird/hookee
+   .. image:: https://img.shields.io/github/actions/workflow/status/alexdlaird/hookee/build.yml
+      :target: https://github.com/alexdlaird/hookee/actions/workflows/build.yml
+   .. image:: https://img.shields.io/readthedocs/hookee
+      :target: https://hookee.readthedocs.io/en/stable
+   .. image:: https://img.shields.io/github/license/alexdlaird/hookee
+      :target: https://github.com/alexdlaird/hookee
 
 ``hookee`` gives you a public URL to your terminal with one command. Point any service's webhooks at it, then see,
 answer, and forward every request as it happens, with no code.
@@ -494,8 +496,10 @@ be a useful reference when developing new plugins for ``hookee``.
 Integrating with ``hookee``
 ===========================
 
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/drive/1DO1yOw8sCkybSFP_Ci8sDmsSbOgB8r54?usp=sharing
+.. only:: builder_html
+
+   .. image:: https://colab.research.google.com/assets/colab-badge.svg
+      :target: https://colab.research.google.com/drive/1DO1yOw8sCkybSFP_Ci8sDmsSbOgB8r54?usp=sharing
 
 You can also integrate with ``hookee`` instead of using its command line interface.
 :class:`~hookee.hookeemanager.HookeeManager` is a good starting point for custom integrations. If you still want
