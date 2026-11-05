@@ -1,4 +1,4 @@
-.PHONY: all install nopyc clean test docs check local validate-release upload
+.PHONY: all install nopyc clean test docs check local validate-release
 
 SHELL := /usr/bin/env bash
 PYTHON_BIN ?= python
@@ -63,9 +63,3 @@ validate-release:
 		if [[ $$(grep "| $${MAJOR_MINOR}\.x" SECURITY.md) == "" ]] ; then echo "SECURITY.md missing supported-versions entry for $${MAJOR_MINOR}.x" & exit 1 ; fi; \
 	fi
 
-upload: local
-	@( \
-        $(PYTHON_BIN) -m pip install --upgrade twine; \
-		$(PYTHON_BIN) -m build; \
-		$(PYTHON_BIN) -m twine upload dist/*; \
-	)
