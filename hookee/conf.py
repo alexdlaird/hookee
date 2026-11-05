@@ -40,9 +40,9 @@ template = {
     "plugins_dir": confuse.Filename(),
     "plugins": list,
     "console_width": confuse.Integer(default=80),
-    "header_color": confuse.Integer(default="green"),
-    "default_color": confuse.Integer(default="white"),
-    "request_color": confuse.Integer(default="white"),
+    "header_color": confuse.String(default="green"),
+    "default_color": confuse.String(default="white"),
+    "request_color": confuse.String(default="white"),
 }
 
 removed_keys = {
@@ -130,6 +130,8 @@ class Config:
             raise HookeeConfigError(f"The config file is invalid: {str(e)}.")
         except (confuse.ConfigReadError, ValueError):
             raise HookeeConfigError("The config file is not valid YAML.")
+        except confuse.ConfigError as e:
+            raise HookeeConfigError(f"The config file is invalid: {str(e)}.")
 
     @staticmethod
     def _validate_no_removed_keys(config: confuse.Configuration) -> None:

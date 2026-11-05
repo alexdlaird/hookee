@@ -3,6 +3,8 @@ __license__ = "MIT"
 
 from unittest import mock
 
+from hookee.conf import Config
+from hookee.exception import HookeeConfigError
 from tests.testcase import HookeeTestCase
 
 
@@ -54,3 +56,15 @@ class TestConfig(HookeeTestCase):
         # THEN
         self.assertNotIn("request_headers", self.config.get("plugins"))
         self.assertTrue(mock_write_config_objects_to_file.called)
+
+    def test_config_with_invalid_value_raises_hookee_config_error(self):
+        # GIVEN
+        with open(self.config.config_path, "a") as f:
+            f.write("\nno_tunnel: maybe\n")
+
+        # WHEN
+        with self.assertRaises(HookeeConfigError) as cm:
+            Config()
+
+        # THEN
+        self.assertIn("no_tunnel", str(cm.exception))

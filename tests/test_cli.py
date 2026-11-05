@@ -5,6 +5,7 @@ import os
 from unittest import mock
 
 from hookee.cli import hookee
+from hookee.conf import Config
 from tests.testcase import HookeeTestCase
 
 
@@ -32,6 +33,52 @@ class TestCli(HookeeTestCase):
         # THEN
         self.assertEqual(result.exit_code, 2)
         self.assertIn("No such key", result.output)
+
+    def test_update_config_boolean(self):
+        # WHEN
+        result = self.runner.invoke(hookee, ["update-config", "no-tunnel", "true"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertIs(Config().get("no_tunnel"), True)
+        self.assertEqual(self.runner.invoke(hookee, ["enabled-plugins"]).exit_code, 0,
+                         "The saved value must not break the next command")
+
+    def test_update_config_decimal(self):
+        # WHEN
+        result = self.runner.invoke(hookee, ["update-config", "delay", "1.5"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(Config().get("delay"), 1.5)
+
+    def test_update_config_color(self):
+        # WHEN
+        result = self.runner.invoke(hookee, ["update-config", "header_color", "red"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(Config().get("header_color"), "red")
+
+    def test_update_config_keeps_digits_as_text_for_text_keys(self):
+        # WHEN
+        result = self.runner.invoke(hookee, ["update-config", "basic_auth", "1234"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(Config().get("basic_auth"), "1234")
+
+    def test_update_config_invalid_value(self):
+        # GIVEN
+        port = Config().get("port")
+
+        # WHEN
+        result = self.runner.invoke(hookee, ["update-config", "port", "abc"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 2)
+        self.assertIn("not a valid value", result.output)
+        self.assertEqual(Config().get("port"), port, "An invalid value must not be saved")
 
     def test_available_plugins(self):
         # WHEN
