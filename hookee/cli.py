@@ -6,11 +6,15 @@ __license__ = "MIT"
 import platform
 import signal
 from types import FrameType
-from typing import Any, NoReturn, Optional, Union
+from typing import Any, NoReturn, Optional
 
 import click
+import confuse
+from confuse import yaml_util
 
-from hookee import HookeeManager, __version__, pluginmanager
+from hookee import HookeeManager, __version__, conf, pluginmanager
+
+_INVALID_CONFIG_VALUE = object()
 
 
 @click.group(invoke_without_command=True)
@@ -129,15 +133,17 @@ def update_config(ctx: click.Context, key: str, value: str) -> None:
     if "-" in key:
         key = key.replace("-", "_")
 
-    config_value: Union[str, int] = int(value) if value.isdigit() else value
-
-    try:
-        hookee_manager.config.set(key, config_value)
-
-        hookee_manager.print_util.print_config_update(
-            f"The default value for \"{key}\" has been updated in the config.")
-    except KeyError:
+    if key not in conf.template:
         ctx.fail(f"No such key exists in the config: {key}")
+
+    config_value = _parse_config_value(key, value)
+    if config_value is _INVALID_CONFIG_VALUE:
+        ctx.fail(f"\"{value}\" is not a valid value for \"{key}\".")
+
+    hookee_manager.config.set(key, config_value)
+
+    hookee_manager.print_util.print_config_update(
+        f"The default value for \"{key}\" has been updated in the config.")
 
 
 @hookee.command()
@@ -257,6 +263,27 @@ def _run_until_stopped(hookee_manager: HookeeManager) -> None:
     signal.signal(signal.SIGTERM, _raise_keyboard_interrupt)
 
     hookee_manager.run()
+
+
+def _parse_config_value(key: str, value: str) -> Any:
+    if _is_valid_config_value(key, value):
+        return value
+
+    try:
+        typed_value = yaml_util.load_yaml_string(value, "value")
+    except confuse.ConfigReadError:
+        return _INVALID_CONFIG_VALUE
+
+    return typed_value if _is_valid_config_value(key, typed_value) else _INVALID_CONFIG_VALUE
+
+
+def _is_valid_config_value(key: str, value: Any) -> bool:
+    view = confuse.RootView([confuse.ConfigSource.of({key: value})])
+    try:
+        view[key].get(conf.template[key])
+        return True
+    except confuse.ConfigError:
+        return False
 
 
 def _raise_keyboard_interrupt(signum: int, frame: Optional[FrameType]) -> NoReturn:
