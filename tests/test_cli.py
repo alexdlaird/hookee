@@ -114,12 +114,28 @@ class TestCli(HookeeTestCase):
         self.assertIn(" * response_info", result.output)
 
     def test_enable_plugin(self):
+        # GIVEN
+        self.config.remove("plugins", "request_body")
+
         # WHEN
         result = self.runner.invoke(hookee, ["enable-plugin", "request_body"])
 
         # THEN
         self.assertEqual(result.exit_code, 0)
         self.assertIn("\"request_body\" has been enabled", result.output)
+        self.assertIn("request_body", Config().get("plugins"))
+
+    def test_enable_plugin_already_enabled(self):
+        # GIVEN
+        plugins_before = list(Config().get("plugins"))
+
+        # WHEN
+        result = self.runner.invoke(hookee, ["enable-plugin", "request_body"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("\"request_body\" is already enabled", result.output)
+        self.assertEqual(plugins_before, list(Config().get("plugins")))
 
     def test_enable_plugin_invalid(self):
         # WHEN
@@ -136,6 +152,44 @@ class TestCli(HookeeTestCase):
         # THEN
         self.assertEqual(result.exit_code, 0)
         self.assertIn("\"request_body\" is disabled", result.output)
+
+    def test_disable_plugin_invalid(self):
+        # GIVEN
+        plugins_before = list(Config().get("plugins"))
+
+        # WHEN
+        result = self.runner.invoke(hookee, ["disable-plugin", "fake_plugin"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 2)
+        self.assertIn("\"fake_plugin\" could not be found", result.output)
+        self.assertEqual(plugins_before, list(Config().get("plugins")))
+
+    def test_disable_plugin_already_disabled(self):
+        # GIVEN
+        self.config.remove("plugins", "request_body")
+        plugins_before = list(Config().get("plugins"))
+
+        # WHEN
+        result = self.runner.invoke(hookee, ["disable-plugin", "request_body"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("\"request_body\" is already disabled", result.output)
+        self.assertEqual(plugins_before, list(Config().get("plugins")))
+
+    def test_disable_plugin_with_plugins_override(self):
+        # GIVEN
+        plugins_before = list(Config().get("plugins"))
+
+        # WHEN
+        result = self.runner.invoke(hookee, ["--plugins", "blueprint_default", "--plugins", "response_echo",
+                                             "disable-plugin", "response_echo"])
+
+        # THEN
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("\"response_echo\" is disabled", result.output)
+        self.assertEqual([p for p in plugins_before if p != "response_echo"], list(Config().get("plugins")))
 
     def test_disable_required_plugin(self):
         # WHEN
