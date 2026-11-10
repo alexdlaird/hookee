@@ -175,7 +175,10 @@ def disable_plugin(ctx: click.Context, plugin: str) -> None:
         ctx.fail(f"Can't disable the plugin \"{plugin}\".")
 
     if plugin not in hookee_manager.plugin_manager.enabled_plugins():
-        ctx.fail(f"Plugin \"{plugin}\" is not enabled.")
+        hookee_manager.plugin_manager.get_plugin(plugin)
+
+        hookee_manager.print_util.print_config_update(f"Plugin \"{plugin}\" is already disabled.")
+        return
 
     hookee_manager.config.remove("plugins", plugin)
 

@@ -137,25 +137,30 @@ class TestCli(HookeeTestCase):
         self.assertEqual(result.exit_code, 0)
         self.assertIn("\"request_body\" is disabled", result.output)
 
-    def test_disable_plugin_not_enabled(self):
+    def test_disable_plugin_invalid(self):
+        # GIVEN
+        plugins_before = list(Config().get("plugins"))
+
         # WHEN
         result = self.runner.invoke(hookee, ["disable-plugin", "fake_plugin"])
 
         # THEN
         self.assertEqual(result.exit_code, 2)
-        self.assertIn("is not enabled", result.output)
+        self.assertIn("\"fake_plugin\" could not be found", result.output)
+        self.assertEqual(plugins_before, list(Config().get("plugins")))
 
-    def test_disable_plugin_twice(self):
+    def test_disable_plugin_already_disabled(self):
         # GIVEN
-        first = self.runner.invoke(hookee, ["disable-plugin", "request_body"])
-        self.assertEqual(first.exit_code, 0)
+        self.config.remove("plugins", "request_body")
+        plugins_before = list(Config().get("plugins"))
 
         # WHEN
         result = self.runner.invoke(hookee, ["disable-plugin", "request_body"])
 
         # THEN
-        self.assertEqual(result.exit_code, 2)
-        self.assertIn("is not enabled", result.output)
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("\"request_body\" is already disabled", result.output)
+        self.assertEqual(plugins_before, list(Config().get("plugins")))
 
     def test_disable_required_plugin(self):
         # WHEN
