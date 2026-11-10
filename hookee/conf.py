@@ -3,7 +3,7 @@ __license__ = "MIT"
 
 import os
 import threading
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Set
 
 import click
 import confuse
@@ -100,6 +100,12 @@ class Config:
             config = confuse.Configuration("hookee", __name__)
             config.set_args(kwargs)
 
+            #: The config as persisted to ``config.yaml``, without overrides passed as arguments. Writes are applied to
+            #: this, so overrides are never persisted.
+            self.persisted_config_obj: confuse.Configuration = confuse.Configuration("hookee", __name__)
+            #: The keys overridden by arguments, which writes will not change in :attr:`config_data`.
+            self.overridden_keys: Set[str] = {key for key, value in kwargs.items() if value is not None}
+
             self._validate_no_removed_keys(config)
 
             #: The templated config object.
@@ -163,49 +169,70 @@ class Config:
         :param key: The key.
         :param value: The value to set.
         """
-        if value != self.config_data[key]:
+        if value != self._get_persisted(key):
             self._update_config_objects(key, value)
 
     def append(self,
                key: str,
-               value: Any) -> None:
+               value: Any) -> bool:
         """
         Update the config key by appending to the list the given value, persisting to ``config.yaml``.
 
         :param key: The key.
         :param value: The value to append.
+        :return: ``True`` if the value was appended, ``False`` if it was already present.
         """
-        list_item = list(self.config_data[key])
+        list_item = list(self._get_persisted(key, []))
 
-        if value not in list_item:
-            list_item.append(value)
-            self._update_config_objects(key, list_item)
+        if value in list_item:
+            return False
+
+        list_item.append(value)
+        self._update_config_objects(key, list_item)
+
+        return True
 
     def remove(self,
                key: str,
-               value: Any) -> None:
+               value: Any) -> bool:
         """
-        Update the config key by removing from the list the given value from the list for the given key, persisting to
-        ``config.yaml``.
+        Update the config key by removing all occurrences of the given value from the list for the given key,
+        persisting to ``config.yaml``.
 
         :param key: The key.
         :param value: The value to remove.
+        :return: ``True`` if the value was removed, ``False`` if it was not present.
         """
-        list_item = list(self.config_data[key])
+        list_item = list(self._get_persisted(key, []))
+        remaining = [item for item in list_item if item != value]
 
-        if value in list_item:
-            list_item.remove(value)
-            self._update_config_objects(key, list_item)
+        if len(remaining) == len(list_item):
+            return False
+
+        self._update_config_objects(key, remaining)
+
+        return True
+
+    def _get_persisted(self,
+                       key: str,
+                       default: Any = None) -> Any:
+        try:
+            return self.persisted_config_obj[key].get()
+        except confuse.NotFoundError:
+            return default
 
     def _update_config_objects(self,
                                key: str,
                                value: Any) -> None:
-        self.config_data[key] = value
-        self.config_obj[key] = value
+        self.persisted_config_obj[key] = value
+
+        if key not in self.overridden_keys:
+            self.config_data[key] = value
+            self.config_obj[key] = value
 
         self._write_config_objects_to_file()
 
     def _write_config_objects_to_file(self) -> None:
         with config_file_lock:
             with open(self.config_path, "w") as f:
-                f.write(self.config_obj.dump())
+                f.write(self.persisted_config_obj.dump())
